@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Craig VolHawk â€” Volatility-Triggered OCO Agent
+ * Craig VolHawk — Volatility-Triggered OCO Agent
  *
  * Monitors Solana token prices via Jupiter Price V3 API.
  * Detects volatility breakouts using rolling realised volatility.
@@ -9,7 +9,7 @@
  * is available.
  *
  * Built for the Jupiter Developer Platform hackathon (May 2026).
- * Author: Craig Armstrong â€” craig-earn-agent-green-77
+ * Author: Craig Armstrong — craig-earn-agent-green-77
  */
 
 const fs     = require('fs');
@@ -21,7 +21,7 @@ const { getAuthChallenge, buildOcoOrder } = require('./trigger');
 
 const ROOT = path.join(__dirname, '..');
 
-// â”€â”€â”€ Config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Config ───────────────────────────────────────────────────────────────────
 // Load env
 try {
   fs.readFileSync(path.join(ROOT, 'crypto_bot.env'), 'utf8').split('\n').forEach(line => {
@@ -37,34 +37,34 @@ const WALLET       = process.env.SUPERTEAM_WALLET;
 
 const POLL_MS        = 30_000;   // 30s between price polls
 const WINDOW_SIZE    = 20;       // rolling window: 20 samples = ~10 minutes
-const VOL_MULT       = 2.0;      // trigger when vol > 2Ã— recent average
+const VOL_MULT       = 2.0;      // trigger when vol > 2× recent average
 const TP_PCT         = 0.02;     // 2% take-profit
 const SL_PCT         = 0.01;     // 1% stop-loss
 
-// Tokens to monitor â€” mint addresses
+// Tokens to monitor — mint addresses
 const WATCH = [
   { symbol: 'SOL',  mint: MINTS.SOL  },
   { symbol: 'JUP',  mint: MINTS.JUP  },
   { symbol: 'WIF',  mint: MINTS.WIF  },
 ];
 
-// â”€â”€â”€ State â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── State ────────────────────────────────────────────────────────────────────
 // Rolling price history per mint
 const priceHistory = {};   // { [mint]: number[] }
-const signalCooldown = {}; // { [mint]: number } â€” last signal timestamp
+const signalCooldown = {}; // { [mint]: number } — last signal timestamp
 
 for (const t of WATCH) {
   priceHistory[t.mint] = [];
   signalCooldown[t.mint] = 0;
 }
 
-// â”€â”€â”€ Logging â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Logging ──────────────────────────────────────────────────────────────────
 function log(msg) {
   const line = `[${new Date().toISOString()}] ${msg}`;
   console.log(line);
 }
 
-// â”€â”€â”€ Telegram â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Telegram ─────────────────────────────────────────────────────────────────
 function tgSend(text) {
   if (!TG_TOKEN || !TG_CHAT) return;
   const body = JSON.stringify({ chat_id: TG_CHAT, text, parse_mode: 'HTML' });
@@ -79,7 +79,7 @@ function tgSend(text) {
   req.end();
 }
 
-// â”€â”€â”€ Volatility calculation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Volatility calculation ───────────────────────────────────────────────────
 // Realised volatility = std dev of log returns over the rolling window
 function realisedVol(prices) {
   if (prices.length < 2) return 0;
@@ -92,7 +92,7 @@ function realisedVol(prices) {
   return Math.sqrt(variance);
 }
 
-// Split window in half â€” compare recent half vs earlier half to detect spikes
+// Split window in half — compare recent half vs earlier half to detect spikes
 function isVolatilityBreakout(prices) {
   if (prices.length < WINDOW_SIZE) return false;
   const half = Math.floor(WINDOW_SIZE / 2);
@@ -104,7 +104,7 @@ function isVolatilityBreakout(prices) {
   return volRecent > volEarly * VOL_MULT;
 }
 
-// â”€â”€â”€ OCO order generator â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── OCO order generator ──────────────────────────────────────────────────────
 function generateOco(symbol, mint, price) {
   const tpPrice = price * (1 + TP_PCT);
   const slPrice = price * (1 - SL_PCT);
@@ -121,7 +121,7 @@ function generateOco(symbol, mint, price) {
   return { order, tpPrice, slPrice };
 }
 
-// â”€â”€â”€ Main tick â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Main tick ────────────────────────────────────────────────────────────────
 async function tick() {
   const mints = WATCH.map(t => t.mint);
   let prices;
@@ -157,15 +157,15 @@ async function tick() {
     const { order, tpPrice, slPrice } = generateOco(token.symbol, token.mint, price);
 
     const msg = [
-      `âš¡ <b>VOLATILITY BREAKOUT â€” ${token.symbol}</b>`,
+      `⚡ <b>VOLATILITY BREAKOUT — ${token.symbol}</b>`,
       `Price: $${price.toFixed(4)}`,
       `OCO order generated:`,
-      `  â†’ Take profit: $${tpPrice.toFixed(4)} (+${(TP_PCT * 100).toFixed(1)}%)`,
-      `  â†’ Stop loss:   $${slPrice.toFixed(4)} (-${(SL_PCT * 100).toFixed(1)}%)`,
-      `  â†’ Buy: 100 USDC of ${token.symbol}`,
+      `  → Take profit: $${tpPrice.toFixed(4)} (+${(TP_PCT * 100).toFixed(1)}%)`,
+      `  → Stop loss:   $${slPrice.toFixed(4)} (-${(SL_PCT * 100).toFixed(1)}%)`,
+      `  → Buy: 100 USDC of ${token.symbol}`,
     ].join('\n');
 
-    log(`âš¡ BREAKOUT: ${token.symbol} @ $${price.toFixed(4)}  TP=$${tpPrice.toFixed(4)}  SL=$${slPrice.toFixed(4)}`);
+    log(`⚡ BREAKOUT: ${token.symbol} @ $${price.toFixed(4)}  TP=$${tpPrice.toFixed(4)}  SL=$${slPrice.toFixed(4)}`);
     log(`OCO payload: ${JSON.stringify(order)}`);
     tgSend(msg);
 
@@ -174,10 +174,10 @@ async function tick() {
       try {
         const challenge = await getAuthChallenge(JUP_API_KEY, WALLET);
         if (challenge.status === 200) {
-          log(`Auth challenge received â€” wallet signature required to submit order`);
+          log(`Auth challenge received — wallet signature required to submit order`);
           log(`Challenge: ${challenge.body.challenge}`);
           // Full execution requires ed25519 signing of the challenge message.
-          // See trigger.js â€” the signed message would then be submitted to
+          // See trigger.js — the signed message would then be submitted to
           // POST /trigger/v2/orders/price to place the live OCO order.
         }
       } catch (err) {
@@ -187,16 +187,16 @@ async function tick() {
   }
 }
 
-// â”€â”€â”€ Entry point â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Entry point ──────────────────────────────────────────────────────────────
 async function main() {
   log(`Craig VolHawk starting`);
   log(`Watching: ${WATCH.map(t => t.symbol).join(', ')}`);
   log(`Poll interval: ${POLL_MS / 1000}s  |  Window: ${WINDOW_SIZE} samples`);
-  log(`Breakout threshold: ${VOL_MULT}Ã— recent volatility`);
+  log(`Breakout threshold: ${VOL_MULT}× recent volatility`);
   log(`OCO levels: TP +${TP_PCT * 100}%  SL -${SL_PCT * 100}%`);
   if (!JUP_API_KEY) log('Running keyless (0.5 RPS). Set JUPITER_API_KEY for higher limits.');
 
-  tgSend(`ðŸ¦… <b>Craig VolHawk online</b>\nWatching: ${WATCH.map(t => t.symbol).join(', ')}\nPoll: ${POLL_MS / 1000}s`);
+  tgSend(`🦅 <b>Craig VolHawk online</b>\nWatching: ${WATCH.map(t => t.symbol).join(', ')}\nPoll: ${POLL_MS / 1000}s`);
 
   await tick();
   setInterval(tick, POLL_MS);

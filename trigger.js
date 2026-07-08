@@ -1,5 +1,5 @@
 'use strict';
-// trigger.js â€” Jupiter Trigger V2 API (Limit Orders / OCO)
+// trigger.js — Jupiter Trigger V2 API (Limit Orders / OCO)
 // https://api.jup.ag/trigger/v2
 // OCO = One-Cancels-Other: paired TP + SL orders
 // NOTE: Requires wallet signing. This module builds the order payload

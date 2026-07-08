@@ -1,5 +1,5 @@
 'use strict';
-// price.js â€” Jupiter Price V3 API client
+// price.js — Jupiter Price V3 API client
 // https://api.jup.ag/price/v3?ids={mints}
 // Works keyless (0.5 RPS) or with x-api-key header (higher limits)
 

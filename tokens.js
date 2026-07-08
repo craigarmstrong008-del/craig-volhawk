@@ -1,5 +1,5 @@
 'use strict';
-// tokens.js â€” Jupiter Tokens V2 API client
+// tokens.js — Jupiter Tokens V2 API client
 // https://api.jup.ag/tokens/v2/search?query=...
 // Returns token metadata, verification status, organic score, trading metrics
 
@@ -7,7 +7,7 @@ const https = require('https');
 
 const BASE = 'api.jup.ag';
 
-// Search tokens by symbol or name â€” returns array of token objects
+// Search tokens by symbol or name — returns array of token objects
 function searchTokens(query, apiKey = null) {
   return new Promise((resolve, reject) => {
     const headers = { 'Accept': 'application/json' };
@@ -31,7 +31,7 @@ function searchTokens(query, apiKey = null) {
   });
 }
 
-// Get recently created token pools â€” useful for spotting new listings
+// Get recently created token pools — useful for spotting new listings
 function getRecentTokens(apiKey = null) {
   return new Promise((resolve, reject) => {
     const headers = { 'Accept': 'application/json' };
