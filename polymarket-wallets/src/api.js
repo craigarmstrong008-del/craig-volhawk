@@ -6,7 +6,7 @@ let requestCount = 0;
 export const stats = () => ({ requests: requestCount });
 
 export async function get(path, params = {}, { retries = 6 } = {}) {
-  const url = new URL(BASE() + path);
+  const url = new URL(/^https?:/.test(path) ? path : BASE() + path);
   for (const [k, v] of Object.entries(params)) if (v !== undefined && v !== null) url.searchParams.set(k, String(v));
   let attempt = 0;
   for (;;) {
@@ -110,4 +110,12 @@ export async function portfolioValue(user) {
   const j = await get('/value', { user });
   const row = Array.isArray(j) ? j[0] : j;
   return num(row?.value);
+}
+
+const PNL_BASE = () => (process.env.PM_PNL_API || 'https://user-pnl-api.polymarket.com').replace(/\/$/, '');
+
+/** Polymarket's own cumulative-PnL history for a wallet (what the profile chart shows): [{t, p}]. */
+export async function pnlSeries(user) {
+  const j = await get(`${PNL_BASE()}/user-pnl`, { user_address: user, interval: 'all', fidelity: '1d' });
+  return Array.isArray(j) ? j : Array.isArray(j?.history) ? j.history : Array.isArray(j?.data) ? j.data : [];
 }

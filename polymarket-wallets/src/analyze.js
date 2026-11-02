@@ -96,10 +96,17 @@ export function analyzeWallet(raw) {
   const sortedClosed = [...closedIn].sort((a, b) => num(b.realizedPnl) - num(a.realizedPnl));
   const slim = (p) => ({ title: p.title, outcome: p.outcome, slug: p.slug, eventSlug: p.eventSlug, realizedPnl: num(p.realizedPnl), avgPrice: num(p.avgPrice), timestamp: num(p.timestamp) });
 
-  // Daily realised PnL → equity curve, consistency, drawdown, Sharpe-like ratio.
+  // Polymarket's own cumulative PnL history, when available, is the source of truth for profit.
+  const official = officialPnl(raw.pnl, start);
+
+  // Daily PnL → equity curve, consistency, drawdown, Sharpe-like ratio.
   const daily = new Map();
   for (let t = start; t <= end; t += DAY) daily.set(dateKey(t), 0);
-  for (const p of closedIn) { const k = dateKey(num(p.timestamp)); daily.set(k, (daily.get(k) || 0) + num(p.realizedPnl)); }
+  if (official) {
+    for (const [k, v] of official.daily) if (daily.has(k)) daily.set(k, v);
+  } else {
+    for (const p of closedIn) { const k = dateKey(num(p.timestamp)); daily.set(k, (daily.get(k) || 0) + num(p.realizedPnl)); }
+  }
   const dailyRows = [...daily.entries()].sort(([a], [b]) => (a < b ? -1 : 1));
   let cum = 0, peak = 0, maxDD = 0;
   const equity = dailyRows.map(([date, pnl]) => {
@@ -141,11 +148,33 @@ export function analyzeWallet(raw) {
     worstTrades: sortedClosed.slice(-5).reverse().filter((p) => num(p.realizedPnl) < 0).map(slim),
     equity, maxDrawdown: maxDD, sharpe, greenDayShare,
     openCount: liveOpen.length, openPositions, openValue, unrealizedPnl, portfolioValue: num(value) || openValue,
-    totalPnl90: realizedPnl + unrealizedPnl,
+    positionPnl90: realizedPnl + unrealizedPnl,
+    totalPnl90: official ? official.pnl90 : realizedPnl + unrealizedPnl,
+    pnlSource: official ? 'polymarket' : 'positions',
     truncated: !!raw.truncated, lastTradeTs, sellRatio: buyUsd ? sellUsd / buyUsd : 0,
   };
   m.archetypes = archetypes(m);
   return m;
+}
+
+/** 90-day change and daily deltas from a cumulative PnL series [{t, p}] (t in s or ms). */
+export function officialPnl(series, start) {
+  if (!Array.isArray(series) || series.length < 2) return null;
+  const pts = series
+    .map((x) => { let t = num(x.t ?? x.timestamp ?? x.time); if (t > 1e12) t = Math.floor(t / 1000); return { t, p: num(x.p ?? x.pnl ?? x.value) }; })
+    .filter((x) => x.t > 0)
+    .sort((a, b) => a.t - b.t);
+  if (pts.length < 2) return null;
+  let base = pts[0];
+  for (const x of pts) if (x.t <= start) base = x;
+  const last = pts[pts.length - 1];
+  const byDay = new Map();
+  for (const x of pts) if (x.t >= base.t) byDay.set(dateKey(x.t), x.p); // last value per day
+  const days = [...byDay.entries()].sort(([a], [b]) => (a < b ? -1 : 1));
+  const daily = [];
+  let prev = base.p;
+  for (const [k, v] of days) { daily.push([k, v - prev]); prev = v; }
+  return { pnl90: last.p - base.p, daily, startsLate: base.t > start + 2 * DAY };
 }
 
 export function archetypes(m) {

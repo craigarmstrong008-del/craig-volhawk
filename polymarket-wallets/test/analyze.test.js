@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { analyzeWallet, buildReport, consensus } from '../src/analyze.js';
+import { analyzeWallet, buildReport, consensus, officialPnl } from '../src/analyze.js';
 import { categorize } from '../src/categorize.js';
 import { percentileRanks } from '../src/util.js';
 import { makeRaw, NOW } from './fixtures.js';
@@ -83,4 +83,22 @@ test('categoriser and percentile ranks', () => {
   assert.equal(categorize('Something unrelated'), 'Other');
   assert.deepEqual(percentileRanks([10, 20, 30]), [0, 0.5, 1]);
   assert.deepEqual(percentileRanks([5, 5]), [0.5, 0.5]);
+});
+
+test('Polymarket PnL history drives 90-day PnL when present', () => {
+  const raw = makeRaw(5);
+  const { start, end } = raw.window;
+  raw.pnl = [
+    { t: start - 10 * 86400, p: 1000 },
+    { t: start - 86400, p: 2000 },          // baseline: last point at/before the window start
+    { t: (start + 5 * 86400) * 1000, p: 2500 }, // millisecond timestamps are normalised
+    { t: end - 86400, p: 7000 },
+  ];
+  const w = analyzeWallet(raw);
+  assert.equal(w.pnlSource, 'polymarket');
+  assert.equal(w.totalPnl90, 5000);
+  assert.ok(Math.abs(w.equity.at(-1).cum - 5000) < 1e-6);
+  assert.notEqual(w.positionPnl90, w.totalPnl90);
+  assert.equal(officialPnl([], start), null);
+  assert.equal(analyzeWallet(makeRaw(6)).pnlSource, 'positions');
 });

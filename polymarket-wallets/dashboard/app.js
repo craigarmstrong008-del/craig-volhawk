@@ -209,13 +209,14 @@
   addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !drawer.hidden) closeDrawer(); });
 
   function equityChart(el, eq) {
+    if (!eq || eq.length < 2) { el.innerHTML = '<p class="hint">No history in this window.</p>'; return; }
     const w = 760, h = 220, m = { l: 60, r: 12, t: 10, b: 24 };
     const vals = eq.map((e) => e.cum);
     const lo = Math.min(0, ...vals), hi = Math.max(0, ...vals);
     const X = (i) => m.l + (i / Math.max(1, eq.length - 1)) * (w - m.l - m.r);
     const Y = (v) => m.t + (1 - (v - lo) / (hi - lo || 1)) * (h - m.t - m.b);
     const ticks = [lo, (lo + hi) / 2, hi, 0].filter((v, i, a) => a.indexOf(v) === i);
-    let svg = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Cumulative realised PnL">`;
+    let svg = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Cumulative PnL">`;
     for (const t of ticks) svg += `<line class="${t === 0 ? 'baseline' : 'gridline'}" x1="${m.l}" x2="${w - m.r}" y1="${Y(t)}" y2="${Y(t)}"/><text class="lbl" x="${m.l - 6}" y="${Y(t) + 4}" text-anchor="end">${money(t)}</text>`;
     [0, Math.floor(eq.length / 2), eq.length - 1].forEach((i) => eq[i] && (svg += `<text class="lbl" x="${X(i)}" y="${h - 6}" text-anchor="${i === 0 ? 'start' : i === eq.length - 1 ? 'end' : 'middle'}">${eq[i].date.slice(5)}</text>`));
     svg += `<path d="${eq.map((e, i) => `${i ? 'L' : 'M'}${X(i).toFixed(1)},${Y(e.cum).toFixed(1)}`).join('')}" fill="none" stroke="var(--series)" stroke-width="2" stroke-linejoin="round"/>`;
@@ -252,7 +253,7 @@
       <div>${w.archetypes.map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div></div></div>
       <div class="kpis">
         ${kpi('Rank / score', `#${w.rank} · ${w.score}`, boards ? `leaderboards: ${esc(boards)}` : 'added manually')}
-        ${kpi('90-day PnL', signed(w.totalPnl90), `realised ${money(w.realizedPnl)} · open ${money(w.unrealizedPnl)}`)}
+        ${kpi('90-day PnL', signed(w.totalPnl90), w.pnlSource === 'polymarket' ? `from Polymarket's profit history · position estimate ${money(w.positionPnl90 ?? 0)}` : `position estimate · realised ${money(w.realizedPnl)} · open ${money(w.unrealizedPnl)}`)}
         ${kpi('Win rate', pct(w.winRate), `${w.wins} wins / ${w.losses} losses${w.unredeemedCount ? ` · ${w.unredeemedCount} resolved, unredeemed` : ''}`)}
         ${kpi('Profit factor', pf(w.profitFactor), `avg win ${money(w.avgWin)} · avg loss ${money(w.avgLoss)}`)}
         ${kpi('Volume', money(w.volume), `${w.trades.toLocaleString()} trades · ${w.uniqueMarkets} markets${w.truncated ? ' · activity capped, volume understated' : ''}`)}
@@ -260,7 +261,7 @@
         ${kpi('Sharpe (daily, ann.)', w.sharpe.toFixed(2), `max drawdown ${money(w.maxDrawdown)}`)}
         ${kpi('Portfolio', money(w.portfolioValue), `${w.openCount} open positions · last trade ${ago(w.lastTradeTs)}`)}
       </div>
-      <div class="card"><h2>Cumulative realised PnL</h2><p class="hint">From positions closed each day in the window.</p><div id="eq" class="chart"></div></div>
+      <div class="card"><h2>Cumulative PnL</h2><p class="hint">${w.pnlSource === 'polymarket' ? "From Polymarket's own profit history for this wallet." : 'From positions closed each day in the window.'}</p><div id="eq" class="chart"></div></div>
       <div class="grid2">
         <div class="card"><h2>Entry price mix</h2><p class="hint">Share of buy dollars by price paid. Average entry ${cents(w.avgBuyPrice)}.</p><div id="pmix"></div></div>
         <div class="card"><h2>Categories</h2><p class="hint">Share of traded volume.</p><div id="wcats"></div></div>

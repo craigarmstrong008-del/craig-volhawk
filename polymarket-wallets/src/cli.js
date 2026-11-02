@@ -39,12 +39,20 @@ async function runAnalyze() {
   const report = buildReportFrom(analyses, slim);
   await fs.writeFile(path.join(DATA, 'report.json'), JSON.stringify(report));
   await writeCsv(report);
+  const official = report.wallets.filter((w) => w.pnlSource === 'polymarket');
   console.log(`analysed ${report.wallets.length} wallets → data/report.json, data/wallets.csv`);
+  console.log(`Polymarket PnL history used for ${official.length}/${report.wallets.length} wallets`);
+  // Sanity check: sign agreement with Polymarket's own 30-day leaderboard.
+  const month = report.wallets.map((w) => ({ w, b: w.boards.find((b) => b.timePeriod === 'MONTH' && b.orderBy === 'PNL') })).filter((x) => x.b);
+  const last30 = (w) => w.equity.slice(-30).reduce((a, e) => a + e.pnl, 0);
+  const agree = month.filter(({ w, b }) => (b.pnl > 0) === (last30(w) > 0)).length;
+  console.log(`last-30-day PnL sign matches Polymarket's monthly board for ${agree}/${month.length} wallets`);
+  month.slice(0, 8).forEach(({ w, b }) => console.log(`  ${(w.name || w.address).slice(0, 20).padEnd(20)} board ${Math.round(b.pnl)}  ours(30d) ${Math.round(last30(w))}  source ${w.pnlSource}`));
   return report;
 }
 
 async function writeCsv(report) {
-  const cols = ['rank', 'score', 'address', 'name', 'totalPnl90', 'realizedPnl', 'unrealizedPnl', 'volume', 'trades', 'closedCount', 'winRate', 'profitFactor', 'roi', 'sharpe', 'maxDrawdown', 'avgTrade', 'avgBuyPrice', 'uniqueMarkets', 'portfolioValue', 'archetypes'];
+  const cols = ['rank', 'score', 'address', 'name', 'totalPnl90', 'pnlSource', 'positionPnl90', 'realizedPnl', 'unrealizedPnl', 'volume', 'trades', 'closedCount', 'winRate', 'profitFactor', 'roi', 'sharpe', 'maxDrawdown', 'avgTrade', 'avgBuyPrice', 'uniqueMarkets', 'portfolioValue', 'archetypes'];
   const esc = (v) => { const s = Array.isArray(v) ? v.join('; ') : v == null ? '' : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
   const lines = [cols.join(','), ...report.wallets.map((w) => cols.map((c) => esc(w[c])).join(','))];
   await fs.writeFile(path.join(DATA, 'wallets.csv'), lines.join('\n') + '\n');

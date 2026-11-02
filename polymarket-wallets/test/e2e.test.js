@@ -24,6 +24,7 @@ test('collect paginates, retries and feeds analysis', async () => {
       const off = +q.offset;
       return send(wallets.slice(off, off + 50).map((w, i) => ({ rank: off + i + 1, proxyWallet: w.address, userName: `t${i}`, pnl: 1, vol: 1 })));
     }
+    if (u.pathname === '/user-pnl') return send([{ t: now - 100 * 86400, p: 0 }, { t: now - 89 * 86400, p: 10 }, { t: now, p: 1234 }]);
     const w = by.get(q.user);
     if (!w) return send([]);
     if (u.pathname === '/activity') {
@@ -38,6 +39,7 @@ test('collect paginates, retries and feeds analysis', async () => {
   });
   await new Promise((r) => server.listen(0, r));
   process.env.PM_DATA_API = `http://127.0.0.1:${server.address().port}`;
+  process.env.PM_PNL_API = process.env.PM_DATA_API;
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'pmw-'));
   try {
     const { collect } = await import('../src/collect.js');
@@ -53,6 +55,7 @@ test('collect paginates, retries and feeds analysis', async () => {
     const report = buildReport(raws);
     assert.equal(report.wallets.length, 6);
     assert.equal(report.consensus[0].holderCount, 6);
+    assert.ok(report.wallets.every((w) => w.pnlSource === 'polymarket' && w.totalPnl90 === 1234));
     // Cached second run makes no per-wallet requests.
     const before = seen.activityPages;
     await collect({ dataDir: dir, perBoard: 100, log: () => {} });

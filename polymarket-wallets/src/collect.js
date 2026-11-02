@@ -50,14 +50,15 @@ export async function collect({ dataDir, days = 90, perBoard = 100, concurrency 
         const cached = JSON.parse(await fs.readFile(file, 'utf8'));
         if (cached.window?.days === days) { cached.profile = c; await fs.writeFile(file, JSON.stringify(cached)); return; }
       }
-      const [activity, closed, open, value] = await Promise.all([
+      const [pnl, activity, closed, open, value] = await Promise.all([
+        api.pnlSeries(c.address).catch(() => null),
         api.activity(c.address, start, end, { maxEvents: MAX_EVENTS }),
         api.closedPositions(c.address, start),
         api.positions(c.address),
         api.portfolioValue(c.address).catch(() => 0),
       ]);
       const truncated = activity.length >= MAX_EVENTS * 0.98;
-      await fs.writeFile(file, JSON.stringify({ profile: c, window: { start, end, days }, fetchedAt: end, truncated, activity, closed, open, value }));
+      await fs.writeFile(file, JSON.stringify({ profile: c, window: { start, end, days }, fetchedAt: end, truncated, pnl, activity, closed, open, value }));
     } catch (err) {
       failures.push({ address: c.address, error: err.message });
     } finally {
