@@ -17,7 +17,7 @@ permissions:
 
 concurrency:
   group: polymarket-paper-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false   # a new run waits for the running agent instead of killing it mid-chunk
 
 jobs:
   paper:

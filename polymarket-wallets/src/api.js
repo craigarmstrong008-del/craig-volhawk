@@ -116,14 +116,15 @@ export async function portfolioValue(user) {
   return num(row?.value);
 }
 
-const PNL_BASE = () => (process.env.PM_PNL_API || 'https://user-pnl-api.polymarket.com').replace(/\/$/, '');
+// The old user-pnl-api.polymarket.com host was retired (HTTP 410) in favour of data-api /v2/user-pnl.
+const PNL_URL = () => (process.env.PM_PNL_URL || `${BASE()}/v2/user-pnl`);
 
 /** Polymarket's own cumulative-PnL history for a wallet (what the profile chart shows): [{t, p}]. */
 const PNL_VARIANTS = [
+  {},
   { interval: 'all', fidelity: '1d' },
-  { interval: 'max', fidelity: '1d' },
-  { interval: 'all', fidelity: '1440' },
-  { interval: '3m', fidelity: '1d' },
+  { interval: 'max' },
+  { interval: 'all' },
 ];
 export const pnlDiag = { ok: 0, empty: 0, failed: 0, variant: null, samples: [] };
 let pnlVariant = null; // first variant that returned data is reused for every wallet
@@ -136,19 +137,19 @@ async function rawGet(url) {
     return { status: res.status, text, json };
   } catch (err) { return { status: 0, text: err.message, json: null }; }
 }
-const seriesOf = (j) => (Array.isArray(j) ? j : Array.isArray(j?.history) ? j.history : Array.isArray(j?.data) ? j.data : Array.isArray(j?.pnl) ? j.pnl : []);
+const seriesOf = (j) => (Array.isArray(j) ? j : Array.isArray(j?.history) ? j.history : Array.isArray(j?.data) ? j.data : Array.isArray(j?.pnl) ? j.pnl : Array.isArray(j?.series) ? j.series : Array.isArray(j?.points) ? j.points : []);
 
 export async function pnlSeries(user) {
   const variants = pnlVariant ? [pnlVariant] : PNL_VARIANTS;
   for (const v of variants) {
-    const url = new URL(`${PNL_BASE()}/user-pnl`);
-    url.searchParams.set('user_address', user);
+    const url = new URL(PNL_URL());
+    url.searchParams.set('user', user);
     for (const [k, x] of Object.entries(v)) url.searchParams.set(k, x);
     let r = await rawGet(url);
     for (let i = 0; i < 3 && (r.status === 429 || r.status >= 500 || r.status === 0); i++) { await sleep(1000 * 2 ** i); r = await rawGet(url); }
     requestCount++;
     const arr = seriesOf(r.json);
-    if (pnlDiag.samples.length < 6) pnlDiag.samples.push(`${new URLSearchParams(v)} -> HTTP ${r.status}, ${arr.length} points, body: ${r.text.slice(0, 160).replace(/\s+/g, ' ')}`);
+    if (pnlDiag.samples.length < 6) pnlDiag.samples.push(`${new URLSearchParams(v) || '(user only)'} -> HTTP ${r.status}, ${arr.length} points, body: ${r.text.slice(0, 160).replace(/\s+/g, ' ')}`);
     if (r.status === 200 && arr.length >= 2) { pnlVariant = v; pnlDiag.variant = v; pnlDiag.ok++; return arr; }
   }
   if (pnlVariant) pnlDiag.empty++; else pnlDiag.failed++;

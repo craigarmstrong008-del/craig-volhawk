@@ -8,7 +8,7 @@ import { trainStats, runBacktest, STRATEGIES, selectWallets, buildSignals, isBuy
 const MIN_USD = Math.min(...STRATEGIES.map((s) => s.minUsd));
 const parseJsonArr = (v) => { if (Array.isArray(v)) return v; try { const x = JSON.parse(v); return Array.isArray(x) ? x : []; } catch { return []; } };
 
-export async function backtest({ dataDir, trainDays = 45, maxAssets = 6000, maxFine = 8000, concurrency = 8, log = console.log }) {
+export async function backtest({ dataDir, trainDays = 45, maxAssets = 12000, maxFine = 16000, concurrency = 8, log = console.log }) {
   const rawDir = path.join(dataDir, 'raw');
   const files = (await fs.readdir(rawDir)).filter((f) => f.endsWith('.json'));
   if (!files.length) throw new Error('No raw wallet data. Run `npm run collect` first.');
@@ -43,12 +43,19 @@ export async function backtest({ dataDir, trainDays = 45, maxAssets = 6000, maxF
   log(`  train PnL source: ${['polymarket', 'positions', 'none'].map((k) => `${k} ${stats.filter((s) => s.source === k).length}`).join(', ')}`);
 
   // Which outcomes need prices: strategies first, so the cap only ever trims the baseline.
-  const needed = new Map();
-  const fineKeys = new Map(); // `${asset}|${t}` -> {asset, t}, strategies in priority order
-  for (const s of STRATEGIES) {
+  // Signals per strategy, then interleaved so a fetch cap trims every strategy evenly.
+  const perStrategy = STRATEGIES.map((s) => {
     const sigs = buildSignals(buys, s, selectWallets(stats, s.select));
     log(`  ${s.id}: ${sigs.length} signals`);
-    for (const g of sigs) {
+    return sigs;
+  });
+  const needed = new Map();
+  const fineKeys = new Map(); // `${asset}|${t}` -> {asset, t}
+  const longest = Math.max(0, ...perStrategy.map((x) => x.length));
+  for (let i = 0; i < longest; i++) {
+    for (const sigs of perStrategy) {
+      const g = sigs[i];
+      if (!g) continue;
       if (!needed.has(g.asset)) needed.set(g.asset, g.conditionId);
       const k = `${g.asset}|${g.t}`;
       if (!fineKeys.has(k)) fineKeys.set(k, { asset: g.asset, t: g.t });
