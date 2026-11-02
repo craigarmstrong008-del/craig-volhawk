@@ -4,7 +4,7 @@ import http from 'node:http';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { fillFromBook, decide, emptyState, summarizePaper, stakeFor, ensureBooks, bookCheck, PAPER_BOOKS } from '../src/paper.js';
+import { fillFromBook, decide, emptyState, summarizePaper, stakeFor, ensureBooks, bookCheck, PAPER_BOOKS, typicalBuy } from '../src/paper.js';
 
 test('fills walk the order book', () => {
   const asks = [{ price: 0.5, size: 10 }, { price: 0.6, size: 100 }];
@@ -35,6 +35,15 @@ test('sized stakes scale with conviction: $10 at a typical trade, up to $50', ()
   assert.equal(stakeFor('sized', 3000, 1000), 30);
   assert.equal(stakeFor('sized', 1e6, 1000), 50, 'capped');
   assert.equal(stakeFor('sized', 5000, undefined), 10, 'unknown typical size bets the minimum');
+});
+
+test('typical buy ignores the small fills a big order is split into', () => {
+  const fills = [...Array(40)].map(() => ({ side: 'BUY', usdcSize: 15 }));
+  const big = [600, 800, 1000, 1200, 5000].map((u) => ({ side: 'BUY', usdcSize: u }));
+  assert.equal(typicalBuy([...fills, ...big, { side: 'SELL', usdcSize: 9000 }], 500), 1000);
+  assert.equal(typicalBuy(fills, 500), null, 'no qualifying buys -> unknown (minimum stake)');
+  assert.equal(stakeFor('sized', 1000, typicalBuy(big, 500)), 10, 'a typical-sized copy bets $10, not $50');
+  assert.equal(stakeFor('sized', 3000, typicalBuy(big, 500)), 30);
 });
 
 test('paper wallets: $500 each, existing bets are folded in, checks per book', () => {
