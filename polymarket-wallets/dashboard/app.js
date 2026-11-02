@@ -122,7 +122,7 @@
   })();
 
   // ---------- tables ----------
-  const who = (w) => `<span class="who">${w.profileImage ? `<img src="${esc(w.profileImage)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : ''}<span>${label(w)}${w.verified ? ' ✓' : ''}<br><span class="addr">${short(w.address)}</span></span></span>`;
+  const who = (w) => `<span class="who">${w.profileImage ? `<img src="${esc(w.profileImage)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}<span>${label(w)}${w.verified ? ' ✓' : ''}<br><span class="addr">${short(w.address)}</span></span></span>`;
   const scoreCell = (s) => `<span class="score">${s}<i><b style="width:${s}%"></b></i></span>`;
   const tags = (w) => w.archetypes.slice(0, 3).map((t) => `<span class="tag">${esc(t)}</span>`).join('');
 
@@ -167,6 +167,7 @@
   };
   const rerender = table($('#wtable'), filtered, COLS, { k: 'rank', dir: 1 }, (w) => openWallet(w.address));
   ['input', 'change'].forEach((e) => { $('#q').addEventListener(e, rerender); tagSel.addEventListener(e, rerender); $('#minclosed').addEventListener(e, rerender); });
+  if (window.self !== window.top) $('#csv').hidden = true; // embedded viewers block downloads
   $('#csv').addEventListener('click', () => {
     const cols = ['rank', 'score', 'address', 'name', 'totalPnl90', 'realizedPnl', 'unrealizedPnl', 'volume', 'trades', 'closedCount', 'winRate', 'profitFactor', 'roi', 'sharpe', 'avgTrade', 'avgBuyPrice', 'portfolioValue', 'archetypes'];
     const q = (v) => { const s = Array.isArray(v) ? v.join('; ') : v == null ? '' : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
@@ -202,7 +203,7 @@
 
   // ---------- wallet drawer ----------
   const drawer = $('#drawer');
-  const closeDrawer = () => { drawer.hidden = true; hideTip(); if (location.hash.startsWith('#w=')) history.replaceState(null, '', location.pathname); };
+  const closeDrawer = () => { drawer.hidden = true; hideTip(); if (location.hash.startsWith('#w-')) history.replaceState(null, '', location.pathname); };
   $('#dclose').addEventListener('click', closeDrawer);
   drawer.addEventListener('click', (ev) => { if (ev.target === drawer) closeDrawer(); });
   addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !drawer.hidden) closeDrawer(); });
@@ -246,7 +247,7 @@
     const boards = w.boards.map((b) => `${b.timePeriod.toLowerCase()} ${b.orderBy.toLowerCase()} #${b.rank}`).join(', ');
     const posRows = (list, cols) => `<div class="tablewrap"><table><thead><tr>${cols.map((c) => `<th class="${c.l ? 'l' : ''}">${c.h}</th>`).join('')}</tr></thead><tbody>${list.map((r) => `<tr>${cols.map((c) => `<td class="${c.l ? 'l' : ''}">${c.f(r)}</td>`).join('')}</tr>`).join('') || `<tr><td class="l" colspan="${cols.length}">None</td></tr>`}</tbody></table></div>`;
     $('#dbody').innerHTML = `
-      <div class="dhead">${w.profileImage ? `<img src="${esc(w.profileImage)}" alt="" referrerpolicy="no-referrer">` : ''}<div><h1 id="dtitle">${label(w)}${w.verified ? ' ✓' : ''}</h1>
+      <div class="dhead">${w.profileImage ? `<img src="${esc(w.profileImage)}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}<div><h1 id="dtitle">${label(w)}${w.verified ? ' ✓' : ''}</h1>
       <div class="sub"><a href="${pmUser(w.address)}" target="_blank" rel="noopener">${esc(w.address)}</a>${xl}</div>
       <div>${w.archetypes.map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div></div></div>
       <div class="kpis">
@@ -279,7 +280,8 @@
     heat($('#hours'), w.hours);
     drawer.hidden = false;
     drawer.querySelector('.drawer-inner').scrollTop = 0;
-    history.replaceState(null, '', `#w=${addr}`);
+    history.replaceState(null, '', `#w-${addr}`);
   }
-  if (location.hash.startsWith('#w=')) openWallet(location.hash.slice(3));
+  if (location.hash.startsWith('#w-')) openWallet(location.hash.slice(3));
+  addEventListener('hashchange', () => { if (location.hash.startsWith('#w-')) openWallet(location.hash.slice(3)); });
 })();

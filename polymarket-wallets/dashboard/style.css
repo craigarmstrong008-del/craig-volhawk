@@ -38,11 +38,12 @@ code { font-size: 12.5px; background: var(--surface-2); padding: 1px 5px; border
 a { color: var(--series); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-.top { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: end; justify-content: space-between; padding: 20px 24px 12px; max-width: 1280px; margin: 0 auto; }
+.top { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: end; justify-content: space-between; padding-block: 20px 12px; padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); max-width: 1280px; margin: 0 auto; }
 .tabs { display: flex; gap: 4px; flex-wrap: wrap; }
 .tabs button, .btn { font: inherit; border: 1px solid var(--ring); background: var(--surface); color: var(--ink-2); padding: 6px 12px; border-radius: 8px; cursor: pointer; }
 .tabs button[aria-selected="true"] { color: var(--ink); background: var(--surface-2); font-weight: 600; }
-main { max-width: 1280px; margin: 0 auto; padding: 0 24px 48px; }
+main { max-width: 1280px; margin: 0 auto; padding-block: 0 48px; padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); }
+.banner { border: 1px solid var(--ring); background: var(--surface-2); border-radius: 10px; padding: 10px 14px; font-size: 13px; color: var(--ink); }
 section[data-panel] { display: grid; gap: 16px; }
 .card { background: var(--surface); border: 1px solid var(--ring); border-radius: 12px; padding: 16px; min-width: 0; }
 .card.flush { padding: 0; }
@@ -94,9 +95,12 @@ tbody tr:hover { background: var(--surface-2); }
 
 .drawer { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: flex; justify-content: flex-end; z-index: 20; }
 .drawer[hidden] { display: none; }
-.drawer-inner { width: min(860px, 100%); height: 100%; overflow-y: auto; background: var(--page); padding: 20px 24px 40px; position: relative; display: grid; gap: 16px; align-content: start; }
-.close { position: absolute; right: 16px; top: 12px; font-size: 24px; border: 0; background: none; color: var(--ink-2); cursor: pointer; }
-.dhead { display: flex; gap: 12px; align-items: center; }
+.drawer-inner { width: min(860px, 100%); height: 100%; overflow-y: auto; background: var(--page); padding-block: calc(20px + env(safe-area-inset-top, 0px)) calc(40px + env(safe-area-inset-bottom, 0px)); padding-left: 24px; padding-right: max(24px, env(safe-area-inset-right, 0px)); position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-content: start; }
+.close { position: absolute; right: max(16px, env(safe-area-inset-right, 0px)); top: calc(12px + env(safe-area-inset-top, 0px)); font-size: 24px; border: 0; background: none; color: var(--ink-2); cursor: pointer; }
+.dhead { display: flex; gap: 12px; align-items: center; padding-right: 32px; }
+.dhead > div { min-width: 0; }
+.dhead h1 { overflow-wrap: anywhere; }
+.dhead .sub a { overflow-wrap: anywhere; }
 .dhead img { width: 44px; height: 44px; border-radius: 50%; }
 .heat { display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px; }
 .heat div { aspect-ratio: 1; border-radius: 2px; }
@@ -107,9 +111,9 @@ tbody tr:hover { background: var(--surface-2); }
 .tip .m { color: var(--ink-2); }
 
 @media (max-width: 860px) {
-  .top { padding: 16px 16px 8px; }
-  main { padding: 0 16px 40px; }
+  .top { padding-block: 16px 8px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  main { padding-block: 0 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   .grid2 { grid-template-columns: 1fr; }
-  .drawer-inner { padding: 16px; }
-  .bar { grid-template-columns: 96px 1fr 56px; }
+  .drawer-inner { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .bar { grid-template-columns: minmax(96px, 42%) 1fr 64px; }
 }

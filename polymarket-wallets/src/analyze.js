@@ -319,9 +319,10 @@ export function insights(wallets) {
   const pct = (x) => `${Math.round(x * 100)}%`;
 
   const byTag = (tag) => ok.filter((w) => w.archetypes.some((t) => t.includes(tag)));
-  for (const tag of ['Favourite grinder', 'Longshot hunter', 'Whale', 'High-frequency', 'specialist']) {
+  const plural = { 'Favourite grinder': 'Favourite grinders', 'Longshot hunter': 'Longshot hunters', Whale: 'Whales', 'High-frequency': 'High-frequency traders', specialist: 'Category specialists' };
+  for (const tag of Object.keys(plural)) {
     const g = byTag(tag);
-    if (g.length >= 3) out.push(`${tag === 'specialist' ? 'Category specialists' : tag + 's'} (${g.length} wallets): median 90-day PnL ${fmt(median(g.map((w) => w.totalPnl90)))}, median win rate ${pct(median(g.map((w) => w.winRate)))}.`);
+    if (g.length >= 3) out.push(`${plural[tag]} (${g.length} wallets): median 90-day PnL ${fmt(median(g.map((w) => w.totalPnl90)))}, median win rate ${pct(median(g.map((w) => w.winRate)))}.`);
   }
   const hi = [...ok].sort((a, b) => b.winRate - a.winRate)[0];
   out.push(`Highest win rate (≥10 decided positions): ${hi.name || hi.address.slice(0, 10)} at ${pct(hi.winRate)} over ${hi.wins + hi.losses} positions.`);
