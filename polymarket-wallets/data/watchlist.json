@@ -1,5 +1,5 @@
 {
-  "generatedAt": 1793607129,
+  "generatedAt": 1793636171,
   "rankedOnDays": 45,
   "strategies": {
     "top20": [
@@ -18,8 +18,8 @@
       {
         "address": "0xf0318c32136c2db7fec88b84869aee6a1106c80c",
         "name": "BreakTheBank",
-        "pnl": 8472630.334009,
-        "tradesPerDay": 559.9555555555555
+        "pnl": 8503335.165495,
+        "tradesPerDay": 560
       },
       {
         "address": "0xcdcccd0f2d86e450d973da415ad2430e5cc7935a",
@@ -37,25 +37,25 @@
         "address": "0x7c37b52eb226bcb9411375ec48b0169663fb6aeb",
         "name": "Diabolical-Prize",
         "pnl": 2630175.625447,
-        "tradesPerDay": 425.4888888888889
+        "tradesPerDay": 420.4
       },
       {
         "address": "0xfe787d2da716d60e8acff57fb87eb13cd4d10319",
         "name": "ferrariChampions2026",
-        "pnl": 1915249.9480879998,
-        "tradesPerDay": 478.15555555555557
+        "pnl": 2057522.310878,
+        "tradesPerDay": 484.26666666666665
       },
       {
         "address": "0x2a69660046d7acc4ab204d7cc5ba78b0776cd2f7",
         "name": "UpTheBlues",
-        "pnl": 1746073.480701,
-        "tradesPerDay": 457.73333333333335
+        "pnl": 1780015.221599,
+        "tradesPerDay": 461.15555555555557
       },
       {
         "address": "0xd29312e2446a746bbd94408e1c475f1ec6d7d683",
         "name": "Kyn008",
         "pnl": 1571656.9236000008,
-        "tradesPerDay": 160.75555555555556
+        "tradesPerDay": 161.3111111111111
       },
       {
         "address": "0xe18ecc345e00ee7c4f2d1f676f3dd2acb112f826",
@@ -66,32 +66,32 @@
       {
         "address": "0x5268527977f700f9bf9b6d5cd843859e4e70135d",
         "name": "HomeRunHazard",
-        "pnl": 1378892.0988790002,
-        "tradesPerDay": 511.1777777777778
+        "pnl": 1378801.735696,
+        "tradesPerDay": 511.9555555555556
       },
       {
         "address": "0x9a933a2a83188b28efaf1d07d45228ea6ee82793",
         "name": "Walters69",
         "pnl": 1319428.0766999999,
-        "tradesPerDay": 47.31111111111111
+        "tradesPerDay": 47.48888888888889
       },
       {
         "address": "0x684baa57c338c2549aec0aa3f034f695d72a8409",
         "name": "monkeymashingkeyboard",
-        "pnl": 1122144.380951,
-        "tradesPerDay": 410.5777777777778
+        "pnl": 1122146.420051,
+        "tradesPerDay": 415.3333333333333
       },
       {
         "address": "0x4a0eecbf4d18cb6b868f30a7b6e75b7905b9a4b1",
         "name": "forgotmydinner",
-        "pnl": 1028058.0846000001,
-        "tradesPerDay": 465.68888888888887
+        "pnl": 1025279.2386000002,
+        "tradesPerDay": 463.2888888888889
       },
       {
         "address": "0x2879ded7fe05df00eddbb2fba412a0d30964411a",
         "name": "chongchong37",
         "pnl": 1015627.0758999999,
-        "tradesPerDay": 60.44444444444444
+        "tradesPerDay": 61.75555555555555
       },
       {
         "address": "0xa38a455bbdd4b68486548b7e19da99903f4f821d",
@@ -100,10 +100,16 @@
         "tradesPerDay": 517.8
       },
       {
+        "address": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
+        "name": "jakepaulthegoat2008",
+        "pnl": 952480.750282,
+        "tradesPerDay": 554.8666666666667
+      },
+      {
         "address": "0x2b5920274740ca61745eeb077587bf5bb4ff9db6",
         "name": "aHjCz",
-        "pnl": 942102.005397,
-        "tradesPerDay": 504.6666666666667
+        "pnl": 939889.751602,
+        "tradesPerDay": 507.1777777777778
       },
       {
         "address": "0x5fdd66ffd0325d4e8d1d86fbec50caa31770a747",
@@ -116,12 +122,6 @@
         "name": "Abkha",
         "pnl": 901230.5093,
         "tradesPerDay": 6.2
-      },
-      {
-        "address": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
-        "name": "jakepaulthegoat2008",
-        "pnl": 892158.3271359999,
-        "tradesPerDay": 554.0444444444445
       }
     ],
     "slow20": [
@@ -165,7 +165,7 @@
         "address": "0xa96274cc1b321afc8cbdc1ba07f7e2d471e6f7c8",
         "name": "Takon88",
         "pnl": 322346.178917,
-        "tradesPerDay": 12.088888888888889
+        "tradesPerDay": 12.044444444444444
       },
       {
         "address": "0x640b954ebc87c7b68749c763d8f611c3421554b5",
@@ -262,8 +262,8 @@
       {
         "address": "0xf0318c32136c2db7fec88b84869aee6a1106c80c",
         "name": "BreakTheBank",
-        "pnl": 8472630.334009,
-        "tradesPerDay": 559.9555555555555
+        "pnl": 8503335.165495,
+        "tradesPerDay": 560
       },
       {
         "address": "0xcdcccd0f2d86e450d973da415ad2430e5cc7935a",
@@ -281,25 +281,25 @@
         "address": "0x7c37b52eb226bcb9411375ec48b0169663fb6aeb",
         "name": "Diabolical-Prize",
         "pnl": 2630175.625447,
-        "tradesPerDay": 425.4888888888889
+        "tradesPerDay": 420.4
       },
       {
         "address": "0xfe787d2da716d60e8acff57fb87eb13cd4d10319",
         "name": "ferrariChampions2026",
-        "pnl": 1915249.9480879998,
-        "tradesPerDay": 478.15555555555557
+        "pnl": 2057522.310878,
+        "tradesPerDay": 484.26666666666665
       },
       {
         "address": "0x2a69660046d7acc4ab204d7cc5ba78b0776cd2f7",
         "name": "UpTheBlues",
-        "pnl": 1746073.480701,
-        "tradesPerDay": 457.73333333333335
+        "pnl": 1780015.221599,
+        "tradesPerDay": 461.15555555555557
       },
       {
         "address": "0xd29312e2446a746bbd94408e1c475f1ec6d7d683",
         "name": "Kyn008",
         "pnl": 1571656.9236000008,
-        "tradesPerDay": 160.75555555555556
+        "tradesPerDay": 161.3111111111111
       },
       {
         "address": "0xe18ecc345e00ee7c4f2d1f676f3dd2acb112f826",
@@ -310,32 +310,32 @@
       {
         "address": "0x5268527977f700f9bf9b6d5cd843859e4e70135d",
         "name": "HomeRunHazard",
-        "pnl": 1378892.0988790002,
-        "tradesPerDay": 511.1777777777778
+        "pnl": 1378801.735696,
+        "tradesPerDay": 511.9555555555556
       },
       {
         "address": "0x9a933a2a83188b28efaf1d07d45228ea6ee82793",
         "name": "Walters69",
         "pnl": 1319428.0766999999,
-        "tradesPerDay": 47.31111111111111
+        "tradesPerDay": 47.48888888888889
       },
       {
         "address": "0x684baa57c338c2549aec0aa3f034f695d72a8409",
         "name": "monkeymashingkeyboard",
-        "pnl": 1122144.380951,
-        "tradesPerDay": 410.5777777777778
+        "pnl": 1122146.420051,
+        "tradesPerDay": 415.3333333333333
       },
       {
         "address": "0x4a0eecbf4d18cb6b868f30a7b6e75b7905b9a4b1",
         "name": "forgotmydinner",
-        "pnl": 1028058.0846000001,
-        "tradesPerDay": 465.68888888888887
+        "pnl": 1025279.2386000002,
+        "tradesPerDay": 463.2888888888889
       },
       {
         "address": "0x2879ded7fe05df00eddbb2fba412a0d30964411a",
         "name": "chongchong37",
         "pnl": 1015627.0758999999,
-        "tradesPerDay": 60.44444444444444
+        "tradesPerDay": 61.75555555555555
       },
       {
         "address": "0xa38a455bbdd4b68486548b7e19da99903f4f821d",
@@ -344,10 +344,16 @@
         "tradesPerDay": 517.8
       },
       {
+        "address": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
+        "name": "jakepaulthegoat2008",
+        "pnl": 952480.750282,
+        "tradesPerDay": 554.8666666666667
+      },
+      {
         "address": "0x2b5920274740ca61745eeb077587bf5bb4ff9db6",
         "name": "aHjCz",
-        "pnl": 942102.005397,
-        "tradesPerDay": 504.6666666666667
+        "pnl": 939889.751602,
+        "tradesPerDay": 507.1777777777778
       },
       {
         "address": "0x5fdd66ffd0325d4e8d1d86fbec50caa31770a747",
@@ -362,28 +368,16 @@
         "tradesPerDay": 6.2
       },
       {
-        "address": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
-        "name": "jakepaulthegoat2008",
-        "pnl": 892158.3271359999,
-        "tradesPerDay": 554.0444444444445
-      },
-      {
         "address": "0x67542c3219b37fd1610aad290676ff91cdbfe3bc",
         "name": "gmpm2",
         "pnl": 868327.3826109999,
-        "tradesPerDay": 210.55555555555554
+        "tradesPerDay": 210.13333333333333
       },
       {
         "address": "0x96489abcb9f583d6835c8ef95ffc923d05a86825",
         "name": "anoin123",
-        "pnl": 858235.7612710008,
-        "tradesPerDay": 404.6666666666667
-      },
-      {
-        "address": "0x924379a79c64b77ad5816ad362122a5f6228658e",
-        "name": "Kch-Temp",
-        "pnl": 847553.7605949999,
-        "tradesPerDay": 60.93333333333333
+        "pnl": 858235.7620980004,
+        "tradesPerDay": 404.93333333333334
       },
       {
         "address": "0x2e7bf3e7b8ba0351b737897197fd5cc34fbfbd8c",
@@ -392,16 +386,16 @@
         "tradesPerDay": 38.75555555555555
       },
       {
+        "address": "0x924379a79c64b77ad5816ad362122a5f6228658e",
+        "name": "Kch-Temp",
+        "pnl": 836286.6253240001,
+        "tradesPerDay": 82.02222222222223
+      },
+      {
         "address": "0xb7271c112cbd83eb4c1ef1b554ff963604ae2a9d",
         "name": "Elaran1993",
         "pnl": 833518.785277,
         "tradesPerDay": 14.155555555555555
-      },
-      {
-        "address": "0x9b89ef1f344d3e17b37ccdff3bccf62d04f04244",
-        "name": "Woaifacai",
-        "pnl": 805097.297572,
-        "tradesPerDay": 95.8
       },
       {
         "address": "0xd38b71f3e8ed1af71983e5c309eac3dfa9b35029",
@@ -410,16 +404,16 @@
         "tradesPerDay": 252.15555555555557
       },
       {
+        "address": "0x0d6a1ada6d7ff785ab4b7263d9ce8e2baa85aa98",
+        "name": "keeptheblueflagflyinghigh",
+        "pnl": 795838.887512,
+        "tradesPerDay": 511.4888888888889
+      },
+      {
         "address": "0x3eb31daa061a19855cbf0a4884c202fb86976a2a",
         "name": "Dragon-Evolution",
         "pnl": 790255.9064,
         "tradesPerDay": 26.755555555555556
-      },
-      {
-        "address": "0x0d6a1ada6d7ff785ab4b7263d9ce8e2baa85aa98",
-        "name": "keeptheblueflagflyinghigh",
-        "pnl": 781362.5100070001,
-        "tradesPerDay": 511.22222222222223
       },
       {
         "address": "0x7ad71d79a3bb90d0a87a06500fa0fe11663842aa",
@@ -430,98 +424,98 @@
       {
         "address": "0xbc43c8bfbc4d77c2fc9011adad38ba43b88996d3",
         "name": "0xBc43c8bfBC4d77c2FC9011adaD38Ba43b88996d3-1765231687816",
-        "pnl": 768574.4571799999,
-        "tradesPerDay": 406.84444444444443
+        "pnl": 766302.1683639999,
+        "tradesPerDay": 410.24444444444447
+      },
+      {
+        "address": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
+        "name": "THEHIGHLIFE",
+        "pnl": 745011.9078910002,
+        "tradesPerDay": 557.9333333333333
       },
       {
         "address": "0xa2cced8bfae7d645f7f437fb76becf2fcbb70cbc",
         "name": "justwins",
         "pnl": 724115.461686,
-        "tradesPerDay": 63.55555555555556
+        "tradesPerDay": 63.06666666666667
       },
       {
-        "address": "0x8c0b024c17831a0dde038547b7e791ae6a0d7aa5",
-        "name": "THEHIGHLIFE",
-        "pnl": 706905.6219079997,
-        "tradesPerDay": 557.6888888888889
+        "address": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea",
+        "name": "RN1",
+        "pnl": 668172.6100299992,
+        "tradesPerDay": 479.4222222222222
       },
       {
         "address": "0xa3a417e434923aeaf97afe9a61b10ff9364e5106",
         "name": "0xC03cE4d8Af842Ca6251Ac57228B3Ffb166ed50A",
-        "pnl": 658192.0626659999,
-        "tradesPerDay": 511.6
-      },
-      {
-        "address": "0xf68a281980f8c13828e84e147e3822381d6e5b1b",
-        "name": "Nooserac",
-        "pnl": 649723.7022330001,
-        "tradesPerDay": 500.73333333333335
+        "pnl": 661455.6886159999,
+        "tradesPerDay": 510.55555555555554
       },
       {
         "address": "0x821dab0565ebf5b327f51db06223fdcfe01acf16",
         "name": "Flaznorp",
-        "pnl": 641455.7292040001,
-        "tradesPerDay": 444.5111111111111
+        "pnl": 657506.608202,
+        "tradesPerDay": 471.22222222222223
+      },
+      {
+        "address": "0xf68a281980f8c13828e84e147e3822381d6e5b1b",
+        "name": "Nooserac",
+        "pnl": 656104.019858,
+        "tradesPerDay": 498.84444444444443
       },
       {
         "address": "0x83720820a8aa6c3f20ad71850e7a1a17d16c5223",
         "name": "Jsram",
         "pnl": 639290.7558619997,
-        "tradesPerDay": 137.51111111111112
+        "tradesPerDay": 135.55555555555554
       },
       {
         "address": "0x23d81ba9371e576015c1e562db09c689f56b0288",
         "name": "flawfence",
         "pnl": 624114.9828379999,
-        "tradesPerDay": 112.93333333333334
-      },
-      {
-        "address": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea",
-        "name": "RN1",
-        "pnl": 620776.6298769992,
-        "tradesPerDay": 478.1333333333333
+        "tradesPerDay": 112.82222222222222
       },
       {
         "address": "0xa19cbababc312f9df185e49d7004c249ed1ade6b",
         "name": "Tokor",
-        "pnl": 594813.3089640001,
-        "tradesPerDay": 136.62222222222223
+        "pnl": 595196.428725,
+        "tradesPerDay": 132.77777777777777
       },
       {
         "address": "0x676c1bb692c76b57b06f1b93817515acfa5ce139",
         "name": "para-Vision",
-        "pnl": 541046.5634000001,
-        "tradesPerDay": 161.8
+        "pnl": 549033.5658000001,
+        "tradesPerDay": 162.57777777777778
       },
       {
-        "address": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-        "name": "omnibus-076daa",
-        "pnl": 531965.2652799999,
-        "tradesPerDay": 442.93333333333334
+        "address": "0x9b89ef1f344d3e17b37ccdff3bccf62d04f04244",
+        "name": "Woaifacai",
+        "pnl": 510056.61664499994,
+        "tradesPerDay": 97.26666666666667
       },
       {
         "address": "0x27f738fe203827445690339104aae35b20bc44b0",
         "name": "ic4cream",
         "pnl": 510020.049345,
-        "tradesPerDay": 70.28888888888889
+        "tradesPerDay": 70.37777777777778
       },
       {
         "address": "0x448861155279dbf833d041b963e3ac854599e319",
         "name": "0x448861155279dbf833d041b963e3ac854599e319",
-        "pnl": 500807.24390999996,
-        "tradesPerDay": 180.7111111111111
+        "pnl": 500960.91020099993,
+        "tradesPerDay": 182.0888888888889
+      },
+      {
+        "address": "0xc9bfc7986767173b4f1c3fc9b2c6b255fc7381c0",
+        "name": "0xC9BFc7986767173b4f1c3FC9B2c6b255F",
+        "pnl": 491534.86231500003,
+        "tradesPerDay": 179.9777777777778
       },
       {
         "address": "0x6575759174ad221bba9947bc3f18750ec769b198",
         "name": "dromedaryy",
         "pnl": 469829.08521800005,
-        "tradesPerDay": 105.55555555555556
-      },
-      {
-        "address": "0xc9bfc7986767173b4f1c3fc9b2c6b255fc7381c0",
-        "name": "0xC9BFc7986767173b4f1c3FC9B2c6b255F",
-        "pnl": 465081.689383,
-        "tradesPerDay": 178.46666666666667
+        "tradesPerDay": 105.28888888888889
       },
       {
         "address": "0xe9b710551dd82a44e79203c2394a2b10163ace7b",
@@ -545,7 +539,13 @@
         "address": "0xc95ed399d2fbaec9461f2abd70e0d96df1921288",
         "name": "Siddhartha1",
         "pnl": 392205.617775,
-        "tradesPerDay": 269.02222222222224
+        "tradesPerDay": 264.1111111111111
+      },
+      {
+        "address": "0xc9ae00eda811041a059f3eec9356b24067c1b9e0",
+        "name": "Ancient-Strike",
+        "pnl": 391672.481748,
+        "tradesPerDay": 46.75555555555555
       }
     ],
     "fade20": [
@@ -553,31 +553,31 @@
         "address": "0xd106952ebf30a3125affd8a23b6c1f30c35fc79c",
         "name": "Herdonia",
         "pnl": -271911.686826,
-        "tradesPerDay": 521.5777777777778
+        "tradesPerDay": 521.4888888888889
       },
       {
         "address": "0x4f29e103339919c4baaea2a60195cf1c8bb27a7e",
         "name": "0x4f2",
-        "pnl": -358215.908107,
-        "tradesPerDay": 517.1111111111111
+        "pnl": -358692.33778899995,
+        "tradesPerDay": 516.6666666666666
       },
       {
         "address": "0x67ac9e1ad7d7e74ef0215d14fc8edb538e4fedf1",
         "name": "3648393489047",
-        "pnl": -440843.962434,
-        "tradesPerDay": 227.73333333333332
+        "pnl": -443323.42688299995,
+        "tradesPerDay": 224.9777777777778
       },
       {
         "address": "0xe9076a87c5ed90ef16e6fe6529c943baeca0cff6",
         "name": "suntori",
-        "pnl": -463446.35098399967,
-        "tradesPerDay": 427.8666666666667
+        "pnl": -467967.68053600006,
+        "tradesPerDay": 430.73333333333335
       },
       {
         "address": "0x5b6331e7ff0831a3fe2ed12004747db1a9c911a4",
         "name": "neutralwave23",
-        "pnl": -495868.4924680004,
-        "tradesPerDay": 484.31111111111113
+        "pnl": -499376.0376520003,
+        "tradesPerDay": 483.06666666666666
       },
       {
         "address": "0xf28e42d20e4826f2b10a24bc952001697947cab2",
@@ -600,20 +600,26 @@
       {
         "address": "0x26b46988d027c6c03cfa12a7c0c6d778be49b8a9",
         "name": "kkookkoo",
-        "pnl": -721942.765568,
-        "tradesPerDay": 76.55555555555556
+        "pnl": -752170.8392159999,
+        "tradesPerDay": 77.02222222222223
       },
       {
         "address": "0xdc41c39b95453c943174f369926018f6963bdd7e",
         "name": "nigiri99",
-        "pnl": -788518.765162,
-        "tradesPerDay": 499.02222222222224
+        "pnl": -791462.9218830001,
+        "tradesPerDay": 498.2888888888889
+      },
+      {
+        "address": "0x2c335066fe58fe9237c3d3dc7b275c2a034a0563",
+        "name": "0x2c335066FE58fe9237c3d3Dc7b275C2a034a0563-1759935795465",
+        "pnl": -827303.6814679997,
+        "tradesPerDay": 481.8888888888889
       },
       {
         "address": "0x8a8685a792c184e5c2ee8c7d4d4baba7c2c94998",
         "name": "BrotherObama",
         "pnl": -862943.841443,
-        "tradesPerDay": 16.933333333333334
+        "tradesPerDay": 16.22222222222222
       },
       {
         "address": "0xf4c95b636c71243531dfc82a97565a94c106f88c",
@@ -625,19 +631,13 @@
         "address": "0x9f2fe025f84839ca81dd8e0338892605702d2ca8",
         "name": "surfandturf",
         "pnl": -953970.792427,
-        "tradesPerDay": 557.3111111111111
+        "tradesPerDay": 557.3777777777777
       },
       {
         "address": "0x3dfb153c197d4c19d3b31c1ecd2c7b6860eeabaf",
         "name": "0x3DFb153c197D4C19D3B31c1ecD2c7B6860eeabAf-1722957908185",
         "pnl": -1028492.9423780004,
-        "tradesPerDay": 346.8222222222222
-      },
-      {
-        "address": "0x2c335066fe58fe9237c3d3dc7b275c2a034a0563",
-        "name": "0x2c335066FE58fe9237c3d3Dc7b275C2a034a0563-1759935795465",
-        "pnl": -1074079.8299659993,
-        "tradesPerDay": 482.97777777777776
+        "tradesPerDay": 348.4
       },
       {
         "address": "0x34a1eed3f6bb10dd2f99b79cb4e8ca8749ae7622",
@@ -648,20 +648,20 @@
       {
         "address": "0x9e3ed7b661a903fc97afcf49e0f014ebe869f882",
         "name": "0x9e3ed7b661a903fc97afcf49e0f014ebe869f882-1783406009396",
-        "pnl": -1179172.904112,
-        "tradesPerDay": 434.2888888888889
+        "pnl": -1190922.6671969998,
+        "tradesPerDay": 438.8
       },
       {
         "address": "0x85f031d069de300055900c4055c1baeb6bde3f67",
         "name": "RJW1",
         "pnl": -1313663.7941649999,
-        "tradesPerDay": 218.04444444444445
+        "tradesPerDay": 215.3111111111111
       },
       {
         "address": "0xfea31bc088000ff909be1dfd8d0e3f2c7ef2d227",
         "name": "ndb1",
-        "pnl": -1413018.8785930001,
-        "tradesPerDay": 310.5777777777778
+        "pnl": -1420480.769651,
+        "tradesPerDay": 314.6
       },
       {
         "address": "0x4bff30af91642dc7d2b19a8664378fe55c45fc26",
