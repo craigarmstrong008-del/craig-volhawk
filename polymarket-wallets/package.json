@@ -1,0 +1,18 @@
+{
+  "name": "polymarket-wallets",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Standalone 90-day analysis of top Polymarket wallets + static dashboard. Independent of every other project in this repo.",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "collect": "node src/cli.js collect",
+    "analyze": "node src/cli.js analyze",
+    "build": "node src/cli.js build",
+    "backtest": "node src/cli.js backtest",
+    "paper": "node src/cli.js paper",
+    "all": "node src/cli.js all",
+    "serve": "node src/cli.js serve",
+    "test": "node --test test/*.test.js"
+  }
+}

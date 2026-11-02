@@ -1,0 +1,56 @@
+# Paper-trading agent for polymarket-wallets/. Places NO real orders: it only reads public data
+# and records the $20 bets it would have made. Touches only polymarket-wallets/data/paper and
+# polymarket-wallets/dashboard/paper.js.
+name: polymarket-paper
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7 */6 * * *'   # every 6 hours; each run lasts about 5.5 hours (schedules only fire on the default branch)
+  push:
+    paths:
+      - 'polymarket-wallets/src/paper.js'
+      - '.github/workflows/polymarket-paper.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: polymarket-paper-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  paper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    defaults:
+      run:
+        working-directory: polymarket-wallets
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Configure git
+        run: |
+          git config user.name "polymarket-wallets bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Wait for a watchlist (written by the polymarket-wallets workflow)
+        run: |
+          for i in $(seq 1 40); do
+            git pull -q --rebase origin "$GITHUB_REF_NAME" || true
+            if [ -f data/watchlist.json ]; then echo "watchlist found"; exit 0; fi
+            echo "no watchlist yet, waiting"; sleep 90
+          done
+          echo "no watchlist after 60 minutes"; exit 1
+      - name: Run agent in 30-minute chunks, saving progress after each
+        run: |
+          for i in $(seq 1 11); do
+            git pull -q --rebase origin "$GITHUB_REF_NAME" || true
+            node src/cli.js paper --minutes 30 --stake 20 --poll 30 --max-per-day 40 || echo "agent chunk $i exited with an error"
+            git add -f data/paper/state.json dashboard/paper.js 2>/dev/null || true
+            if ! git diff --cached --quiet; then
+              git commit -q -m "polymarket-wallets: paper-trading update [skip ci]"
+              for t in 1 2 3; do git pull -q --rebase origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && break; sleep 5; done
+            fi
+          done

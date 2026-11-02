@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Polymarket Top Wallets</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Polymarket Top Wallets</h1>
+    <p class="sub" id="meta">Loading…</p>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="overview" aria-selected="true">Overview</button>
+    <button role="tab" data-tab="wallets">Wallets</button>
+    <button role="tab" data-tab="consensus">Smart money</button>
+    <button role="tab" data-tab="backtest">Backtest</button>
+    <button role="tab" data-tab="paper">Paper trading</button>
+    <button role="tab" data-tab="method">Method</button>
+  </nav>
+</header>
+
+<main>
+  <section id="empty" class="card empty" hidden>
+    <h2>No data yet</h2>
+    <p>Run <code>npm run all</code> inside <code>polymarket-wallets/</code> (needs network access to <code>data-api.polymarket.com</code>), then reload this page.</p>
+  </section>
+
+  <section data-panel="overview">
+    <div class="kpis" id="kpis"></div>
+    <div class="grid2">
+      <div class="card"><h2>Skill vs. 90-day PnL</h2><p class="hint">Each dot is a wallet. Click one to open it.</p><div id="scatter" class="chart"></div></div>
+      <div class="card"><h2>Volume by category</h2><p class="hint">Inferred from market titles.</p><div id="cats"></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h2>Trader archetypes</h2><p class="hint">A wallet can carry more than one tag.</p><div id="archetypes"></div></div>
+      <div class="card"><h2>What the data says</h2><ul id="insights" class="insights"></ul></div>
+    </div>
+    <div class="card"><h2>Top 10 by score</h2><div class="tablewrap"><table id="top10"></table></div></div>
+  </section>
+
+  <section data-panel="wallets" hidden>
+    <div class="filters">
+      <input id="q" type="search" placeholder="Search name, address or tag…" aria-label="Search wallets">
+      <select id="tag" aria-label="Archetype filter"><option value="">All archetypes</option></select>
+      <select id="minclosed" aria-label="Minimum closed positions">
+        <option value="0">Any sample size</option><option value="10">≥10 closed positions</option><option value="25">≥25 closed positions</option><option value="100">≥100 closed positions</option>
+      </select>
+      <button id="csv" class="btn">Download CSV</button>
+    </div>
+    <div class="card flush"><div class="tablewrap"><table id="wtable"></table></div></div>
+  </section>
+
+  <section data-panel="consensus" hidden>
+    <div class="card">
+      <h2>Consensus positions</h2>
+      <p class="hint">Live outcomes that two or more analysed wallets hold right now, with at least $100 each. "Conviction" is this side's share of top-wallet money in the market.</p>
+      <div class="tablewrap"><table id="ctable"></table></div>
+    </div>
+    <div class="card">
+      <h2>Fresh flow (last 7 days)</h2>
+      <p class="hint">Outcomes that two or more analysed wallets net-bought in the last week.</p>
+      <div class="tablewrap"><table id="ftable"></table></div>
+    </div>
+  </section>
+
+  <section data-panel="backtest" hidden>
+    <div class="card prose">
+      <h2>Would copying these wallets have made money?</h2>
+      <p class="hint" id="bt-intro"></p>
+      <ul class="insights" id="bt-caveats"></ul>
+    </div>
+    <div class="card">
+      <h2>Return on stake by how late you copy</h2>
+      <p class="hint">Profit per $100 bet, by how long after the wallet's buy you enter. The baseline copies everyone; a strategy is only useful if it clearly beats it.</p>
+      <div id="bt-legend" class="legend"></div>
+      <div id="bt-chart" class="chart"></div>
+    </div>
+    <div class="card flush"><div class="tablewrap"><table id="bt-table"></table></div></div>
+    <div class="card">
+      <div class="filters">
+        <select id="bt-strategy" aria-label="Strategy"></select>
+        <select id="bt-delay" aria-label="Entry delay"></select>
+      </div>
+      <p class="hint" id="bt-desc"></p>
+      <div class="kpis" id="bt-kpis"></div>
+    </div>
+    <div class="card"><h2>Cumulative profit</h2><p class="hint">Bets placed each day, valued at how they turned out.</p><div id="bt-equity" class="chart"></div></div>
+    <div class="grid2">
+      <div class="card"><h2>By category</h2><div class="tablewrap"><table id="bt-cats"></table></div></div>
+      <div class="card"><h2>Wallets followed</h2><p class="hint">Ranked on the first half of the window only.</p><div class="tablewrap"><table id="bt-wallets"></table></div></div>
+    </div>
+    <div class="card"><h2>Most recent bets</h2><div class="tablewrap"><table id="bt-trades"></table></div></div>
+  </section>
+
+  <section data-panel="paper" hidden>
+    <div class="card prose">
+      <h2>Paper trading</h2>
+      <p class="hint">An agent watches the wallets each strategy follows. When one of them buys, it records the $20 bet it would have placed at the live order-book price, without sending any order. Bets are settled when the market resolves.</p>
+      <p class="hint" id="pp-meta"></p>
+      <p class="hint" id="pp-empty" hidden>The agent hasn't reported yet. Results appear here after its first run.</p>
+    </div>
+    <div id="pp-body" style="display:grid;gap:16px">
+      <div class="kpis" id="pp-kpis"></div>
+      <div class="card flush"><div class="tablewrap"><table id="pp-table"></table></div></div>
+      <div class="card"><h2>Bets</h2><p class="hint">"Delay" is how long after their trade the agent placed its own. "Price vs theirs" shows how much worse the copy price was on average.</p><div class="tablewrap"><table id="pp-bets"></table></div></div>
+      <div class="card"><h2>Signals not taken</h2><ul class="insights" id="pp-skipped"></ul></div>
+    </div>
+  </section>
+
+  <section data-panel="method" hidden>
+    <div class="card prose">
+      <h2>How this is built</h2>
+      <ol>
+        <li><b>Candidates.</b> Polymarket's leaderboard has no 90-day window, so wallets are pulled from four boards (30-day PnL, 30-day volume, all-time PnL, 7-day PnL) and merged.</li>
+        <li><b>History.</b> For each wallet the tool downloads every on-chain action in the window (trades, redemptions, splits, merges, rewards), every position closed in the window, its open positions and its portfolio value. Everything comes from <code>data-api.polymarket.com</code>.</li>
+        <li><b>90-day PnL</b> comes from Polymarket's own profit history for each wallet (the data behind the chart on its profile page): today's figure minus the figure 90 days ago. If that history isn't available, the tool falls back to a position-level estimate, shown separately in each wallet's panel.</li>
+        <li><b>Realised PnL</b> is the sum of <code>realizedPnl</code> on positions closed inside the window, plus resolved positions that were never redeemed (mostly losing bets, which pay $0 so traders often leave them). <b>Unrealised</b> is the mark-to-market of open, unresolved positions. Some open positions may have been opened before the window started, so <b>90-day PnL</b> (realised + unrealised) is an estimate.</li>
+        <li><b>Win rate</b> counts closed positions with positive vs. negative realised PnL. <b>Profit factor</b> = gross wins ÷ gross losses. <b>ROI</b> = realised PnL ÷ cost basis of closed positions. <b>Sharpe</b> is annualised from daily realised PnL.</li>
+        <li><b>Score (0–100)</b> is a weighted mix of percentile ranks within this cohort: 90-day PnL 25%, realised PnL 20%, win rate (shrunk toward 50%) 15%, profit factor 15%, ROI 15%, Sharpe 10%. Wallets with fewer than 15 closed positions are pulled toward 50 to account for luck.</li>
+        <li><b>Categories</b> come from keyword rules on market titles, so they're approximate. <b>Archetypes</b> are rule-based tags (for example, "Favourite grinder" means at least 60% of buy dollars went in at 80¢ or more).</li>
+      </ol>
+      <p class="hint">This is not financial advice. Past performance on prediction markets is noisy, and copy-trading lags the original fill.</p>
+    </div>
+  </section>
+</main>
+
+<aside id="drawer" class="drawer" hidden aria-modal="true" role="dialog" aria-labelledby="dtitle">
+  <div class="drawer-inner">
+    <button class="close" id="dclose" aria-label="Close">×</button>
+    <div id="dbody"></div>
+  </div>
+</aside>
+<div id="tip" class="tip" hidden></div>
+
+<script src="report.js" onerror="window.REPORT=null"></script>
+<script src="backtest.js" onerror="window.BACKTEST=null"></script>
+<script src="paper.js" onerror="window.PAPER=null"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+# Self-contained job for the polymarket-wallets/ project only. It touches nothing else in the repo.
+name: polymarket-wallets
+
+on:
+  workflow_dispatch:
+    inputs:
+      per_board:
+        description: Wallets pulled from each leaderboard (4 boards, de-duplicated)
+        default: '100'
+  schedule:
+    - cron: '17 6 * * *'   # daily
+  push:
+    paths:
+      - 'polymarket-wallets/**'
+      - '.github/workflows/polymarket-wallets.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: polymarket-wallets-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    defaults:
+      run:
+        working-directory: polymarket-wallets
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm test
+      - name: Collect last 90 days
+        env:
+          PER_BOARD: ${{ github.event.inputs.per_board || '100' }}
+        run: node src/cli.js collect --days 90 --per-board "$(printf '%d' "$PER_BOARD" 2>/dev/null || echo 100)" --concurrency 4
+      - name: Analyse + build dashboard
+        env:
+          NODE_OPTIONS: --max-old-space-size=8192
+        run: |
+          du -sh data/raw
+          node src/cli.js analyze
+          node src/cli.js build
+          ls -lh dashboard/report.js data/wallets.csv
+      - name: Backtest copy-trading strategies
+        env:
+          NODE_OPTIONS: --max-old-space-size=8192
+        run: node src/cli.js backtest --train-days 45
+      - uses: actions/upload-artifact@v4
+        with:
+          name: polymarket-wallets-dashboard
+          path: |
+            polymarket-wallets/dashboard/
+            polymarket-wallets/data/report.json
+            polymarket-wallets/data/wallets.csv
+            polymarket-wallets/data/candidates.json
+      - name: Save refreshed report to this branch
+        run: |
+          git config user.name "polymarket-wallets bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f dashboard/report.js dashboard/backtest.js data/watchlist.json data/wallets.csv data/candidates.json
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -m "polymarket-wallets: refresh 90-day report [skip ci]"
+          for i in 1 2 3; do git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && break; sleep 5; done
