@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Usage: node src/cli.js <collect|analyze|build|backtest|all|serve> [--days 90] [--per-board 100] [--concurrency 4] [--wallets file.txt] [--port 8090]
+// Usage: node src/cli.js <collect|analyze|build|backtest|paper|all|serve> [--days 90] [--per-board 100] [--concurrency 4] [--wallets file.txt] [--port 8090]
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import http from 'node:http';
@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { collect } from './collect.js';
 import { analyzeWallet, slimRaw, buildReportFrom } from './analyze.js';
 import { backtest } from './backtest-run.js';
+import { runPaper, summarizePaper } from './paper.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DATA = path.join(ROOT, 'data');
@@ -71,6 +72,15 @@ async function runBacktest(o) {
   console.log('\nwrote data/backtest.json and dashboard/backtest.js');
 }
 
+async function runPaperCmd(o) {
+  const state = await runPaper({ dataDir: DATA, minutes: Number(o.minutes || 60), pollSec: Number(o.poll || 30), stake: Number(o.stake || 20), maxBetsPerDay: Number(o['max-per-day'] || 40) });
+  const summary = summarizePaper(state);
+  const out = { updatedAt: state.updatedAt, startedAt: state.startedAt, stake: state.stake, summary, skipped: state.skipped, positions: state.positions.slice(-400).reverse(), log: state.log.slice(-60).reverse() };
+  await fs.writeFile(path.join(DASH, 'paper.js'), `window.PAPER = ${JSON.stringify(out)};\n`);
+  console.log('\npaper results (settled bets only count toward return):');
+  for (const [id, r] of Object.entries(summary)) console.log(`  ${id.padEnd(10)} bets ${r.bets}, open ${r.open}, settled ${r.settled}, won ${r.won}, realised ${r.realised.toFixed(2)}, unrealised ${r.unrealised.toFixed(2)}, median lag ${r.medianLagSec ?? '-'}s`);
+}
+
 async function runBuild() {
   const report = await fs.readFile(path.join(DATA, 'report.json'), 'utf8').catch(() => null);
   if (!report) throw new Error('No data/report.json. Run `npm run analyze` first.');
@@ -96,6 +106,7 @@ try {
   else if (cmd === 'analyze') await runAnalyze();
   else if (cmd === 'build') await runBuild();
   else if (cmd === 'backtest') await runBacktest(o);
+  else if (cmd === 'paper') await runPaperCmd(o);
   else if (cmd === 'all') { await runCollect(o); await runAnalyze(); await runBuild(); }
   else if (cmd === 'serve') serve(Number(o.port || 8090));
   else throw new Error(`unknown command ${cmd}`);

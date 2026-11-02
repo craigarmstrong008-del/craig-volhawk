@@ -10,6 +10,7 @@
     "analyze": "node src/cli.js analyze",
     "build": "node src/cli.js build",
     "backtest": "node src/cli.js backtest",
+    "paper": "node src/cli.js paper",
     "all": "node src/cli.js all",
     "serve": "node src/cli.js serve",
     "test": "node --test test/*.test.js"

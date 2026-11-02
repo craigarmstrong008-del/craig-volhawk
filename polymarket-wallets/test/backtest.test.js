@@ -68,6 +68,10 @@ test('simulation: delays, slippage, fading and skips', () => {
   assert.equal(fade.pnl, -100);
   assert.equal(simulate(sig, D('24h'), prices, outcomes).skip, 'already resolved');
   assert.equal(simulate({ ...sig, asset: 'nope' }, D('2h'), prices, outcomes).skip, 'no price');
+  const fine = new Map([['x|0', [{ t: 0, p: 0.4 }, { t: 60, p: 0.42 }, { t: 120, p: 0.43 }, { t: 300, p: 0.45 }]]]);
+  assert.ok(Math.abs(simulate(sig, D('1m'), prices, outcomes, { fine }).entry - 0.43) < 1e-9);
+  assert.ok(Math.abs(simulate(sig, D('5m'), prices, outcomes, { fine }).entry - 0.46) < 1e-9);
+  assert.equal(simulate(sig, D('1m'), prices, outcomes).skip, 'no price', 'no silent fallback to coarse prices');
   assert.equal(priceAfter(hist, 7000), 0.6);
   assert.equal(priceAfter(hist, 40000), null);
 });

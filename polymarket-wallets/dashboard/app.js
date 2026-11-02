@@ -304,7 +304,7 @@
     function chart() {
       const el = $('#bt-chart');
       const w = fitW(el, 720), h = 280, m = { l: 52, r: 16, t: 12, b: 30 };
-      const short = { '0': 'Same', '30m': '30 min', '2h': '2 h', '6h': '6 h', '24h': '24 h' };
+      const short = { '0': 'Same', '1m': '1m', '5m': '5m', '30m': '30m', '2h': '2h', '6h': '6h', '24h': '24h' };
       const vals = B.strategies.flatMap((s) => B.delays.map((d) => s.byDelay[d.id]?.n ? s.byDelay[d.id].roi : null)).filter((v) => v != null);
       let lo = Math.min(0, ...vals), hi = Math.max(0, ...vals);
       const pad = (hi - lo || 0.1) * 0.1; lo -= pad; hi += pad;
@@ -373,6 +373,34 @@
     ss.addEventListener('change', detail); ds.addEventListener('change', detail);
     detail();
     addEventListener('pmw-tab', (e) => { if (e.detail === 'backtest') { chart(); detail(); } });
+  })();
+
+
+  // ---------- paper trading ----------
+  (function paperTab() {
+    const P = window.PAPER;
+    const btn = document.querySelector('[data-tab="paper"]');
+    if (!P || !P.summary) { $('#pp-empty').hidden = false; $('#pp-body').hidden = true; return; }
+    const names = Object.fromEntries((window.BACKTEST?.strategies || []).map((s) => [s.id, s.name]));
+    const nm = (id) => esc(names[id] || id);
+    const when = (ts) => (ts ? new Date(ts * 1000).toISOString().slice(0, 16).replace('T', ' ') + ' UTC' : '—');
+    $('#pp-meta').textContent = `Running since ${when(P.startedAt)}. Last update ${when(P.updatedAt)} (${ago(P.updatedAt)}). $${P.stake} per bet, no real orders.`;
+    const all = Object.values(P.summary);
+    const tot = (k) => all.reduce((s, r) => s + (r[k] || 0), 0);
+    const staked = tot('staked'), realised = tot('realised');
+    $('#pp-kpis').innerHTML = [
+      kpi('Paper bets', tot('bets').toLocaleString(), `${tot('open')} open · ${tot('settled')} settled`),
+      kpi('Settled profit', signed(realised), staked ? `${pctS(realised / staked)} on ${money(staked)} staked` : 'nothing settled yet'),
+      kpi('Open bets now worth', signed(tot('unrealised')), `on ${money(tot('openCost'))} staked`),
+    ].join('');
+    function pctS(x) { return `${x > 0 ? '+' : ''}${(x * 100).toFixed(1)}%`; }
+    $('#pp-table').innerHTML = `<thead><tr><th class="l">Strategy</th><th>Bets</th><th>Open</th><th>Settled</th><th>Won</th><th>Settled profit</th><th>Return</th><th>Open P&amp;L</th><th>Median delay</th><th>Price vs theirs</th></tr></thead><tbody>${Object.entries(P.summary).map(([id, r]) => `<tr><td class="l">${nm(id)}</td><td>${r.bets}</td><td>${r.open}</td><td>${r.settled}</td><td>${r.won}</td><td>${signed(r.realised)}</td><td>${r.roi == null ? '—' : `<span class="${r.roi > 0 ? 'up' : r.roi < 0 ? 'down' : ''}">${pctS(r.roi)}</span>`}</td><td>${signed(r.unrealised)}</td><td>${r.medianLagSec == null ? '—' : r.medianLagSec < 120 ? `${r.medianLagSec}s` : `${Math.round(r.medianLagSec / 60)} min`}</td><td>${r.avgPriceGap == null ? '—' : `${r.avgPriceGap >= 0 ? '+' : ''}${(r.avgPriceGap * 100).toFixed(1)}¢`}</td></tr>`).join('')}</tbody>`;
+    $('#pp-bets').innerHTML = `<thead><tr><th class="l">Placed</th><th class="l">Strategy</th><th class="l">Market</th><th class="l">Side</th><th>They paid</th><th>We paid</th><th>Delay</th><th>Status</th><th>P&amp;L</th></tr></thead><tbody>${P.positions.slice(0, 150).map((p) => {
+      const pl = p.status === 'open' ? (p.mark != null ? p.shares * p.mark - p.cost : null) : p.pnl;
+      return `<tr><td class="l">${when(p.detectedAt)}</td><td class="l">${nm(p.strategy)}</td><td class="l">${mkt(p)}</td><td class="l">${esc(p.outcome)}</td><td>${cents(p.theirPrice)}</td><td>${(p.entry * 100).toFixed(1)}¢</td><td>${p.lagSec < 120 ? `${p.lagSec}s` : `${Math.round(p.lagSec / 60)}m`}</td><td>${esc(p.status === 'open' ? (p.mark != null ? `open, ${cents(p.mark)}` : 'open') : p.status)}</td><td>${pl == null ? '—' : signed(pl)}</td></tr>`;
+    }).join('') || '<tr><td class="l" colspan="9">No paper bets yet. The agent only acts on trades made after it starts.</td></tr>'}</tbody>`;
+    const skipped = Object.entries(P.skipped || {}).sort((a, b) => b[1] - a[1]);
+    $('#pp-skipped').innerHTML = skipped.length ? skipped.map(([k, v]) => `<li>${esc(k)}: ${v}</li>`).join('') : '<li>None yet.</li>';
   })();
 
   if (location.hash.startsWith('#w-')) openWallet(location.hash.slice(3));

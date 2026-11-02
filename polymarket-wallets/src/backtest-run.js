@@ -8,13 +8,14 @@ import { trainStats, runBacktest, STRATEGIES, selectWallets, buildSignals, isBuy
 const MIN_USD = Math.min(...STRATEGIES.map((s) => s.minUsd));
 const parseJsonArr = (v) => { if (Array.isArray(v)) return v; try { const x = JSON.parse(v); return Array.isArray(x) ? x : []; } catch { return []; } };
 
-export async function backtest({ dataDir, trainDays = 45, maxAssets = 6000, concurrency = 8, log = console.log }) {
+export async function backtest({ dataDir, trainDays = 45, maxAssets = 6000, maxFine = 8000, concurrency = 8, log = console.log }) {
   const rawDir = path.join(dataDir, 'raw');
   const files = (await fs.readdir(rawDir)).filter((f) => f.endsWith('.json'));
   if (!files.length) throw new Error('No raw wallet data. Run `npm run collect` first.');
 
   // Pass 1: train stats, test-period buys, and resolution hints from position data. One file at a time.
   const stats = [];
+  const liveStats = []; // most recent `trainDays`, for the paper-trading watchlist
   const buys = [];
   const hints = new Map(); // asset -> {value, resolved}
   let start = Infinity, end = 0;
@@ -23,6 +24,7 @@ export async function backtest({ dataDir, trainDays = 45, maxAssets = 6000, conc
     start = Math.min(start, raw.window.start); end = Math.max(end, raw.window.end);
     const split = raw.window.start + trainDays * DAY;
     stats.push(trainStats(raw, split));
+    liveStats.push(trainStats(raw, raw.window.end, raw.window.end - trainDays * DAY));
     for (const e of raw.activity || []) {
       if (!isBuy(e) || num(e.timestamp) < split || usd(e) < MIN_USD) continue;
       buys.push({ wallet: raw.profile.address, t: num(e.timestamp), asset: e.asset, conditionId: e.conditionId, outcome: e.outcome, outcomeIndex: e.outcomeIndex, price: num(e.price), usd: usd(e), title: e.title, slug: e.slug, eventSlug: e.eventSlug });
@@ -42,10 +44,15 @@ export async function backtest({ dataDir, trainDays = 45, maxAssets = 6000, conc
 
   // Which outcomes need prices: strategies first, so the cap only ever trims the baseline.
   const needed = new Map();
+  const fineKeys = new Map(); // `${asset}|${t}` -> {asset, t}, strategies in priority order
   for (const s of STRATEGIES) {
     const sigs = buildSignals(buys, s, selectWallets(stats, s.select));
     log(`  ${s.id}: ${sigs.length} signals`);
-    for (const g of sigs) if (!needed.has(g.asset)) needed.set(g.asset, g.conditionId);
+    for (const g of sigs) {
+      if (!needed.has(g.asset)) needed.set(g.asset, g.conditionId);
+      const k = `${g.asset}|${g.t}`;
+      if (!fineKeys.has(k)) fineKeys.set(k, { asset: g.asset, t: g.t });
+    }
   }
   const assets = [...needed.keys()].slice(0, maxAssets);
   if (needed.size > maxAssets) log(`  price fetches capped at ${maxAssets} of ${needed.size} outcomes`);
@@ -66,6 +73,19 @@ export async function backtest({ dataDir, trainDays = 45, maxAssets = 6000, conc
   });
   log(`  prices fetched for ${assets.length} outcomes (${empty} had no history)`);
 
+  // Minute-level prices in a small window after each signal, for the 1- and 5-minute delays.
+  const fine = new Map();
+  const fineList = [...fineKeys.values()].slice(0, maxFine);
+  if (fineKeys.size > maxFine) log(`  minute-level price windows capped at ${maxFine} of ${fineKeys.size}`);
+  let fineDone = 0, fineEmpty = 0;
+  await pool(fineList, concurrency, async ({ asset, t }) => {
+    const h = await api.priceHistory(asset, t - 60, t + 9 * 60, { fidelity: 1, chunkDays: 1 });
+    if (!h.length) fineEmpty++;
+    fine.set(`${asset}|${t}`, h);
+    if (++fineDone % 1000 === 0) log(`  minute prices ${fineDone}/${fineList.length}`);
+  });
+  log(`  minute-level windows: ${fineList.length} fetched, ${fineEmpty} empty`);
+
   // Resolutions from Polymarket's market data, falling back to position data.
   const outcomes = new Map();
   const conds = [...new Set(assets.map((a) => needed.get(a)).filter(Boolean))];
@@ -84,13 +104,24 @@ export async function backtest({ dataDir, trainDays = 45, maxAssets = 6000, conc
   for (const a of assets) if (!outcomes.has(a) && hints.get(a)?.resolved) { outcomes.set(a, hints.get(a)); fromHints++; }
   log(`  resolutions: ${fromGamma} from market data, ${fromHints} from position data; the rest are marked to the latest price`);
 
-  const result = runBacktest({ stats, buys, prices, outcomes, split, end });
+  // Watchlist for the paper-trading agent: who each strategy would follow today.
+  const watch = {};
+  for (const s of STRATEGIES) {
+    if (s.select.all) continue;
+    const set = selectWallets(liveStats, s.select);
+    watch[s.id] = liveStats.filter((x) => set.has(x.address)).sort((a, b) => b.trainPnl - a.trainPnl)
+      .map(({ address, name, trainPnl, tradesPerDay }) => ({ address, name, pnl: trainPnl, tradesPerDay }));
+  }
+  await fs.writeFile(path.join(dataDir, 'watchlist.json'), JSON.stringify({ generatedAt: end, rankedOnDays: trainDays, strategies: watch }, null, 2));
+  log(`  watchlist: ${Object.entries(watch).map(([k, v]) => `${k} ${v.length}`).join(', ')}`);
+
+  const result = runBacktest({ stats, buys, prices, outcomes, split, end, opts: { fine } });
   result.start = start;
   result.trainDays = trainDays;
-  result.coverage = { outcomes: needed.size, priced: assets.length, noHistory: empty, resolvedFromMarket: fromGamma, resolvedFromPositions: fromHints };
+  result.coverage = { outcomes: needed.size, priced: assets.length, fineWindows: fineList.length, fineEmpty, noHistory: empty, resolvedFromMarket: fromGamma, resolvedFromPositions: fromHints };
   result.caveats = [
     'Wallets came from leaderboards as they stand today, which partly reflect the test period. That flatters every strategy equally, so compare each one with the baseline rather than reading its return on its own.',
-    'Delayed entries use the first recorded price after the delay (30-minute resolution). The "same price" column assumes you got the wallet\'s own fill, which in practice you can\'t.',
+    'The 1- and 5-minute delays use minute-by-minute prices; longer delays use the first recorded price after the delay (30-minute resolution). The "same price" column assumes you got the wallet\'s own fill, which in practice you can\'t.',
     'Each bet stakes $100 and pays 1¢ of slippage on entry. No fees are charged. Bets on markets that haven\'t resolved yet are valued at the latest price.',
   ];
   return result;

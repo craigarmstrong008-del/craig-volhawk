@@ -17,6 +17,7 @@
     <button role="tab" data-tab="wallets">Wallets</button>
     <button role="tab" data-tab="consensus">Smart money</button>
     <button role="tab" data-tab="backtest">Backtest</button>
+    <button role="tab" data-tab="paper">Paper trading</button>
     <button role="tab" data-tab="method">Method</button>
   </nav>
 </header>
@@ -94,6 +95,21 @@
     <div class="card"><h2>Most recent bets</h2><div class="tablewrap"><table id="bt-trades"></table></div></div>
   </section>
 
+  <section data-panel="paper" hidden>
+    <div class="card prose">
+      <h2>Paper trading</h2>
+      <p class="hint">An agent watches the wallets each strategy follows. When one of them buys, it records the $20 bet it would have placed at the live order-book price, without sending any order. Bets are settled when the market resolves.</p>
+      <p class="hint" id="pp-meta"></p>
+      <p class="hint" id="pp-empty" hidden>The agent hasn't reported yet. Results appear here after its first run.</p>
+    </div>
+    <div id="pp-body" style="display:grid;gap:16px">
+      <div class="kpis" id="pp-kpis"></div>
+      <div class="card flush"><div class="tablewrap"><table id="pp-table"></table></div></div>
+      <div class="card"><h2>Bets</h2><p class="hint">"Delay" is how long after their trade the agent placed its own. "Price vs theirs" shows how much worse the copy price was on average.</p><div class="tablewrap"><table id="pp-bets"></table></div></div>
+      <div class="card"><h2>Signals not taken</h2><ul class="insights" id="pp-skipped"></ul></div>
+    </div>
+  </section>
+
   <section data-panel="method" hidden>
     <div class="card prose">
       <h2>How this is built</h2>
@@ -121,6 +137,7 @@
 
 <script src="report.js" onerror="window.REPORT=null"></script>
 <script src="backtest.js" onerror="window.BACKTEST=null"></script>
+<script src="paper.js" onerror="window.PAPER=null"></script>
 <script src="app.js"></script>
 </body>
 </html>

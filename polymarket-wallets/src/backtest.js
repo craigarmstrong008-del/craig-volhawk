@@ -15,6 +15,8 @@ export const STRATEGIES = [
 
 export const DELAYS = [
   { id: '0', label: 'Same price', seconds: 0 },
+  { id: '1m', label: '1 min later', seconds: 60, fine: true },
+  { id: '5m', label: '5 min later', seconds: 300, fine: true },
   { id: '30m', label: '30 min later', seconds: 1800 },
   { id: '2h', label: '2 hours later', seconds: 7200 },
   { id: '6h', label: '6 hours later', seconds: 21600 },
@@ -38,8 +40,7 @@ function normSeries(series) {
 }
 
 /** Per-wallet stats computed only from the train period. */
-export function trainStats(raw, split) {
-  const { start } = raw.window;
+export function trainStats(raw, split, start = raw.window.start) {
   const trainTrades = (raw.activity || []).filter((e) => e.type === 'TRADE' && num(e.timestamp) >= start && num(e.timestamp) < split);
   const days = Math.max(1, (split - start) / DAY);
   let trainPnl = null, source = 'none';
@@ -126,12 +127,15 @@ export function priceAfter(history, ts, maxGap = 3 * 3600) {
  * Simulate one signal at one delay. prices: Map asset -> sorted [{t,p}];
  * outcomes: Map asset -> {value 0..1, resolved: bool}.
  */
-export function simulate(sig, delay, prices, outcomes, { stake = 100, slippage = 0.01, feeBps = 0 } = {}) {
+export function simulate(sig, delay, prices, outcomes, { stake = 100, slippage = 0.01, feeBps = 0, fine = new Map() } = {}) {
   const hist = prices.get(sig.asset) || [];
   const entryT = sig.t + delay.seconds;
   const out = outcomes.get(sig.asset);
   if (out?.resolved && hist.length && hist[hist.length - 1].t < entryT) return { skip: 'already resolved' };
-  let p = delay.seconds === 0 ? num(sig.price) : priceAfter(hist, entryT);
+  // Minute-level delays need minute-level prices around the signal; never fall back to coarse data.
+  let p = delay.seconds === 0 ? num(sig.price)
+    : delay.fine ? priceAfter(fine.get(`${sig.asset}|${sig.t}`), entryT, 180)
+    : priceAfter(hist, entryT);
   if (p == null || !(p > 0)) return { skip: 'no price' };
   if (sig.fade) p = 1 - p;
   const entry = p + slippage;
@@ -197,7 +201,8 @@ export function runBacktest({ stats, buys, prices, outcomes, split, end, opts = 
     const followed = stats.filter((x) => wallets.has(x.address)).sort((a, b) => b.trainPnl - a.trainPnl);
     results.push({ ...s, select: undefined, walletCount: wallets.size, followed: s.select.all ? [] : followed.map(({ address, name, trainPnl, tradesPerDay }) => ({ address, name, trainPnl, tradesPerDay })), signalCount: signals.length, byDelay });
   }
-  return { split, end, delays: DELAYS, opts: { stake: 100, slippage: 0.01, feeBps: 0, ...opts }, strategies: results };
+  const { fine, ...shownOpts } = opts;
+  return { split, end, delays: DELAYS, opts: { stake: 100, slippage: 0.01, feeBps: 0, ...shownOpts }, strategies: results };
 }
 
 export { isBuy, usd };

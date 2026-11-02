@@ -184,3 +184,24 @@ export async function marketsByCondition(ids) {
   }
   return out;
 }
+
+/** Live order book for one outcome token: asks/bids sorted best-first, as numbers. */
+export async function book(tokenId) {
+  const j = await get(`${CLOB()}/book`, { token_id: tokenId }, { retries: 3 });
+  const side = (xs) => (Array.isArray(xs) ? xs : []).map((x) => ({ price: num(x.price), size: num(x.size) })).filter((x) => x.price > 0 && x.size > 0);
+  return {
+    asks: side(j?.asks).sort((a, b) => a.price - b.price),
+    bids: side(j?.bids).sort((a, b) => b.price - a.price),
+  };
+}
+
+export async function midpoint(tokenId) {
+  const j = await get(`${CLOB()}/midpoint`, { token_id: tokenId }, { retries: 2 });
+  return num(j?.mid) || null;
+}
+
+/** Recent trades for one wallet after `since` (exclusive), newest first. */
+export async function recentTrades(user, since) {
+  const j = await get('/activity', { user, type: 'TRADE', start: since + 1, limit: 100, sortBy: 'TIMESTAMP', sortDirection: 'DESC' }, { retries: 3 });
+  return Array.isArray(j) ? j : [];
+}

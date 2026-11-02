@@ -40,6 +40,22 @@ You need network access to `data-api.polymarket.com`. No API key is required.
 
 `.github/workflows/polymarket-wallets.yml` runs on every push to this folder, daily at 06:17 UTC, and on demand from the Actions tab. Each run tests, collects and analyses, uploads the ready-to-open dashboard as a build artifact named `polymarket-wallets-dashboard`, and commits the refreshed `dashboard/report.js`, `data/wallets.csv` and `data/candidates.json` back to the branch. Those are the only files it writes.
 
+## Backtest
+
+`npm run backtest` tests copy-trading rules without hindsight. Wallets are ranked on the first 45 days of the window, and their buys are followed only in the last 45. Each bet stakes $100 and is entered at Polymarket's recorded price at seven delays: the wallet's own price, 1 min, 5 min, 30 min, 2 h, 6 h and 24 h. The 1- and 5-minute delays use minute-by-minute prices. Each entry pays 1¢ of slippage, and every bet is valued at the market's real result.
+
+Strategies: copy the top 20, copy the top 20 slow traders (20 trades a day or fewer), consensus of 3+ of the top 50, fade the bottom 20, and a copy-everyone baseline. Results are shown in the dashboard's **Backtest** tab. The step also writes `data/watchlist.json`: the wallets each strategy would follow today, ranked on the most recent 45 days.
+
+## Paper trading
+
+`npm run paper -- --minutes 60 --stake 20` runs the paper-trading agent. **It never places real orders.** Every 30 seconds it checks the watchlist wallets for new buys. When a strategy's rule fires, it records the bet it would have made at the live order-book price, walking the book for the full stake. It settles the bet when the market resolves.
+
+- Limits: one open bet per strategy per market, and at most 40 bets per strategy per day.
+- Only trades made after the agent starts count. After a gap of more than 10 minutes, the backlog is skipped rather than traded late.
+- State is kept in `data/paper/state.json`, and results appear in the **Paper trading** tab.
+
+`.github/workflows/polymarket-paper.yml` runs the agent in roughly 5.5-hour stretches, saving progress every 30 minutes. Scheduled runs only fire once the workflow is on the repository's default branch. Until then it runs when its files change, or locally with the command above.
+
 ## Caveats
 
 - Unrealised PnL includes positions opened before the window, so "90-day PnL" is an estimate.
