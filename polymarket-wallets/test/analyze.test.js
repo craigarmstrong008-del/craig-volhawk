@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { analyzeWallet, buildReport, consensus, officialPnl } from '../src/analyze.js';
 import { categorize } from '../src/categorize.js';
 import { percentileRanks } from '../src/util.js';
+import { normPoint } from '../src/api.js';
 import { makeRaw, NOW } from './fixtures.js';
 
 test('cash flows and trade counts add up', () => {
@@ -101,4 +102,12 @@ test('Polymarket PnL history drives 90-day PnL when present', () => {
   assert.notEqual(w.positionPnl90, w.totalPnl90);
   assert.equal(officialPnl([], start), null);
   assert.equal(analyzeWallet(makeRaw(6)).pnlSource, 'positions');
+});
+
+test('PnL history points are read whatever the field is called', () => {
+  assert.deepEqual(normPoint({ timestamp: 1793520000, sum_pnl: '12.5' }), { t: 1793520000, p: 12.5 });
+  assert.deepEqual(normPoint({ timestamp: 1793520000000, pnl: -3 }), { t: 1793520000, p: -3 });
+  assert.deepEqual(normPoint({ t: 5, p: 7 }), { t: 5, p: 7 });
+  assert.deepEqual(normPoint({ timestamp: 9, s: 4 }), { t: 9, p: 4 }, 'falls back to the only numeric field');
+  assert.equal(normPoint({ timestamp: 9 }), null);
 });

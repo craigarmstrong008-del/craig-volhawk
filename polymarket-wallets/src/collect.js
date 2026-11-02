@@ -69,7 +69,8 @@ export async function collect({ dataDir, days = 90, perBoard = 100, concurrency 
   if (failures.length) log(`${failures.length} wallets failed:`, failures.slice(0, 5));
   const d = api.pnlDiag;
   log(`Polymarket PnL history: ${d.ok} wallets returned history, ${d.empty} empty, ${d.failed} failed; format used: ${d.variant ? JSON.stringify(d.variant) : 'none worked'}`);
-  d.samples.forEach((x) => log(`  ${x}`));
+  if (d.pointKeys) log(`  history point fields: ${d.pointKeys}`);
+  d.samples.slice(0, 3).forEach((x) => log(`  ${x}`));
   await fs.writeFile(path.join(dataDir, 'candidates.json'), JSON.stringify({ generatedAt: end, days, wallets: list, failures }, null, 2));
   return { wallets: list.length, failures };
 }
