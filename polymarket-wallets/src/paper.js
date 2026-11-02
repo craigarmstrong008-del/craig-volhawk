@@ -22,6 +22,13 @@ export function stakeFor(sizing, buyUsd, typicalUsd, { stake = 20, base = 10, ma
   return Math.round(Math.min(max, Math.max(base, base * ratio)));
 }
 
+/** Median of a wallet's buys at or above `minUsd` (the sizes that can trigger a copy). */
+export function typicalBuy(trades, minUsd) {
+  const sizes = (trades || []).filter((e) => String(e.side).toUpperCase() === 'BUY')
+    .map((e) => num(e.usdcSize) || num(e.size) * num(e.price)).filter((x) => x >= minUsd).sort((a, b) => a - b);
+  return sizes.length ? sizes[sizes.length >> 1] : null;
+}
+
 /** Create any missing paper wallets. Older state (before wallets existed) is folded in. */
 export function ensureBooks(state, bankroll) {
   state.books = state.books || {};
@@ -158,12 +165,16 @@ export async function runPaper({ dataDir, minutes = 60, pollSec = 30, stake = 20
   let reset = 0;
   for (const w of wallets) if (!state.lastSeen[w] || now0 - state.lastSeen[w] > maxGapMin * 60) { state.lastSeen[w] = now0; reset++; }
   ensureBooks(state, bankroll);
-  // Each wallet's typical (median) buy over the last 30 days, for conviction sizing.
+  // Each wallet's typical copy-sized buy: the median of its own buys at or above the smallest copy
+  // trigger, over its last 500 trades (30 days at most). Large orders fill as many small trades, so
+  // comparing against all fills would make every copied buy look like maximum conviction.
   const typical = new Map();
+  const trigger = Math.min(...STRATEGIES.filter((x) => !x.select.all).map((x) => x.minUsd));
   await pool(wallets, concurrency, async (w) => {
     try {
-      const buys = (await api.recentTrades(w, now0 - 30 * DAY)).filter((e) => String(e.side).toUpperCase() === 'BUY').map((e) => num(e.usdcSize) || num(e.size) * num(e.price)).filter((x) => x > 0).sort((a, b) => a - b);
-      if (buys.length) typical.set(w, buys[buys.length >> 1]);
+      const trades = await api.recentTrades(w, now0 - 30 * DAY, { limit: 500 });
+      const t = typicalBuy(trades, trigger);
+      if (t) typical.set(w, t);
     } catch { /* falls back to the minimum sized stake */ }
   });
   log(`paper agent: ${wallets.length} wallets, ${PAPER_BOOKS.length} books ($${bankroll} paper wallet each; flat $${stake}, sized $${sized.base}-$${sized.max}), ${minutes} min` + (reset ? ` (${reset} wallets start fresh; older trades are ignored)` : ''));

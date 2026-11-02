@@ -220,7 +220,7 @@ export async function midpoint(tokenId) {
 }
 
 /** Recent trades for one wallet after `since` (exclusive), newest first. */
-export async function recentTrades(user, since) {
-  const j = await get('/activity', { user, type: 'TRADE', start: since + 1, limit: 100, sortBy: 'TIMESTAMP', sortDirection: 'DESC' }, { retries: 3 });
+export async function recentTrades(user, since, { limit = 100 } = {}) {
+  const j = await get('/activity', { user, type: 'TRADE', start: since + 1, limit, sortBy: 'TIMESTAMP', sortDirection: 'DESC' }, { retries: 3 });
   return Array.isArray(j) ? j : [];
 }
