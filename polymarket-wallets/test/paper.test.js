@@ -99,8 +99,10 @@ test('agent loop: detects a new buy, prices it from the book, settles it', async
   Object.assign(process.env, { PM_DATA_API: base, PM_CLOB_API: base, PM_GAMMA_API: base });
   try {
     const { runPaper } = await import('../src/paper.js');
-    const state = await runPaper({ dataDir: dir, minutes: 0.06, pollSec: 1, settleEveryMin: 0, log: () => {} });
-    assert.ok(polls >= 2);
+    // Two short runs on the same saved state: deterministic "repeated polls" without relying on timing.
+    await runPaper({ dataDir: dir, minutes: 0.01, pollSec: 1, settleEveryMin: 0, log: () => {} });
+    const state = await runPaper({ dataDir: dir, minutes: 0.01, pollSec: 1, settleEveryMin: 0, log: () => {} });
+    assert.ok(polls >= 2, 'the wallet was polled again after the bet');
     const top = state.positions.filter((p) => p.book === 'top20');
     const topSized = state.positions.filter((p) => p.book === 'top20-sized');
     const fade = state.positions.filter((p) => p.book === 'fade20');
