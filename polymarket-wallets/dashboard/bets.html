@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paper Bets</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="bets.css">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Paper bets</h1>
+    <p class="sub" id="meta">Loading…</p>
+  </div>
+  <div class="head-right">
+    <span class="pill" id="status" hidden></span>
+    <a class="btn" href="index.html">Full dashboard</a>
+  </div>
+</header>
+<main>
+  <section class="card empty" id="empty" hidden>
+    <h2>No paper bets yet</h2>
+    <p class="hint">The agent only copies trades made after it starts, so bets appear as the wallets it follows trade. This page checks for new results every minute.</p>
+  </section>
+
+  <div class="chips" id="chips" role="group" aria-label="Filter by strategy"></div>
+  <div class="kpis" id="kpis"></div>
+
+  <section class="card flush">
+    <div class="tablewrap"><table id="strategies"></table></div>
+  </section>
+
+  <section>
+    <h2 class="sec">Open bets <span class="count" id="open-count"></span></h2>
+    <div class="bets" id="open"></div>
+  </section>
+
+  <section>
+    <h2 class="sec">Settled <span class="count" id="settled-count"></span></h2>
+    <div class="bets" id="settled"></div>
+  </section>
+
+  <div class="grid2">
+    <section class="card"><h2>Agent activity</h2><ul class="feed" id="feed"></ul></section>
+    <section class="card"><h2>Signals not taken</h2><ul class="feed" id="skipped"></ul></section>
+  </div>
+  <p class="hint foot">Paper trading only: no real orders are placed. Each bet is $20, priced at the live order book when the agent saw the trade.</p>
+</main>
+<script src="paper.js" onerror="window.PAPER=null"></script>
+<script src="bets.js"></script>
+</body>
+</html>
