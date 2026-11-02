@@ -72,7 +72,17 @@ export function analyzeWallet(raw) {
   const categories = [...catVol.entries()].map(([name, v]) => ({ name, volume: v, share: volume ? v / volume : 0 })).sort((a, b) => b.volume - a.volume);
 
   // Realised results: positions closed inside the window.
-  const closedIn = closed.filter((p) => num(p.timestamp) >= start && num(p.timestamp) <= end);
+  // Positions closed in the window, plus resolved positions still sitting unredeemed
+  // (losers pay $0, so many traders never redeem them and they never show up as "closed").
+  const closedAssets = new Set(closed.map((p) => p.asset).filter(Boolean));
+  const settled = open
+    .filter((p) => !isLive(p) && !closedAssets.has(p.asset))
+    .map((p) => {
+      const t = p.endDate ? Math.floor(Date.parse(p.endDate) / 1000) : NaN;
+      return { ...p, realizedPnl: num(p.cashPnl), totalBought: num(p.size), timestamp: Number.isFinite(t) ? Math.min(Math.max(t, start), end) : end, _endTs: t, unredeemed: true };
+    })
+    .filter((p) => !(p._endTs < start));
+  const closedIn = [...closed.filter((p) => num(p.timestamp) >= start && num(p.timestamp) <= end), ...settled];
   const pnls = closedIn.map((p) => num(p.realizedPnl));
   const wins = pnls.filter((x) => x > 0);
   const losses = pnls.filter((x) => x < 0);
@@ -124,7 +134,7 @@ export function analyzeWallet(raw) {
     trades: trades.length, buys: buys.length, sells: sells.length, tradesPerDay, activeDays: activeDays.size,
     avgTrade, medianTrade: median(sizes), maxTrade: sizes.length ? Math.max(...sizes) : 0,
     avgBuyPrice, priceMix, hours, weekdays, uniqueMarkets: markets.size, categories, topMarkets,
-    closedCount: closedIn.length, wins: wins.length, losses: losses.length, winRate, profitFactor,
+    closedCount: closedIn.length, unredeemedCount: settled.length, wins: wins.length, losses: losses.length, winRate, profitFactor,
     realizedPnl, grossWin, grossLoss, roi: costBasis ? realizedPnl / costBasis : 0,
     avgWin: wins.length ? grossWin / wins.length : 0, avgLoss: losses.length ? grossLoss / losses.length : 0,
     bestTrades: sortedClosed.slice(0, 5).filter((p) => num(p.realizedPnl) > 0).map(slim),

@@ -252,7 +252,7 @@
       <div class="kpis">
         ${kpi('Rank / score', `#${w.rank} · ${w.score}`, boards ? `leaderboards: ${esc(boards)}` : 'added manually')}
         ${kpi('90-day PnL', signed(w.totalPnl90), `realised ${money(w.realizedPnl)} · open ${money(w.unrealizedPnl)}`)}
-        ${kpi('Win rate', pct(w.winRate), `${w.wins} wins / ${w.losses} losses`)}
+        ${kpi('Win rate', pct(w.winRate), `${w.wins} wins / ${w.losses} losses${w.unredeemedCount ? ` · ${w.unredeemedCount} resolved, unredeemed` : ''}`)}
         ${kpi('Profit factor', pf(w.profitFactor), `avg win ${money(w.avgWin)} · avg loss ${money(w.avgLoss)}`)}
         ${kpi('Volume', money(w.volume), `${w.trades.toLocaleString()} trades · ${w.uniqueMarkets} markets${w.truncated ? ' · activity capped, volume understated' : ''}`)}
         ${kpi('Avg trade', money(w.avgTrade), `median ${money(w.medianTrade)} · max ${money(w.maxTrade)}`)}

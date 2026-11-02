@@ -23,7 +23,7 @@ test('realised stats only count positions closed inside the window', () => {
   raw.closed.push({ realizedPnl: 1e9, timestamp: NOW - 200 * 86400, totalBought: 1, avgPrice: 1 });
   const w = analyzeWallet(raw);
   assert.ok(w.realizedPnl < 1e8);
-  assert.equal(w.wins + w.losses, raw.closed.length - 1);
+  assert.equal(w.wins + w.losses, raw.closed.length - 1 + 1); // minus the pre-window close, plus the fixture's unredeemed resolved position
   assert.ok(w.winRate >= 0 && w.winRate <= 1);
   assert.equal(w.equity.length, 91);
   assert.ok(Math.abs(w.equity.at(-1).cum - w.realizedPnl) < 1e-6);
@@ -33,6 +33,18 @@ test('resolved/redeemable positions are excluded from the open book', () => {
   const w = analyzeWallet(makeRaw(3));
   assert.equal(w.openCount, 2);
   assert.equal(w.unrealizedPnl, 150);
+});
+
+test('unredeemed resolved losers count as realised losses', () => {
+  const raw = makeRaw(4);
+  const base = analyzeWallet(raw);
+  raw.open.push({ conditionId: '0xlost', asset: 'lost', title: 'Lost bet', outcome: 'Yes', size: 2000, avgPrice: 0.9, curPrice: 0, currentValue: 0, cashPnl: -1800, endDate: new Date((raw.window.end - 86400) * 1000).toISOString() });
+  raw.open.push({ conditionId: '0xold', asset: 'old', title: 'Old loss', outcome: 'No', size: 10, avgPrice: 0.5, curPrice: 0, currentValue: 0, cashPnl: -5, endDate: new Date((raw.window.start - 30 * 86400) * 1000).toISOString() });
+  const w = analyzeWallet(raw);
+  // The fixture already holds one resolved winner (+50); the new loser adds -1800, the pre-window one is ignored.
+  assert.equal(w.losses, base.losses + 1);
+  assert.ok(Math.abs(w.realizedPnl - (base.realizedPnl - 1800)) < 1e-6);
+  assert.equal(w.openCount, base.openCount);
 });
 
 test('scores are 0-100 and report is ranked', () => {
