@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Polymarket Top Wallets</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Polymarket Top Wallets</h1>
+    <p class="sub" id="meta">Loading…</p>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="overview" aria-selected="true">Overview</button>
+    <button role="tab" data-tab="wallets">Wallets</button>
+    <button role="tab" data-tab="consensus">Smart money</button>
+    <button role="tab" data-tab="method">Method</button>
+  </nav>
+</header>
+
+<main>
+  <section id="empty" class="card empty" hidden>
+    <h2>No data yet</h2>
+    <p>Run <code>npm run all</code> inside <code>polymarket-wallets/</code> (needs network access to <code>data-api.polymarket.com</code>), then reload this page.</p>
+  </section>
+
+  <section data-panel="overview">
+    <div class="kpis" id="kpis"></div>
+    <div class="grid2">
+      <div class="card"><h2>Skill vs. 90-day PnL</h2><p class="hint">Each dot is a wallet. Click one to open it.</p><div id="scatter" class="chart"></div></div>
+      <div class="card"><h2>Volume by category</h2><p class="hint">Inferred from market titles.</p><div id="cats"></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h2>Trader archetypes</h2><p class="hint">A wallet can carry more than one tag.</p><div id="archetypes"></div></div>
+      <div class="card"><h2>What the data says</h2><ul id="insights" class="insights"></ul></div>
+    </div>
+    <div class="card"><h2>Top 10 by score</h2><div class="tablewrap"><table id="top10"></table></div></div>
+  </section>
+
+  <section data-panel="wallets" hidden>
+    <div class="filters">
+      <input id="q" type="search" placeholder="Search name, address or tag…" aria-label="Search wallets">
+      <select id="tag" aria-label="Archetype filter"><option value="">All archetypes</option></select>
+      <select id="minclosed" aria-label="Minimum closed positions">
+        <option value="0">Any sample size</option><option value="10">≥10 closed positions</option><option value="25">≥25 closed positions</option><option value="100">≥100 closed positions</option>
+      </select>
+      <button id="csv" class="btn">Download CSV</button>
+    </div>
+    <div class="card flush"><div class="tablewrap"><table id="wtable"></table></div></div>
+  </section>
+
+  <section data-panel="consensus" hidden>
+    <div class="card">
+      <h2>Consensus positions</h2>
+      <p class="hint">Live outcomes that two or more analysed wallets hold right now, with at least $100 each. "Conviction" is this side's share of top-wallet money in the market.</p>
+      <div class="tablewrap"><table id="ctable"></table></div>
+    </div>
+    <div class="card">
+      <h2>Fresh flow (last 7 days)</h2>
+      <p class="hint">Outcomes that two or more analysed wallets net-bought in the last week.</p>
+      <div class="tablewrap"><table id="ftable"></table></div>
+    </div>
+  </section>
+
+  <section data-panel="method" hidden>
+    <div class="card prose">
+      <h2>How this is built</h2>
+      <ol>
+        <li><b>Candidates.</b> Polymarket's leaderboard has no 90-day window, so wallets are pulled from four boards (30-day PnL, 30-day volume, all-time PnL, 7-day PnL) and merged.</li>
+        <li><b>History.</b> For each wallet the tool downloads every on-chain action in the window (trades, redemptions, splits, merges, rewards), every position closed in the window, its open positions and its portfolio value. Everything comes from <code>data-api.polymarket.com</code>.</li>
+        <li><b>Realised PnL</b> is the sum of <code>realizedPnl</code> on positions closed inside the window. <b>Unrealised</b> is the mark-to-market of open, unresolved positions. Some open positions may have been opened before the window started, so <b>90-day PnL</b> (realised + unrealised) is an estimate.</li>
+        <li><b>Win rate</b> counts closed positions with positive vs. negative realised PnL. <b>Profit factor</b> = gross wins ÷ gross losses. <b>ROI</b> = realised PnL ÷ cost basis of closed positions. <b>Sharpe</b> is annualised from daily realised PnL.</li>
+        <li><b>Score (0–100)</b> is a weighted mix of percentile ranks within this cohort: 90-day PnL 25%, realised PnL 20%, win rate (shrunk toward 50%) 15%, profit factor 15%, ROI 15%, Sharpe 10%. Wallets with fewer than 15 closed positions are pulled toward 50 to account for luck.</li>
+        <li><b>Categories</b> come from keyword rules on market titles, so they're approximate. <b>Archetypes</b> are rule-based tags (for example, "Favourite grinder" means at least 60% of buy dollars went in at 80¢ or more).</li>
+      </ol>
+      <p class="hint">This is not financial advice. Past performance on prediction markets is noisy, and copy-trading lags the original fill.</p>
+    </div>
+  </section>
+</main>
+
+<aside id="drawer" class="drawer" hidden aria-modal="true" role="dialog" aria-labelledby="dtitle">
+  <div class="drawer-inner">
+    <button class="close" id="dclose" aria-label="Close">×</button>
+    <div id="dbody"></div>
+  </div>
+</aside>
+<div id="tip" class="tip" hidden></div>
+
+<script src="report.js" onerror="window.REPORT=null"></script>
+<script src="app.js"></script>
+</body>
+</html>

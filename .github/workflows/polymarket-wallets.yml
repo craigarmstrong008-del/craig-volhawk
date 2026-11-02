@@ -1,0 +1,48 @@
+# Self-contained job for the polymarket-wallets/ project only. It touches nothing else in the repo.
+name: polymarket-wallets
+
+on:
+  workflow_dispatch:
+    inputs:
+      per_board:
+        description: Wallets pulled from each leaderboard (4 boards, de-duplicated)
+        default: '100'
+  schedule:
+    - cron: '17 6 * * *'   # daily
+  push:
+    paths:
+      - 'polymarket-wallets/**'
+      - '.github/workflows/polymarket-wallets.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: polymarket-wallets-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    defaults:
+      run:
+        working-directory: polymarket-wallets
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm test
+      - name: Collect + analyse last 90 days
+        env:
+          PER_BOARD: ${{ github.event.inputs.per_board || '100' }}
+        run: node src/cli.js all --days 90 --per-board "$(printf '%d' "$PER_BOARD" 2>/dev/null || echo 100)" --concurrency 4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: polymarket-wallets-dashboard
+          path: |
+            polymarket-wallets/dashboard/
+            polymarket-wallets/data/report.json
+            polymarket-wallets/data/wallets.csv
+            polymarket-wallets/data/candidates.json
