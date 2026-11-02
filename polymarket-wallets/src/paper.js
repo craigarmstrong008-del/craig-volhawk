@@ -7,6 +7,34 @@ import { STRATEGIES } from './backtest.js';
 import { DAY, num, pool, sleep } from './util.js';
 
 export const PAPER_STRATEGIES = STRATEGIES.filter((s) => !s.select.all).map((s) => s.id);
+export const SIZINGS = ['flat', 'sized'];
+/** A "book" is one strategy traded one way (flat $20 or conviction-sized), with its own paper wallet. */
+export const bookId = (strategy, sizing) => (sizing === 'flat' ? strategy : `${strategy}-sized`);
+export const PAPER_BOOKS = PAPER_STRATEGIES.flatMap((id) => SIZINGS.map((z) => bookId(id, z)));
+
+/**
+ * Stake for one bet. Flat: always `stake`. Sized: $10 for a trade the size of the wallet's typical
+ * buy, scaling with how much bigger it is, capped at $50.
+ */
+export function stakeFor(sizing, buyUsd, typicalUsd, { stake = 20, base = 10, max = 50 } = {}) {
+  if (sizing === 'flat') return stake;
+  const ratio = typicalUsd > 0 ? buyUsd / typicalUsd : 1;
+  return Math.round(Math.min(max, Math.max(base, base * ratio)));
+}
+
+/** Create any missing paper wallets. Older state (before wallets existed) is folded in. */
+export function ensureBooks(state, bankroll) {
+  state.books = state.books || {};
+  for (const b of PAPER_BOOKS) {
+    if (state.books[b]) continue;
+    const ps = state.positions.filter((p) => (p.book || p.strategy) === b);
+    const spent = ps.reduce((s, p) => s + p.cost, 0);
+    const paidBack = ps.filter((p) => p.status !== 'open').reduce((s, p) => s + p.shares * (p.exit ?? 0), 0);
+    state.books[b] = { start: bankroll, cash: bankroll - spent + paidBack };
+  }
+  for (const p of state.positions) { if (!p.book) p.book = p.strategy; if (!p.sizing) p.sizing = 'flat'; }
+  return state.books;
+}
 
 /** Average fill for spending `stake` dollars against the asks. Null if the book can't fill it. */
 export function fillFromBook(asks, stake) {
@@ -28,9 +56,9 @@ const bump = (o, k) => (o[k] = (o[k] || 0) + 1);
 
 /**
  * Pure decision step: given one new buy by a watched wallet, return the bets each strategy wants
- * (before pricing). Mutates `state` bookkeeping (dedupe, consensus windows, daily counts).
+ * (before sizing and pricing). Mutates `state` bookkeeping (dedupe and consensus windows).
  */
-export function decide(state, buy, watch, { maxBetsPerDay = 40 } = {}) {
+export function decide(state, buy, watch) {
   const wants = [];
   const day = new Date(buy.t * 1000).toISOString().slice(0, 10);
   for (const id of PAPER_STRATEGIES) {
@@ -55,12 +83,17 @@ export function decide(state, buy, watch, { maxBetsPerDay = 40 } = {}) {
       wallets = arr.map((x) => x.wallet);
     }
     const target = s.fade ? 'opposite' : 'same';
-    if (state.positions.some((p) => p.strategy === id && p.status === 'open' && p.conditionId === buy.conditionId)) { bump(state.skipped, `${id}: already holding`); continue; }
-    const dayKey = `${id}|${day}`;
-    if ((state.daily[dayKey] || 0) >= maxBetsPerDay) { bump(state.skipped, `${id}: daily cap`); continue; }
-    wants.push({ strategy: id, target, wallets, buy, dayKey });
+    wants.push({ strategy: id, target, wallets, buy, day });
   }
   return wants;
+}
+
+/** Per-book checks before pricing: one open bet per market, daily cap, enough cash. */
+export function bookCheck(state, book, conditionId, day, stake, { maxBetsPerDay = 40 } = {}) {
+  if (state.positions.some((p) => p.book === book && p.status === 'open' && p.conditionId === conditionId)) return 'already holding';
+  if ((state.daily[`${book}|${day}`] || 0) >= maxBetsPerDay) return 'daily cap';
+  if ((state.books[book]?.cash ?? 0) < stake) return 'out of cash';
+  return null;
 }
 
 /** Resolve the token we'd actually buy (the same one, or the other side for a fade). */
@@ -82,18 +115,24 @@ const parseArr = (v) => { if (Array.isArray(v)) return v; try { const x = JSON.p
 
 export function summarizePaper(state) {
   const by = {};
-  for (const id of PAPER_STRATEGIES) {
-    const ps = state.positions.filter((p) => p.strategy === id);
+  for (const b of PAPER_BOOKS) {
+    const ps = state.positions.filter((p) => (p.book || p.strategy) === b);
     const settled = ps.filter((p) => p.status !== 'open');
     const open = ps.filter((p) => p.status === 'open');
     const realised = settled.reduce((s, p) => s + p.pnl, 0);
     const staked = settled.reduce((s, p) => s + p.cost, 0);
-    const unreal = open.reduce((s, p) => s + (p.mark != null ? p.shares * p.mark - p.cost : 0), 0);
+    const openValue = open.reduce((s, p) => s + (p.mark != null ? p.shares * p.mark : p.cost), 0);
+    const openCost = open.reduce((s, p) => s + p.cost, 0);
     const lag = ps.map((p) => p.lagSec).sort((a, b) => a - b);
-    by[id] = {
+    const wallet = state.books?.[b] || { start: 0, cash: 0 };
+    const equity = wallet.cash + openValue;
+    by[b] = {
+      strategy: b.replace(/-sized$/, ''), sizing: b.endsWith('-sized') ? 'sized' : 'flat',
       bets: ps.length, open: open.length, settled: settled.length,
       won: settled.filter((p) => p.pnl > 0).length, realised, staked, roi: staked ? realised / staked : null,
-      unrealised: unreal, openCost: open.reduce((s, p) => s + p.cost, 0),
+      unrealised: openValue - openCost, openCost,
+      start: wallet.start, cash: wallet.cash, equity, walletReturn: wallet.start ? equity / wallet.start - 1 : null,
+      avgStake: ps.length ? ps.reduce((s, p) => s + p.cost, 0) / ps.length : null,
       medianLagSec: lag.length ? lag[lag.length >> 1] : null,
       avgPriceGap: ps.length ? ps.reduce((s, p) => s + (p.entry - p.theirPrice), 0) / ps.length : null,
     };
@@ -105,7 +144,7 @@ export function summarizePaper(state) {
  * Run the agent for `minutes`. State lives in dataDir/paper/state.json so runs resume where they
  * left off; a gap longer than `maxGapMin` skips the backlog instead of trading on stale signals.
  */
-export async function runPaper({ dataDir, minutes = 60, pollSec = 30, stake = 20, maxBetsPerDay = 40, maxGapMin = 10, settleEveryMin = 10, concurrency = 4, log = console.log }) {
+export async function runPaper({ dataDir, minutes = 60, pollSec = 30, stake = 20, bankroll = 500, sized = { base: 10, max: 50 }, maxBetsPerDay = 40, maxGapMin = 10, settleEveryMin = 10, concurrency = 4, log = console.log }) {
   const dir = path.join(dataDir, 'paper');
   await fs.mkdir(dir, { recursive: true });
   const stateFile = path.join(dir, 'state.json');
@@ -118,7 +157,16 @@ export async function runPaper({ dataDir, minutes = 60, pollSec = 30, stake = 20
   const now0 = Math.floor(Date.now() / 1000);
   let reset = 0;
   for (const w of wallets) if (!state.lastSeen[w] || now0 - state.lastSeen[w] > maxGapMin * 60) { state.lastSeen[w] = now0; reset++; }
-  log(`paper agent: ${wallets.length} wallets across ${PAPER_STRATEGIES.length} strategies, $${stake} per bet, ${minutes} min` + (reset ? ` (${reset} wallets start fresh; older trades are ignored)` : ''));
+  ensureBooks(state, bankroll);
+  // Each wallet's typical (median) buy over the last 30 days, for conviction sizing.
+  const typical = new Map();
+  await pool(wallets, concurrency, async (w) => {
+    try {
+      const buys = (await api.recentTrades(w, now0 - 30 * DAY)).filter((e) => String(e.side).toUpperCase() === 'BUY').map((e) => num(e.usdcSize) || num(e.size) * num(e.price)).filter((x) => x > 0).sort((a, b) => a - b);
+      if (buys.length) typical.set(w, buys[buys.length >> 1]);
+    } catch { /* falls back to the minimum sized stake */ }
+  });
+  log(`paper agent: ${wallets.length} wallets, ${PAPER_BOOKS.length} books ($${bankroll} paper wallet each; flat $${stake}, sized $${sized.base}-$${sized.max}), ${minutes} min` + (reset ? ` (${reset} wallets start fresh; older trades are ignored)` : ''));
 
   const markets = new Map();
   const save = async () => {
@@ -155,25 +203,34 @@ export async function runPaper({ dataDir, minutes = 60, pollSec = 30, stake = 20
 
     // 2. Decide and price paper bets at the live order book.
     for (const buy of fresh) {
-      for (const want of decide(state, buy, watch, { maxBetsPerDay })) {
-        try {
-          const tgt = await targetToken(want, markets);
-          if (!tgt) { bump(state.skipped, `${want.strategy}: no opposite side`); continue; }
-          const { asks } = await api.book(tgt.token);
-          const fill = fillFromBook(asks, stake);
-          if (!fill) { bump(state.skipped, `${want.strategy}: not enough liquidity`); continue; }
-          if (fill.avg >= 0.99) { bump(state.skipped, `${want.strategy}: price too high`); continue; }
-          const detectedAt = Math.floor(Date.now() / 1000);
-          const theirPrice = want.target === 'same' ? buy.price : 1 - buy.price;
-          state.positions.push({
-            id: `${want.strategy}-${tgt.token}-${detectedAt}`, strategy: want.strategy, status: 'open',
-            token: tgt.token, conditionId: buy.conditionId, title: buy.title, slug: buy.slug, eventSlug: buy.eventSlug,
-            outcome: tgt.outcome, wallets: want.wallets, theirPrice, theirTs: buy.t, theirUsd: buy.usd,
-            detectedAt, lagSec: detectedAt - buy.t, entry: fill.avg, bestAsk: fill.bestAsk, shares: fill.shares, cost: stake,
-          });
-          state.daily[want.dayKey] = (state.daily[want.dayKey] || 0) + 1;
-          note(`${want.strategy}: bought ${tgt.outcome} on "${(buy.title || '').slice(0, 60)}" at ${(fill.avg * 100).toFixed(1)}¢ (they paid ${(theirPrice * 100).toFixed(1)}¢, ${detectedAt - buy.t}s ago)`);
-        } catch (e) { bump(state.skipped, `${want.strategy}: pricing error`); }
+      for (const want of decide(state, buy, watch)) {
+        let tgt;
+        try { tgt = await targetToken(want, markets); } catch { bump(state.skipped, `${want.strategy}: pricing error`); continue; }
+        if (!tgt) { bump(state.skipped, `${want.strategy}: no opposite side`); continue; }
+        let asks = null;
+        for (const sizing of SIZINGS) {
+          const book = bookId(want.strategy, sizing);
+          const amount = stakeFor(sizing, buy.usd, typical.get(buy.wallet), { stake, ...sized });
+          const why = bookCheck(state, book, buy.conditionId, want.day, amount, { maxBetsPerDay });
+          if (why) { bump(state.skipped, `${book}: ${why}`); continue; }
+          try {
+            if (!asks) asks = (await api.book(tgt.token)).asks;
+            const fill = fillFromBook(asks, amount);
+            if (!fill) { bump(state.skipped, `${book}: not enough liquidity`); continue; }
+            if (fill.avg >= 0.99) { bump(state.skipped, `${book}: price too high`); continue; }
+            const detectedAt = Math.floor(Date.now() / 1000);
+            const theirPrice = want.target === 'same' ? buy.price : 1 - buy.price;
+            state.positions.push({
+              id: `${book}-${tgt.token}-${detectedAt}`, book, strategy: want.strategy, sizing, status: 'open',
+              token: tgt.token, conditionId: buy.conditionId, title: buy.title, slug: buy.slug, eventSlug: buy.eventSlug,
+              outcome: tgt.outcome, wallets: want.wallets, theirPrice, theirTs: buy.t, theirUsd: buy.usd, theirTypicalUsd: typical.get(buy.wallet) ?? null,
+              detectedAt, lagSec: detectedAt - buy.t, entry: fill.avg, bestAsk: fill.bestAsk, shares: fill.shares, cost: amount,
+            });
+            state.books[book].cash -= amount;
+            state.daily[`${book}|${want.day}`] = (state.daily[`${book}|${want.day}`] || 0) + 1;
+            note(`${book}: bought ${tgt.outcome} on "${(buy.title || '').slice(0, 60)}" for $${amount} at ${(fill.avg * 100).toFixed(1)}¢ (they paid ${(theirPrice * 100).toFixed(1)}¢ with $${Math.round(buy.usd)}, ${detectedAt - buy.t}s ago)`);
+          } catch { bump(state.skipped, `${book}: pricing error`); }
+        }
       }
     }
 
@@ -193,7 +250,8 @@ export async function runPaper({ dataDir, minutes = 60, pollSec = 30, stake = 20
         if (resolved.has(p.token)) {
           const v = resolved.get(p.token);
           p.exit = v; p.pnl = p.shares * v - p.cost; p.status = v > 0.5 ? 'won' : v < 0.5 ? 'lost' : 'void'; p.settledAt = Math.floor(Date.now() / 1000);
-          note(`${p.strategy}: ${p.status} "${(p.title || '').slice(0, 60)}" ${p.pnl >= 0 ? '+' : ''}$${p.pnl.toFixed(2)}`);
+          state.books[p.book || p.strategy].cash += p.shares * v;
+          note(`${p.book || p.strategy}: ${p.status} "${(p.title || '').slice(0, 60)}" ${p.pnl >= 0 ? '+' : ''}$${p.pnl.toFixed(2)}`);
         } else {
           try { p.mark = await api.midpoint(p.token); } catch { /* keep the previous mark */ }
         }
