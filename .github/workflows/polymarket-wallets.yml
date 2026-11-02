@@ -24,7 +24,7 @@ concurrency:
 jobs:
   report:
     runs-on: ubuntu-latest
-    timeout-minutes: 150
+    timeout-minutes: 180
     defaults:
       run:
         working-directory: polymarket-wallets
@@ -46,6 +46,10 @@ jobs:
           node src/cli.js analyze
           node src/cli.js build
           ls -lh dashboard/report.js data/wallets.csv
+      - name: Backtest copy-trading strategies
+        env:
+          NODE_OPTIONS: --max-old-space-size=8192
+        run: node src/cli.js backtest --train-days 45
       - uses: actions/upload-artifact@v4
         with:
           name: polymarket-wallets-dashboard
@@ -58,7 +62,7 @@ jobs:
         run: |
           git config user.name "polymarket-wallets bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f dashboard/report.js data/wallets.csv data/candidates.json
+          git add -f dashboard/report.js dashboard/backtest.js data/wallets.csv data/candidates.json
           if git diff --cached --quiet; then echo "no changes"; exit 0; fi
           git commit -m "polymarket-wallets: refresh 90-day report [skip ci]"
           for i in 1 2 3; do git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && break; sleep 5; done

@@ -1,11 +1,12 @@
 #!/usr/bin/env node
-// Usage: node src/cli.js <collect|analyze|build|all|serve> [--days 90] [--per-board 100] [--concurrency 4] [--wallets file.txt] [--port 8090]
+// Usage: node src/cli.js <collect|analyze|build|backtest|all|serve> [--days 90] [--per-board 100] [--concurrency 4] [--wallets file.txt] [--port 8090]
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import http from 'node:http';
 import { fileURLToPath } from 'node:url';
 import { collect } from './collect.js';
 import { analyzeWallet, slimRaw, buildReportFrom } from './analyze.js';
+import { backtest } from './backtest-run.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DATA = path.join(ROOT, 'data');
@@ -58,6 +59,18 @@ async function writeCsv(report) {
   await fs.writeFile(path.join(DATA, 'wallets.csv'), lines.join('\n') + '\n');
 }
 
+async function runBacktest(o) {
+  const res = await backtest({ dataDir: DATA, trainDays: Number(o['train-days'] || 45), maxAssets: Number(o['max-assets'] || 6000) });
+  const json = JSON.stringify(res);
+  await fs.writeFile(path.join(DATA, 'backtest.json'), json);
+  await fs.writeFile(path.join(DASH, 'backtest.js'), `window.BACKTEST = ${json};\n`);
+  const pct = (x) => `${(x * 100).toFixed(1)}%`.padStart(7);
+  console.log(`\nReturn on stake by entry delay (n = bets):`);
+  console.log('strategy'.padEnd(30) + res.delays.map((d) => d.id.padStart(16)).join(''));
+  for (const s of res.strategies) console.log(s.name.slice(0, 29).padEnd(30) + res.delays.map((d) => { const r = s.byDelay[d.id]; return `${pct(r.roi)} n=${String(r.n).padEnd(5)}`.padStart(16); }).join(''));
+  console.log('\nwrote data/backtest.json and dashboard/backtest.js');
+}
+
 async function runBuild() {
   const report = await fs.readFile(path.join(DATA, 'report.json'), 'utf8').catch(() => null);
   if (!report) throw new Error('No data/report.json. Run `npm run analyze` first.');
@@ -82,6 +95,7 @@ try {
   if (cmd === 'collect') await runCollect(o);
   else if (cmd === 'analyze') await runAnalyze();
   else if (cmd === 'build') await runBuild();
+  else if (cmd === 'backtest') await runBacktest(o);
   else if (cmd === 'all') { await runCollect(o); await runAnalyze(); await runBuild(); }
   else if (cmd === 'serve') serve(Number(o.port || 8090));
   else throw new Error(`unknown command ${cmd}`);

@@ -18,6 +18,7 @@
   const pmEvent = (m) => (m.eventSlug || m.slug ? `https://polymarket.com/event/${encodeURIComponent(m.eventSlug || m.slug)}` : '#');
   const ago = (ts) => { if (!ts) return '—'; const h = (Date.now() / 1000 - ts) / 3600; return h < 1 ? 'just now' : h < 48 ? `${Math.round(h)}h ago` : `${Math.round(h / 24)}d ago`; };
   const pf = (x) => (x == null ? '∞' : x.toFixed(2));
+  const fitW = (el, def) => { const cw = el.clientWidth; return cw ? Math.max(300, Math.min(def, Math.round(cw))) : def; };
 
   // ---------- tabs ----------
   const tabs = document.querySelectorAll('.tabs button');
@@ -25,6 +26,7 @@
     tabs.forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
     document.querySelectorAll('[data-panel]').forEach((p) => (p.hidden = p.dataset.panel !== name || !R));
     try { localStorage.setItem('pmw-tab', name); } catch {}
+    dispatchEvent(new CustomEvent('pmw-tab', { detail: name }));
   };
   tabs.forEach((b) => b.addEventListener('click', () => show(b.dataset.tab)));
 
@@ -77,7 +79,7 @@
   // ---------- scatter: score (x) vs 90d pnl (y, symlog) ----------
   (function scatter() {
     const el = $('#scatter');
-    const w = 640, h = 340, m = { l: 56, r: 12, t: 10, b: 30 };
+    const w = fitW(el, 640), h = w < 500 ? 260 : 340, m = { l: 56, r: 12, t: 10, b: 30 };
     const sl = (v) => Math.sign(v) * Math.log10(1 + Math.abs(v));
     const ys = W.map((x) => sl(x.totalPnl90));
     const yMin = Math.min(0, ...ys), yMax = Math.max(0, ...ys);
@@ -210,7 +212,7 @@
 
   function equityChart(el, eq) {
     if (!eq || eq.length < 2) { el.innerHTML = '<p class="hint">No history in this window.</p>'; return; }
-    const w = 760, h = 220, m = { l: 60, r: 12, t: 10, b: 24 };
+    const w = fitW(el, 760), h = 220, m = { l: 60, r: 12, t: 10, b: 24 };
     const vals = eq.map((e) => e.cum);
     const lo = Math.min(0, ...vals), hi = Math.max(0, ...vals);
     const X = (i) => m.l + (i / Math.max(1, eq.length - 1)) * (w - m.l - m.r);
@@ -283,6 +285,96 @@
     drawer.querySelector('.drawer-inner').scrollTop = 0;
     history.replaceState(null, '', `#w-${addr}`);
   }
+
+  // ---------- backtest ----------
+  (function backtestTab() {
+    const B = window.BACKTEST;
+    const tabBtn = document.querySelector('[data-tab="backtest"]');
+    if (!B || !B.strategies?.length) { tabBtn.hidden = true; return; }
+    const sd = (ts) => new Date(ts * 1000).toISOString().slice(0, 10);
+    const pctS = (x) => `${x > 0 ? '+' : ''}${(x * 100).toFixed(1)}%`;
+    const roiCell = (x) => `<span class="${x > 0 ? 'up' : x < 0 ? 'down' : ''}">${pctS(x)}</span>`;
+    const ciText = (ci) => (ci ? `90% range ${pctS(ci[0])} to ${pctS(ci[1])}` : 'too few bets for a range');
+    const colors = ['var(--s1)', 'var(--s2)', 'var(--s3)', 'var(--s4)', 'var(--s5)'];
+    $('#bt-intro').textContent = `Wallets were ranked on ${sd(B.start)} to ${sd(B.split)} (${B.trainDays} days). Their buys from ${sd(B.split)} to ${sd(B.end)} were then copied with $${B.opts.stake} per bet and ${Math.round(B.opts.slippage * 100)}¢ slippage.`;
+    $('#bt-caveats').innerHTML = (B.caveats || []).map((c) => `<li>${esc(c)}</li>`).join('');
+    $('#bt-legend').innerHTML = B.strategies.map((s, i) => `<span><i style="background:${colors[i % 5]}"></i>${esc(s.name)}</span>`).join('');
+
+    // Line chart: ROI (y) across delays (x), one line per strategy.
+    function chart() {
+      const el = $('#bt-chart');
+      const w = fitW(el, 720), h = 280, m = { l: 52, r: 16, t: 12, b: 30 };
+      const short = { '0': 'Same', '30m': '30 min', '2h': '2 h', '6h': '6 h', '24h': '24 h' };
+      const vals = B.strategies.flatMap((s) => B.delays.map((d) => s.byDelay[d.id]?.n ? s.byDelay[d.id].roi : null)).filter((v) => v != null);
+      let lo = Math.min(0, ...vals), hi = Math.max(0, ...vals);
+      const pad = (hi - lo || 0.1) * 0.1; lo -= pad; hi += pad;
+      const X = (i) => m.l + (i / (B.delays.length - 1)) * (w - m.l - m.r);
+      const Y = (v) => m.t + (1 - (v - lo) / (hi - lo)) * (h - m.t - m.b);
+      const step = Math.pow(10, Math.floor(Math.log10((hi - lo) / 4)));
+      const nice = [1, 2, 5, 10].map((k) => k * step).find((k) => (hi - lo) / k <= 6) || step * 10;
+      let svg = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Return on stake by entry delay">`;
+      for (let v = Math.ceil(lo / nice) * nice; v <= hi; v += nice) {
+        const vv = Math.abs(v) < 1e-12 ? 0 : v;
+        svg += `<line class="${vv === 0 ? 'baseline' : 'gridline'}" x1="${m.l}" x2="${w - m.r}" y1="${Y(vv)}" y2="${Y(vv)}"/><text class="lbl" x="${m.l - 6}" y="${Y(vv) + 4}" text-anchor="end">${(vv * 100).toFixed(Math.abs(nice) < 0.01 ? 1 : 0)}%</text>`;
+      }
+      B.delays.forEach((d, i) => (svg += `<text class="lbl" x="${X(i)}" y="${h - 8}" text-anchor="${i === 0 ? 'start' : i === B.delays.length - 1 ? 'end' : 'middle'}">${esc(w < 560 ? short[d.id] || d.id : d.label)}</text>`));
+      B.strategies.forEach((s, si) => {
+        const pts = B.delays.map((d, i) => ({ i, r: s.byDelay[d.id] })).filter((p) => p.r?.n);
+        if (!pts.length) return;
+        svg += `<path d="${pts.map((p, k) => `${k ? 'L' : 'M'}${X(p.i).toFixed(1)},${Y(p.r.roi).toFixed(1)}`).join('')}" fill="none" stroke="${colors[si % 5]}" stroke-width="2" stroke-linejoin="round"/>`;
+        pts.forEach((p) => (svg += `<circle data-s="${si}" data-d="${p.i}" cx="${X(p.i)}" cy="${Y(p.r.roi)}" r="4.5" fill="${colors[si % 5]}" stroke="var(--surface)" stroke-width="2"/>`));
+      });
+      svg += '</svg>';
+      el.innerHTML = svg;
+      const svgEl = el.querySelector('svg');
+      svgEl.addEventListener('mousemove', (ev) => {
+        const pt = svgEl.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY;
+        const p = pt.matrixTransform(svgEl.getScreenCTM().inverse());
+        let best = null, bd = 18 ** 2;
+        svgEl.querySelectorAll('circle').forEach((c) => { const dd = (+c.getAttribute('cx') - p.x) ** 2 + (+c.getAttribute('cy') - p.y) ** 2; if (dd < bd) { bd = dd; best = c; } });
+        if (!best) return hideTip();
+        const s = B.strategies[+best.dataset.s], d = B.delays[+best.dataset.d], r = s.byDelay[d.id];
+        showTip(`<b>${esc(s.name)}</b><br><span class="m">${esc(d.label)}</span> ${roiCell(r.roi)} on ${r.n} bets<br><span class="m">${ciText(r.ci)}</span>`, ev);
+      });
+      svgEl.addEventListener('mouseleave', hideTip);
+    }
+    chart();
+
+    // Summary table.
+    const head = `<thead><tr><th class="l">Strategy</th><th>Wallets</th>${B.delays.map((d) => `<th>${esc(d.label)}</th>`).join('')}</tr></thead>`;
+    const body = B.strategies.map((s, si) => `<tr data-s="${si}"><td class="l"><span class="who"><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${colors[si % 5]}"></i>${esc(s.name)}</span></td><td>${s.walletCount}</td>${B.delays.map((d) => { const r = s.byDelay[d.id]; return `<td title="${esc(ciText(r.ci))}">${r.n ? roiCell(r.roi) : '—'} <span class="addr">${r.n}</span></td>`; }).join('')}</tr>`).join('');
+    $('#bt-table').innerHTML = head + `<tbody>${body}</tbody>`;
+
+    const ss = $('#bt-strategy'), ds = $('#bt-delay');
+    ss.innerHTML = B.strategies.map((s, i) => `<option value="${i}">${esc(s.name)}</option>`).join('');
+    ds.innerHTML = B.delays.map((d) => `<option value="${esc(d.id)}">${esc(d.label)}</option>`).join('');
+    ds.value = B.delays.some((d) => d.id === '2h') ? '2h' : B.delays[0].id;
+    $('#bt-table').querySelectorAll('tbody tr').forEach((tr) => tr.addEventListener('click', () => { ss.value = tr.dataset.s; detail(); $('#bt-kpis').scrollIntoView({ behavior: 'smooth', block: 'center' }); }));
+
+    function detail() {
+      const s = B.strategies[+ss.value], r = s.byDelay[ds.value];
+      const base = B.strategies.find((x) => x.id === 'all')?.byDelay[ds.value];
+      $('#bt-desc').textContent = s.desc;
+      $('#bt-kpis').innerHTML = [
+        kpi('Return on stake', roiCell(r.roi), ciText(r.ci)),
+        kpi('Profit', signed(r.pnl), `on ${money(r.staked)} staked`),
+        kpi('Bets', r.n.toLocaleString(), `${Object.entries(r.skipped || {}).map(([k, v]) => `${v} skipped (${k})`).join(', ') || 'none skipped'}`),
+        kpi('Win rate', pct(r.winRate), `median entry ${cents(r.medianEntry)}`),
+        kpi('Worst drawdown', money(r.maxDrawdown), `${pct(r.resolvedShare)} of bets resolved`),
+        kpi('vs baseline', base && s.id !== 'all' ? roiCell(r.roi - base.roi) : '—', base && s.id !== 'all' ? `baseline ${pctS(base.roi)}` : 'this is the baseline'),
+      ].join('');
+      equityChart($('#bt-equity'), r.equity);
+      $('#bt-cats').innerHTML = `<thead><tr><th class="l">Category</th><th>Bets</th><th>Return</th><th>Profit</th></tr></thead><tbody>${r.categories.map((c) => `<tr><td class="l">${esc(c.name)}</td><td>${c.n}</td><td>${roiCell(c.roi)}</td><td>${signed(c.pnl)}</td></tr>`).join('') || '<tr><td class="l" colspan="4">No bets</td></tr>'}</tbody>`;
+      $('#bt-wallets').innerHTML = s.followed?.length
+        ? `<thead><tr><th class="l">Wallet</th><th>First-half PnL</th><th>Trades/day</th></tr></thead><tbody>${s.followed.slice(0, 25).map((w) => `<tr><td class="l">${byAddr.has(w.address) ? `<a href="#" data-addr="${esc(w.address)}">${label(w)}</a>` : label(w)}</td><td>${signed(w.trainPnl)}</td><td>${w.tradesPerDay.toFixed(1)}</td></tr>`).join('')}</tbody>`
+        : '<tbody><tr><td class="l">Every wallet in the group.</td></tr></tbody>';
+      $('#bt-trades').innerHTML = `<thead><tr><th class="l">Date</th><th class="l">Market</th><th class="l">Side</th><th>Entry</th><th>Result</th><th>Profit</th></tr></thead><tbody>${r.sample.map((t) => `<tr><td class="l">${sd(t.t)}</td><td class="l">${mkt(t)}</td><td class="l">${s.id === 'fade20' ? 'against ' : ''}${esc(t.outcome)}</td><td>${cents(t.entry)}</td><td>${t.resolved ? (t.exit >= 0.5 ? 'Won' : 'Lost') : `open, ${cents(t.exit)}`}</td><td>${signed(t.pnl)}</td></tr>`).join('') || '<tr><td class="l" colspan="6">No bets</td></tr>'}</tbody>`;
+    }
+    ss.addEventListener('change', detail); ds.addEventListener('change', detail);
+    detail();
+    addEventListener('pmw-tab', (e) => { if (e.detail === 'backtest') { chart(); detail(); } });
+  })();
+
   if (location.hash.startsWith('#w-')) openWallet(location.hash.slice(3));
   addEventListener('hashchange', () => { if (location.hash.startsWith('#w-')) openWallet(location.hash.slice(3)); });
 })();

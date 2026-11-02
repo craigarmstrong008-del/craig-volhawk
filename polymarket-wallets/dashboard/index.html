@@ -16,6 +16,7 @@
     <button role="tab" data-tab="overview" aria-selected="true">Overview</button>
     <button role="tab" data-tab="wallets">Wallets</button>
     <button role="tab" data-tab="consensus">Smart money</button>
+    <button role="tab" data-tab="backtest">Backtest</button>
     <button role="tab" data-tab="method">Method</button>
   </nav>
 </header>
@@ -64,6 +65,35 @@
     </div>
   </section>
 
+  <section data-panel="backtest" hidden>
+    <div class="card prose">
+      <h2>Would copying these wallets have made money?</h2>
+      <p class="hint" id="bt-intro"></p>
+      <ul class="insights" id="bt-caveats"></ul>
+    </div>
+    <div class="card">
+      <h2>Return on stake by how late you copy</h2>
+      <p class="hint">Profit per $100 bet, by how long after the wallet's buy you enter. The baseline copies everyone; a strategy is only useful if it clearly beats it.</p>
+      <div id="bt-legend" class="legend"></div>
+      <div id="bt-chart" class="chart"></div>
+    </div>
+    <div class="card flush"><div class="tablewrap"><table id="bt-table"></table></div></div>
+    <div class="card">
+      <div class="filters">
+        <select id="bt-strategy" aria-label="Strategy"></select>
+        <select id="bt-delay" aria-label="Entry delay"></select>
+      </div>
+      <p class="hint" id="bt-desc"></p>
+      <div class="kpis" id="bt-kpis"></div>
+    </div>
+    <div class="card"><h2>Cumulative profit</h2><p class="hint">Bets placed each day, valued at how they turned out.</p><div id="bt-equity" class="chart"></div></div>
+    <div class="grid2">
+      <div class="card"><h2>By category</h2><div class="tablewrap"><table id="bt-cats"></table></div></div>
+      <div class="card"><h2>Wallets followed</h2><p class="hint">Ranked on the first half of the window only.</p><div class="tablewrap"><table id="bt-wallets"></table></div></div>
+    </div>
+    <div class="card"><h2>Most recent bets</h2><div class="tablewrap"><table id="bt-trades"></table></div></div>
+  </section>
+
   <section data-panel="method" hidden>
     <div class="card prose">
       <h2>How this is built</h2>
@@ -90,6 +120,7 @@
 <div id="tip" class="tip" hidden></div>
 
 <script src="report.js" onerror="window.REPORT=null"></script>
+<script src="backtest.js" onerror="window.BACKTEST=null"></script>
 <script src="app.js"></script>
 </body>
 </html>

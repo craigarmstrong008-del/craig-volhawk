@@ -7,7 +7,11 @@ export const stats = () => ({ requests: requestCount });
 
 export async function get(path, params = {}, { retries = 6 } = {}) {
   const url = new URL(/^https?:/.test(path) ? path : BASE() + path);
-  for (const [k, v] of Object.entries(params)) if (v !== undefined && v !== null) url.searchParams.set(k, String(v));
+  for (const [k, v] of Object.entries(params)) {
+    if (v === undefined || v === null) continue;
+    if (Array.isArray(v)) v.forEach((x) => url.searchParams.append(k, String(x)));
+    else url.searchParams.set(k, String(v));
+  }
   let attempt = 0;
   for (;;) {
     requestCount++;
@@ -118,4 +122,34 @@ const PNL_BASE = () => (process.env.PM_PNL_API || 'https://user-pnl-api.polymark
 export async function pnlSeries(user) {
   const j = await get(`${PNL_BASE()}/user-pnl`, { user_address: user, interval: 'all', fidelity: '1d' });
   return Array.isArray(j) ? j : Array.isArray(j?.history) ? j.history : Array.isArray(j?.data) ? j.data : [];
+}
+
+const CLOB = () => (process.env.PM_CLOB_API || 'https://clob.polymarket.com').replace(/\/$/, '');
+const GAMMA = () => (process.env.PM_GAMMA_API || 'https://gamma-api.polymarket.com').replace(/\/$/, '');
+
+/** Price history for one outcome token: sorted [{t, p}]. Long spans are fetched in chunks. */
+export async function priceHistory(asset, startTs, endTs, { fidelity = 30, chunkDays = 14 } = {}) {
+  const out = [];
+  for (let a = startTs; a < endTs; a += chunkDays * 86400) {
+    const b = Math.min(endTs, a + chunkDays * 86400);
+    let j;
+    try { j = await get(`${CLOB()}/prices-history`, { market: asset, startTs: a, endTs: b, fidelity }, { retries: 3 }); }
+    catch { continue; }
+    const h = Array.isArray(j?.history) ? j.history : Array.isArray(j) ? j : [];
+    for (const x of h) out.push({ t: num(x.t), p: num(x.p) });
+  }
+  out.sort((x, y) => x.t - y.t);
+  return out.filter((x, i) => i === 0 || x.t !== out[i - 1].t);
+}
+
+/** Market metadata (outcomes, token ids, resolution prices) by condition id. */
+export async function marketsByCondition(ids) {
+  const out = [];
+  for (const closed of [true, false]) {
+    try {
+      const j = await get(`${GAMMA()}/markets`, { condition_ids: ids, closed, limit: ids.length + 5 }, { retries: 3 });
+      if (Array.isArray(j)) out.push(...j);
+    } catch { /* fall back to position data */ }
+  }
+  return out;
 }
