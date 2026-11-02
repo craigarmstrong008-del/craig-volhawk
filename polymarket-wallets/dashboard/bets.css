@@ -1,0 +1,38 @@
+/* Bets view: a scannable feed of paper bets, phone first. Builds on style.css tokens. */
+:root { --good: #0a7d0a; --bad: #c43535; --wait: #8a6d00; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --good: #2fbf2f; --bad: #ec6b6b; --wait: #e0b43a; } }
+:root[data-theme="dark"] { --good: #2fbf2f; --bad: #ec6b6b; --wait: #e0b43a; }
+
+main { display: grid; gap: 16px; }
+.head-right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--ring); background: var(--surface); color: var(--ink-2); }
+.pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.pill.live::before { background: var(--good); }
+.pill.idle::before { background: var(--wait); }
+.btn { text-decoration: none; }
+
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chips button { font: inherit; font-size: 13px; border: 1px solid var(--ring); background: var(--surface); color: var(--ink-2); padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+.chips button[aria-pressed="true"] { background: var(--ink); color: var(--page); border-color: var(--ink); }
+.chips button:focus-visible, .btn:focus-visible { outline: 2px solid var(--series); outline-offset: 2px; }
+
+.sec { font-size: 15px; margin: 0 0 8px; display: flex; align-items: baseline; gap: 8px; }
+.count { color: var(--muted); font-weight: 500; font-size: 13px; }
+.bets { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 10px; }
+.bet { background: var(--surface); border: 1px solid var(--ring); border-radius: 12px; padding: 12px 14px; display: grid; gap: 6px; min-width: 0; }
+.bet .row { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; min-width: 0; }
+.bet .title { font-weight: 600; overflow-wrap: anywhere; color: var(--ink); text-decoration: none; }
+.bet .title:hover { text-decoration: underline; }
+.bet .pl { font-weight: 650; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bet .meta { color: var(--ink-2); font-size: 12.5px; display: flex; flex-wrap: wrap; gap: 4px 12px; font-variant-numeric: tabular-nums; }
+.bet .meta b { color: var(--ink); font-weight: 600; }
+.state { font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+.state.won { color: var(--good); } .state.lost { color: var(--bad); } .state.open { color: var(--ink-2); } .state.void { color: var(--muted); }
+.up { color: var(--good); } .down { color: var(--bad); }
+.none { color: var(--ink-2); font-size: 13.5px; padding: 4px 2px; }
+.more { font: inherit; justify-self: start; }
+
+.feed { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; font-size: 13px; color: var(--ink-2); max-height: 360px; overflow-y: auto; }
+.feed li { overflow-wrap: anywhere; }
+.feed time { color: var(--muted); font-variant-numeric: tabular-nums; margin-right: 6px; }
+.foot { text-align: center; }
