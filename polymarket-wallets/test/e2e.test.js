@@ -24,7 +24,11 @@ test('collect paginates, retries and feeds analysis', async () => {
       const off = +q.offset;
       return send(wallets.slice(off, off + 50).map((w, i) => ({ rank: off + i + 1, proxyWallet: w.address, userName: `t${i}`, pnl: 1, vol: 1 })));
     }
-    if (u.pathname === '/v2/user-pnl') return send([{ t: now - 100 * 86400, p: 0 }, { t: now - 89 * 86400, p: 10 }, { t: now, p: 1234 }]);
+    if (u.pathname === '/v2/user-pnl') {
+      // Shape returned by data-api /v2/user-pnl (field names beyond timestamp are matched loosely).
+      if (u.searchParams.get('interval') !== 'all') return send({ data: { interval: '1d', points: [{ timestamp: now, sum_pnl: 1 }] } });
+      return send({ data: { proxy_wallet: q.user, interval: 'all', fidelity: '1d', points: [{ timestamp: now - 100 * 86400, sum_pnl: 0 }, { timestamp: now - 89 * 86400, sum_pnl: 10 }, { timestamp: now, sum_pnl: 1234 }] } });
+    }
     const w = by.get(q.user);
     if (!w) return send([]);
     if (u.pathname === '/activity') {

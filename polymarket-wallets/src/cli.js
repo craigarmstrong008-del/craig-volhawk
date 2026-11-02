@@ -61,7 +61,7 @@ async function writeCsv(report) {
 }
 
 async function runBacktest(o) {
-  const res = await backtest({ dataDir: DATA, trainDays: Number(o['train-days'] || 45), maxAssets: Number(o['max-assets'] || 6000) });
+  const res = await backtest({ dataDir: DATA, trainDays: Number(o['train-days'] || 45), ...(o['max-assets'] ? { maxAssets: Number(o['max-assets']) } : {}), ...(o['max-fine'] ? { maxFine: Number(o['max-fine']) } : {}) });
   const json = JSON.stringify(res);
   await fs.writeFile(path.join(DATA, 'backtest.json'), json);
   await fs.writeFile(path.join(DASH, 'backtest.js'), `window.BACKTEST = ${json};\n`);

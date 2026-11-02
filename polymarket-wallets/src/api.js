@@ -121,10 +121,10 @@ const PNL_URL = () => (process.env.PM_PNL_URL || `${BASE()}/v2/user-pnl`);
 
 /** Polymarket's own cumulative-PnL history for a wallet (what the profile chart shows): [{t, p}]. */
 const PNL_VARIANTS = [
-  {},
-  { interval: 'all', fidelity: '1d' },
-  { interval: 'max' },
+  { interval: 'all', fidelity: '1d' }, // full daily history; a bare request returns only the last day
   { interval: 'all' },
+  { interval: 'max' },
+  {},
 ];
 export const pnlDiag = { ok: 0, empty: 0, failed: 0, variant: null, samples: [] };
 let pnlVariant = null; // first variant that returned data is reused for every wallet
@@ -137,7 +137,24 @@ async function rawGet(url) {
     return { status: res.status, text, json };
   } catch (err) { return { status: 0, text: err.message, json: null }; }
 }
-const seriesOf = (j) => (Array.isArray(j) ? j : Array.isArray(j?.history) ? j.history : Array.isArray(j?.data) ? j.data : Array.isArray(j?.pnl) ? j.pnl : Array.isArray(j?.series) ? j.series : Array.isArray(j?.points) ? j.points : []);
+const seriesOf = (j) => {
+  for (const c of [j, j?.data?.points, j?.data?.history, j?.points, j?.history, j?.data, j?.pnl, j?.series]) if (Array.isArray(c)) return c;
+  return [];
+};
+
+const PNL_KEYS = ['p', 'pnl', 'value', 'cumulativePnl', 'cumulative_pnl', 'totalPnl', 'total_pnl', 'cashPnl', 'cash_pnl', 'profit'];
+/** One history point -> {t (seconds), p}, whatever the API calls its fields. */
+export function normPoint(x) {
+  if (!x || typeof x !== 'object') return null;
+  let t = num(x.t ?? x.timestamp ?? x.time ?? x.ts);
+  if (t > 1e12) t = Math.floor(t / 1000);
+  const isNum = (v) => v !== null && v !== '' && typeof v !== 'boolean' && Number.isFinite(Number(v));
+  let key = PNL_KEYS.find((k) => isNum(x[k]));
+  if (!key) key = Object.keys(x).find((k) => /pnl/i.test(k) && isNum(x[k]));
+  if (!key) key = Object.keys(x).find((k) => !/^(t|timestamp|time|ts)$/i.test(k) && isNum(x[k]));
+  if (!t || !key) return null;
+  return { t, p: Number(x[key]) };
+}
 
 export async function pnlSeries(user) {
   const variants = pnlVariant ? [pnlVariant] : PNL_VARIANTS;
@@ -148,7 +165,8 @@ export async function pnlSeries(user) {
     let r = await rawGet(url);
     for (let i = 0; i < 3 && (r.status === 429 || r.status >= 500 || r.status === 0); i++) { await sleep(1000 * 2 ** i); r = await rawGet(url); }
     requestCount++;
-    const arr = seriesOf(r.json);
+    const arr = seriesOf(r.json).map(normPoint).filter(Boolean);
+    if (!pnlDiag.pointKeys && seriesOf(r.json)[0]) pnlDiag.pointKeys = Object.keys(seriesOf(r.json)[0]).join(', ');
     if (pnlDiag.samples.length < 6) pnlDiag.samples.push(`${new URLSearchParams(v) || '(user only)'} -> HTTP ${r.status}, ${arr.length} points, body: ${r.text.slice(0, 160).replace(/\s+/g, ' ')}`);
     if (r.status === 200 && arr.length >= 2) { pnlVariant = v; pnlDiag.variant = v; pnlDiag.ok++; return arr; }
   }
