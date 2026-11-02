@@ -36,3 +36,4 @@ main { display: grid; gap: 16px; }
 .feed li { overflow-wrap: anywhere; }
 .feed time { color: var(--muted); font-variant-numeric: tabular-nums; margin-right: 6px; }
 .foot { text-align: center; }
+.chip-gap { flex-basis: 100%; height: 0; }

@@ -47,7 +47,7 @@ jobs:
         run: |
           for i in $(seq 1 11); do
             git pull -q --rebase origin "$GITHUB_REF_NAME" || true
-            node src/cli.js paper --minutes 30 --stake 20 --poll 30 --max-per-day 40 || echo "agent chunk $i exited with an error"
+            node src/cli.js paper --minutes 30 --stake 20 --bankroll 500 --poll 30 --max-per-day 40 || echo "agent chunk $i exited with an error"
             git add -f data/paper/state.json dashboard/paper.js 2>/dev/null || true
             if ! git diff --cached --quiet; then
               git commit -q -m "polymarket-wallets: paper-trading update [skip ci]"

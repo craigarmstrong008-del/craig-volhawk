@@ -12,6 +12,10 @@ on:
   push:
     paths:
       - 'polymarket-wallets/**'
+      - '!polymarket-wallets/src/paper.js'
+      - '!polymarket-wallets/test/paper.test.js'
+      - '!polymarket-wallets/dashboard/**'
+      - '!polymarket-wallets/README.md'
       - '.github/workflows/polymarket-wallets.yml'
 
 permissions:

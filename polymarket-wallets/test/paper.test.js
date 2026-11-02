@@ -4,7 +4,7 @@ import http from 'node:http';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { fillFromBook, decide, emptyState, summarizePaper } from '../src/paper.js';
+import { fillFromBook, decide, emptyState, summarizePaper, stakeFor, ensureBooks, bookCheck, PAPER_BOOKS } from '../src/paper.js';
 
 test('fills walk the order book', () => {
   const asks = [{ price: 0.5, size: 10 }, { price: 0.6, size: 100 }];
@@ -20,15 +20,37 @@ const watch = {
 };
 const buy = (wallet, t, extra = {}) => ({ wallet, t, asset: 'tok1', conditionId: 'c1', outcome: 'Yes', price: 0.4, usd: 2000, ...extra });
 
-test('decide: copies, dedupes for 24h, respects size and daily cap', () => {
+test('decide: copies, dedupes for 24h, respects minimum size', () => {
   const st = emptyState(20);
   const w1 = decide(st, buy('a', 1000), watch).map((x) => x.strategy).sort();
   assert.deepEqual(w1, ['slow20', 'top20']);
   assert.equal(decide(st, buy('a', 2000), watch).length, 0, 'same wallet+outcome within 24h');
   assert.equal(decide(st, buy('a', 3000, { asset: 'tok2', conditionId: 'c2', usd: 100 }), watch).length, 0, 'below minimum size');
-  const st2 = emptyState(20);
-  st2.daily['top20|1970-01-01'] = 1;
-  assert.ok(!decide(st2, buy('a', 1000), watch, { maxBetsPerDay: 1 }).some((x) => x.strategy === 'top20'));
+});
+
+test('sized stakes scale with conviction: $10 at a typical trade, up to $50', () => {
+  assert.equal(stakeFor('flat', 99999, 100), 20);
+  assert.equal(stakeFor('sized', 1000, 1000), 10);
+  assert.equal(stakeFor('sized', 500, 1000), 10, 'smaller than usual still bets the minimum');
+  assert.equal(stakeFor('sized', 3000, 1000), 30);
+  assert.equal(stakeFor('sized', 1e6, 1000), 50, 'capped');
+  assert.equal(stakeFor('sized', 5000, undefined), 10, 'unknown typical size bets the minimum');
+});
+
+test('paper wallets: $500 each, existing bets are folded in, checks per book', () => {
+  const st = emptyState(20);
+  st.positions.push({ strategy: 'top20', status: 'open', conditionId: 'c1', cost: 20, shares: 40 });
+  st.positions.push({ strategy: 'top20', status: 'won', conditionId: 'c0', cost: 20, shares: 50, exit: 1, pnl: 30 });
+  ensureBooks(st, 500);
+  assert.equal(Object.keys(st.books).length, PAPER_BOOKS.length);
+  assert.equal(st.books.top20.cash, 500 - 40 + 50);
+  assert.equal(st.books['top20-sized'].cash, 500);
+  assert.equal(bookCheck(st, 'top20', 'c1', '2026-01-01', 20), 'already holding');
+  assert.equal(bookCheck(st, 'top20-sized', 'c1', '2026-01-01', 20), null, 'the sized book can still take it');
+  st.daily['top20-sized|2026-01-01'] = 40;
+  assert.equal(bookCheck(st, 'top20-sized', 'c9', '2026-01-01', 20), 'daily cap');
+  st.books.slow20.cash = 15;
+  assert.equal(bookCheck(st, 'slow20', 'c9', '2026-01-01', 20), 'out of cash');
 });
 
 test('decide: consensus needs 3 distinct wallets in 24h, fade targets the other side', () => {
@@ -43,12 +65,6 @@ test('decide: consensus needs 3 distinct wallets in 24h, fade targets the other 
   assert.equal(f[0].target, 'opposite');
 });
 
-test('decide: no second open position on the same market', () => {
-  const st = emptyState(20);
-  st.positions.push({ strategy: 'top20', status: 'open', conditionId: 'c1' });
-  assert.ok(!decide(st, buy('a', 1000), watch).some((x) => x.strategy === 'top20'));
-});
-
 test('agent loop: detects a new buy, prices it from the book, settles it', async () => {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'pmpaper-'));
   await fs.writeFile(path.join(dir, 'watchlist.json'), JSON.stringify({ strategies: { top20: [{ address: '0xa' }], slow20: [], consensus: [], fade20: [{ address: '0xa' }] } }));
@@ -58,8 +74,9 @@ test('agent loop: detects a new buy, prices it from the book, settles it', async
     const u = new URL(req.url, 'http://x');
     const send = (j) => res.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify(j));
     if (u.pathname === '/activity') {
-      polls++;
       const since = +u.searchParams.get('start');
+      if (since < start - 86400) return send([1, 2, 3].map((k) => ({ type: 'TRADE', side: 'BUY', timestamp: start - k * 86400, asset: 'old', price: 0.5, usdcSize: 1000 }))); // 30-day history: typical $1,000
+      polls++;
       const t = start + 1;
       return send(t >= since ? [{ type: 'TRADE', side: 'BUY', timestamp: t, asset: 'yes1', conditionId: 'c9', outcome: 'Yes', title: 'Test market', price: 0.4, usdcSize: 5000 }] : []);
     }
@@ -75,19 +92,24 @@ test('agent loop: detects a new buy, prices it from the book, settles it', async
     const { runPaper } = await import('../src/paper.js');
     const state = await runPaper({ dataDir: dir, minutes: 0.06, pollSec: 1, settleEveryMin: 0, log: () => {} });
     assert.ok(polls >= 2);
-    const top = state.positions.filter((p) => p.strategy === 'top20');
-    const fade = state.positions.filter((p) => p.strategy === 'fade20');
+    const top = state.positions.filter((p) => p.book === 'top20');
+    const topSized = state.positions.filter((p) => p.book === 'top20-sized');
+    const fade = state.positions.filter((p) => p.book === 'fade20');
     assert.equal(top.length, 1, 'one bet despite repeated polls');
     assert.equal(top[0].status, 'won');
     assert.ok(Math.abs(top[0].pnl - (20 / 0.45 - 20)) < 1e-6);
+    assert.equal(topSized.length, 1);
+    assert.equal(topSized[0].cost, 50, '$5,000 vs a typical $1,000 buy -> capped at $50');
     assert.equal(fade.length, 1);
     assert.equal(fade[0].token, 'no1');
     assert.equal(fade[0].status, 'lost');
     assert.equal(fade[0].pnl, -20);
     const sum = summarizePaper(state);
     assert.equal(sum.top20.won, 1);
+    assert.ok(Math.abs(sum.top20.equity - (500 + 20 / 0.45 - 20)) < 1e-6, 'winnings paid back into the $500 wallet');
+    assert.equal(sum.fade20.equity, 480);
     const saved = JSON.parse(await fs.readFile(path.join(dir, 'paper', 'state.json'), 'utf8'));
-    assert.equal(saved.positions.length, 2, 'state persisted');
+    assert.equal(saved.positions.length, 4, 'state persisted (flat + sized for each strategy)');
   } finally {
     server.close();
     await fs.rm(dir, { recursive: true, force: true });
