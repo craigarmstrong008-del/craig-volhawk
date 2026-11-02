@@ -38,7 +38,7 @@ You need network access to `data-api.polymarket.com`. No API key is required.
 
 ## Automated
 
-`.github/workflows/polymarket-wallets.yml` runs on every push to this folder, daily at 06:17 UTC, and on demand from the Actions tab. Each run tests, collects and analyses, then uploads the ready-to-open dashboard (with the CSV and JSON) as a build artifact named `polymarket-wallets-dashboard`. The workflow has read-only permissions and never pushes to the repo.
+`.github/workflows/polymarket-wallets.yml` runs on every push to this folder, daily at 06:17 UTC, and on demand from the Actions tab. Each run tests, collects and analyses, uploads the ready-to-open dashboard as a build artifact named `polymarket-wallets-dashboard`, and commits the refreshed `dashboard/report.js`, `data/wallets.csv` and `data/candidates.json` back to the branch. Those are the only files it writes.
 
 ## Caveats
 

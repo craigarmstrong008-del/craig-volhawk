@@ -15,7 +15,7 @@ on:
       - '.github/workflows/polymarket-wallets.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: polymarket-wallets-${{ github.ref }}
@@ -46,3 +46,11 @@ jobs:
             polymarket-wallets/data/report.json
             polymarket-wallets/data/wallets.csv
             polymarket-wallets/data/candidates.json
+      - name: Save refreshed report to this branch
+        run: |
+          git config user.name "polymarket-wallets bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f dashboard/report.js data/wallets.csv data/candidates.json
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -m "polymarket-wallets: refresh 90-day report [skip ci]"
+          for i in 1 2 3; do git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && break; sleep 5; done
