@@ -34,6 +34,11 @@ test('wallet selection: top, slow-only and bottom', () => {
   assert.deepEqual([...selectWallets(stats, { top: 5, maxTradesPerDay: 20 })], ['b']);
   assert.deepEqual([...selectWallets(stats, { bottom: 5 })], ['c']);
   assert.equal(selectWallets(stats, { all: true }).size, 4);
+  const dated = [
+    { address: 'live', trainPnl: 100, trainTrades: 5, tradesPerDay: 1, lastTradeTs: 1000 - DAY, splitTs: 1000 },
+    { address: 'gone', trainPnl: 900, trainTrades: 5, tradesPerDay: 1, lastTradeTs: 1000 - 30 * DAY, splitTs: 1000 },
+  ];
+  assert.deepEqual([...selectWallets(dated, { top: 5, recentDays: 7 })], ['live'], 'wallets idle for over a week are not followed');
 });
 
 test('signals: one per wallet+outcome per day, minimum size enforced', () => {
@@ -101,6 +106,7 @@ test('runner: fetches prices and resolutions and scores every strategy', async (
     const activity = [];
     for (let d = 46; d < 88; d += 3) activity.push({ type: 'TRADE', side: 'BUY', timestamp: start + d * DAY + i * 600, asset: good ? 'w' : 'l', conditionId: '0xc', outcome: good ? 'Yes' : 'No', price: 0.5, usdcSize: 2000, title: 'Test market', slug: 't' });
     activity.push({ type: 'TRADE', side: 'BUY', timestamp: start + DAY, asset: 'w', price: 0.5, usdcSize: 10 });
+    activity.push({ type: 'TRADE', side: 'BUY', timestamp: split - 2 * DAY, asset: 'w', price: 0.5, usdcSize: 10 }); // still active at the split
     await fs.writeFile(path.join(dir, 'raw', `${address}.json`), JSON.stringify({
       profile: { address, name: `w${i}` }, window: { start, end: now, days: 90 },
       pnl: [{ t: start - DAY, p: 0 }, { t: split - DAY, p: good ? 10000 : -10000 }, { t: now, p: 0 }],

@@ -6,7 +6,7 @@ name: polymarket-paper
 on:
   workflow_dispatch:
   schedule:
-    - cron: '7 */6 * * *'   # every 6 hours; each run lasts about 5.5 hours (schedules only fire on the default branch)
+    - cron: '7 */6 * * *'   # backup: each run queues the next itself; schedules only fire on the default branch
   push:
     paths:
       - 'polymarket-wallets/src/paper.js'
@@ -14,6 +14,7 @@ on:
 
 permissions:
   contents: write
+  actions: write   # lets a finishing run queue the next one
 
 concurrency:
   group: polymarket-paper-${{ github.ref }}
@@ -54,3 +55,8 @@ jobs:
               for t in 1 2 3; do git pull -q --rebase origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && break; sleep 5; done
             fi
           done
+      - name: Queue the next run so the agent keeps going
+        if: always() && github.ref_name == github.event.repository.default_branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run polymarket-paper.yml --ref "$GITHUB_REF_NAME" || echo "could not queue the next run; the 6-hourly schedule is the fallback"

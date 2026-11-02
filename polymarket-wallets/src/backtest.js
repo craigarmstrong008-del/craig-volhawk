@@ -6,10 +6,10 @@ import { DAY, num, median, dateKey } from './util.js';
 import { categorize } from './categorize.js';
 
 export const STRATEGIES = [
-  { id: 'top20', name: 'Copy the top 20', desc: 'Copy every new buy of $500+ by the 20 wallets with the best first-half profit.', select: { top: 20 }, minUsd: 500 },
-  { id: 'slow20', name: 'Copy the top 20 slow traders', desc: 'Same, but only wallets that averaged 20 trades a day or fewer, so their trades are realistic to copy.', select: { top: 20, maxTradesPerDay: 20 }, minUsd: 500 },
-  { id: 'consensus', name: 'Consensus of 3+', desc: 'Buy when 3 of the top 50 wallets have bought the same outcome within 24 hours.', select: { top: 50 }, minUsd: 500, consensus: { k: 3, windowH: 24, cooldownDays: 7 } },
-  { id: 'fade20', name: 'Fade the bottom 20', desc: 'Take the opposite side of buys of $1,000+ by the 20 wallets with the worst first-half profit.', select: { bottom: 20 }, minUsd: 1000, fade: true },
+  { id: 'top20', name: 'Copy the top 20', desc: 'Copy every new buy of $500+ by the 20 wallets with the best first-half profit.', select: { top: 20, recentDays: 7 }, minUsd: 500 },
+  { id: 'slow20', name: 'Copy the top 20 slow traders', desc: 'Same, but only wallets that averaged 20 trades a day or fewer, so their trades are realistic to copy.', select: { top: 20, maxTradesPerDay: 20, recentDays: 7 }, minUsd: 500 },
+  { id: 'consensus', name: 'Consensus of 3+', desc: 'Buy when 3 of the top 50 wallets have bought the same outcome within 24 hours.', select: { top: 50, recentDays: 7 }, minUsd: 500, consensus: { k: 3, windowH: 24, cooldownDays: 7 } },
+  { id: 'fade20', name: 'Fade the bottom 20', desc: 'Take the opposite side of buys of $1,000+ by the 20 wallets with the worst first-half profit.', select: { bottom: 20, recentDays: 7 }, minUsd: 1000, fade: true },
   { id: 'all', name: 'Baseline: copy everyone', desc: 'A random sample of buys of $500+ by every wallet in the group. Each strategy should beat this to be worth anything.', select: { all: true }, minUsd: 500, sample: 3000 },
 ];
 
@@ -53,9 +53,11 @@ export function trainStats(raw, split, start = raw.window.start) {
     const closed = (raw.closed || []).filter((p) => num(p.timestamp) >= start && num(p.timestamp) < split);
     if (closed.length) { trainPnl = closed.reduce((s, p) => s + num(p.realizedPnl), 0); source = 'positions'; }
   }
+  const lastTradeTs = trainTrades.reduce((m, e) => Math.max(m, num(e.timestamp)), 0) || null;
   return {
     address: raw.profile?.address, name: raw.profile?.name || '',
     trainPnl, source, trainTrades: trainTrades.length, tradesPerDay: trainTrades.length / days,
+    lastTradeTs, splitTs: split,
   };
 }
 
@@ -63,6 +65,8 @@ export function trainStats(raw, split, start = raw.window.start) {
 export function selectWallets(stats, sel) {
   if (sel.all) return new Set(stats.map((s) => s.address));
   let pool = stats.filter((s) => s.trainPnl != null && s.trainTrades > 0);
+  // Only wallets still trading: a last trade within `recentDays` of the ranking date.
+  if (sel.recentDays) pool = pool.filter((s) => s.lastTradeTs == null || s.splitTs - s.lastTradeTs <= sel.recentDays * DAY);
   if (sel.maxTradesPerDay != null) pool = pool.filter((s) => s.tradesPerDay <= sel.maxTradesPerDay);
   if (sel.top) pool = pool.filter((s) => s.trainPnl > 0).sort((a, b) => b.trainPnl - a.trainPnl).slice(0, sel.top);
   if (sel.bottom) pool = pool.filter((s) => s.trainPnl < 0).sort((a, b) => a.trainPnl - b.trainPnl).slice(0, sel.bottom);
