@@ -137,6 +137,9 @@ export function simulate(sig, delay, prices, outcomes, { stake = 100, slippage =
     : delay.fine ? priceAfter(fine.get(`${sig.asset}|${sig.t}`), entryT, 180)
     : priceAfter(hist, entryT);
   if (p == null || !(p > 0)) return { skip: 'no price' };
+  // A market priced at 2c or less (or 98c or more) by the delayed entry is effectively decided:
+  // nobody copying would still buy it, and buying resolved losers at ~1c would fake huge losses.
+  if (delay.seconds > 0 && (p <= 0.02 || p >= 0.98)) return { skip: 'market already decided' };
   if (sig.fade) p = 1 - p;
   const entry = p + slippage;
   if (entry >= 0.99 || entry <= 0.01) return { skip: 'price out of range' };

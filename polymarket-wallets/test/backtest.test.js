@@ -72,6 +72,11 @@ test('simulation: delays, slippage, fading and skips', () => {
   assert.ok(Math.abs(simulate(sig, D('1m'), prices, outcomes, { fine }).entry - 0.43) < 1e-9);
   assert.ok(Math.abs(simulate(sig, D('5m'), prices, outcomes, { fine }).entry - 0.46) < 1e-9);
   assert.equal(simulate(sig, D('1m'), prices, outcomes).skip, 'no price', 'no silent fallback to coarse prices');
+  // A delayed entry into a market that has already collapsed to ~1c (a resolved loser) is skipped, not bought.
+  const dead = new Map([['y', [{ t: 0, p: 0.5 }, { t: 1800, p: 0.005 }, { t: 3600, p: 0.005 }]]]);
+  const deadOut = new Map([['y', { value: 0, resolved: true }]]);
+  assert.equal(simulate({ t: 0, asset: 'y', price: 0.5 }, D('30m'), dead, deadOut).skip, 'market already decided');
+  assert.ok(!simulate({ t: 0, asset: 'y', price: 0.5 }, D('0'), dead, deadOut).skip, 'the wallet\'s own fill is still counted');
   assert.equal(priceAfter(hist, 7000), 0.6);
   assert.equal(priceAfter(hist, 40000), null);
 });
