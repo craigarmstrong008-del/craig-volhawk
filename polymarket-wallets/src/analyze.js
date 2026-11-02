@@ -245,8 +245,23 @@ export function freshFlow(raws, scored, { days = 7, minWallets = 2, limit = 40 }
     .slice(0, limit);
 }
 
-export function buildReport(raws, { minTrades = 1 } = {}) {
-  const wallets = raws.map(analyzeWallet).filter((w) => w.trades >= minTrades || w.closedCount > 0);
+/** Keep only what freshFlow needs (recent trades) so full histories can be freed. */
+export function slimRaw(raw, { days = 7 } = {}) {
+  const since = raw.window.end - days * DAY;
+  return {
+    profile: { address: raw.profile?.address }, window: raw.window, fetchedAt: raw.fetchedAt,
+    activity: (raw.activity || []).filter((e) => e.type === 'TRADE' && num(e.timestamp) >= since)
+      .map(({ type, side, timestamp, conditionId, title, slug, eventSlug, outcome, usdcSize, size, price }) => ({ type, side, timestamp, conditionId, title, slug, eventSlug, outcome, usdcSize, size, price })),
+  };
+}
+
+export function buildReport(raws, opts) {
+  return buildReportFrom(raws.map(analyzeWallet), raws.map((r) => slimRaw(r)), opts);
+}
+
+/** Memory-friendly entry point: per-wallet analyses plus slimmed raws. */
+export function buildReportFrom(analyses, raws, { minTrades = 1 } = {}) {
+  const wallets = analyses.filter((w) => w.trades >= minTrades || w.closedCount > 0);
   score(wallets);
   wallets.sort((a, b) => b.score - a.score || b.totalPnl90 - a.totalPnl90);
   wallets.forEach((w, i) => (w.rank = i + 1));

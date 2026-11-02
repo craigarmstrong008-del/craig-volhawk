@@ -34,10 +34,18 @@ jobs:
         with:
           node-version: '22'
       - run: npm test
-      - name: Collect + analyse last 90 days
+      - name: Collect last 90 days
         env:
           PER_BOARD: ${{ github.event.inputs.per_board || '100' }}
-        run: node src/cli.js all --days 90 --per-board "$(printf '%d' "$PER_BOARD" 2>/dev/null || echo 100)" --concurrency 4
+        run: node src/cli.js collect --days 90 --per-board "$(printf '%d' "$PER_BOARD" 2>/dev/null || echo 100)" --concurrency 4
+      - name: Analyse + build dashboard
+        env:
+          NODE_OPTIONS: --max-old-space-size=8192
+        run: |
+          du -sh data/raw
+          node src/cli.js analyze
+          node src/cli.js build
+          ls -lh dashboard/report.js data/wallets.csv
       - uses: actions/upload-artifact@v4
         with:
           name: polymarket-wallets-dashboard

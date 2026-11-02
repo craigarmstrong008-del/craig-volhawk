@@ -5,7 +5,7 @@ import path from 'node:path';
 import http from 'node:http';
 import { fileURLToPath } from 'node:url';
 import { collect } from './collect.js';
-import { buildReport } from './analyze.js';
+import { analyzeWallet, slimRaw, buildReportFrom } from './analyze.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DATA = path.join(ROOT, 'data');
@@ -28,8 +28,15 @@ async function runAnalyze() {
   const rawDir = path.join(DATA, 'raw');
   const files = (await fs.readdir(rawDir).catch(() => [])).filter((f) => f.endsWith('.json'));
   if (!files.length) throw new Error('No raw wallet data. Run `npm run collect` first.');
-  const raws = await Promise.all(files.map(async (f) => JSON.parse(await fs.readFile(path.join(rawDir, f), 'utf8'))));
-  const report = buildReport(raws);
+  // One wallet at a time: full histories can be hundreds of MB in total.
+  const analyses = [], slim = [];
+  for (const f of files) {
+    let raw = JSON.parse(await fs.readFile(path.join(rawDir, f), 'utf8'));
+    analyses.push(analyzeWallet(raw));
+    slim.push(slimRaw(raw));
+    raw = null;
+  }
+  const report = buildReportFrom(analyses, slim);
   await fs.writeFile(path.join(DATA, 'report.json'), JSON.stringify(report));
   await writeCsv(report);
   console.log(`analysed ${report.wallets.length} wallets → data/report.json, data/wallets.csv`);
