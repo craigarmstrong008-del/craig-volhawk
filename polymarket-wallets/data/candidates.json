@@ -1,5 +1,5 @@
 {
-  "generatedAt": 1793596392,
+  "generatedAt": 1793600583,
   "days": 90,
   "wallets": [
     {
@@ -5476,5 +5476,10 @@
       ]
     }
   ],
-  "failures": []
+  "failures": [
+    {
+      "address": "0x60a92c8620846d81f5ea17b0564e0d4b7c545a71",
+      "error": "GET https://data-api.polymarket.com/closed-positions?user=0x60a92c8620846d81f5ea17b0564e0d4b7c545a71&limit=50&offset=0&sortBy=TIMESTAMP&sortDirection=DESC -> HTTP 429"
+    }
+  ]
 }
