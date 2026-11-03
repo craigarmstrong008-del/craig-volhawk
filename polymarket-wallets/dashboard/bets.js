@@ -2,10 +2,12 @@
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const NAMES = { top20: 'Copy the top 20', slow20: 'Slow top 20', consensus: 'Consensus of 3+', consensus4: 'Consensus of 4+', fade20: 'Fade the bottom 20 (retired)' };
-  const baseOf = (book) => String(book || '').replace(/-sized$/, '');
-  const isSized = (book) => String(book || '').endsWith('-sized');
+  const baseOf = (book) => String(book || '').replace(/-(sized|pct)$/, '');
+  const sizingOf = (book) => (/-pct$/.test(String(book || '')) ? 'pct' : /-sized$/.test(String(book || '')) ? 'sized' : 'flat');
+  const isSized = (book) => sizingOf(book) === 'sized';
+  const SIZING_LABEL = { flat: 'Flat $20', sized: 'By conviction', pct: '3% of wallet' };
   const name = (id) => NAMES[baseOf(id)] || baseOf(id);
-  const bookName = (book) => `${name(book)} · ${isSized(book) ? 'sized' : 'flat $20'}`;
+  const bookName = (book) => `${name(book)} · ${({ flat: 'flat $20', sized: 'sized', pct: '3% of wallet' })[sizingOf(book)]}`;
   const bookOf = (p) => p.book || p.strategy;
   const usd = (x) => `${x < 0 ? '−' : ''}$${Math.abs(x).toFixed(2)}`;
   const signed = (x) => (x == null ? '—' : `<span class="${x > 0.005 ? 'up' : x < -0.005 ? 'down' : ''}">${x > 0.005 ? '+' : ''}${usd(x)}</span>`);
@@ -26,7 +28,7 @@
   let filter = 'all';
   let sizing = 'all';
   try { filter = localStorage.getItem('pmw-bets-filter') || 'all'; sizing = localStorage.getItem('pmw-bets-sizing') || 'all'; } catch {}
-  const matches = (book) => (filter === 'all' || baseOf(book) === filter) && (sizing === 'all' || (sizing === 'sized') === isSized(book));
+  const matches = (book) => (filter === 'all' || baseOf(book) === filter) && (sizing === 'all' || sizing === sizingOf(book));
   const shown = { open: 30, settled: 30 };
 
   function card(p) {
@@ -70,7 +72,7 @@
     const strategies = [...new Set(books.map(baseOf))];
     const chip = (attr, val, cur, label) => `<button type="button" data-${attr}="${esc(val)}" aria-pressed="${cur === val}">${esc(label)}</button>`;
     $('#chips').innerHTML = ['all', ...strategies].map((id) => chip('f', id, filter, id === 'all' ? 'All strategies' : name(id))).join('')
-      + '<span class="chip-gap"></span>' + [['all', 'Flat & sized'], ['flat', 'Flat $20'], ['sized', 'Sized $10–50']].map(([v, l]) => chip('z', v, sizing, l)).join('');
+      + '<span class="chip-gap"></span>' + [['all', 'All sizes'], ['flat', 'Flat $20'], ['sized', 'Sized $10–50'], ['pct', '3% of wallet']].map(([v, l]) => chip('z', v, sizing, l)).join('');
     $('#chips').querySelectorAll('button').forEach((b) => b.addEventListener('click', () => {
       if (b.dataset.f) filter = b.dataset.f; else sizing = b.dataset.z;
       shown.open = shown.settled = 30;
@@ -95,7 +97,7 @@
       tile('Won', settledN ? `${won} of ${settledN}` : '—', settledN ? `${Math.round((100 * won) / settledN)}% of settled bets` : `${sum('bets')} bets so far`),
     ].join('');
 
-    $('#strategies').innerHTML = `<thead><tr><th class="l">Strategy</th><th class="l">Bets sized</th><th>Wallet</th><th>Cash</th><th>Bets</th><th>Open</th><th>Won / settled</th><th>Settled profit</th><th>Avg bet</th><th>Typical delay</th></tr></thead><tbody>${books.filter(matches).map((b) => { const r = P.summary[b]; return `<tr data-f="${esc(baseOf(b))}" data-z="${isSized(b) ? 'sized' : 'flat'}"><td class="l">${esc(name(b))}</td><td class="l">${isSized(b) ? 'By conviction' : 'Flat $20'}</td><td>$${(r.equity ?? 0).toFixed(2)} ${r.walletReturn == null ? '' : `<span class="${r.walletReturn > 0 ? 'up' : r.walletReturn < 0 ? 'down' : ''}">${pct(r.walletReturn)}</span>`}</td><td>$${(r.cash ?? 0).toFixed(2)}</td><td>${r.bets}</td><td>${r.open}</td><td>${r.settled ? `${r.won} / ${r.settled}` : '—'}</td><td>${signed(r.realised)}</td><td>${r.avgStake == null ? '—' : `$${r.avgStake.toFixed(0)}`}</td><td>${r.medianLagSec == null ? '—' : lag(r.medianLagSec)}</td></tr>`; }).join('')}</tbody>`;
+    $('#strategies').innerHTML = `<thead><tr><th class="l">Strategy</th><th class="l">Bets sized</th><th>Wallet</th><th>Cash</th><th>Bets</th><th>Open</th><th>Won / settled</th><th>Settled profit</th><th>Avg bet</th><th>Typical delay</th></tr></thead><tbody>${books.filter(matches).map((b) => { const r = P.summary[b]; return `<tr data-f="${esc(baseOf(b))}" data-z="${sizingOf(b)}"><td class="l">${esc(name(b))}</td><td class="l">${SIZING_LABEL[sizingOf(b)]}</td><td>$${(r.equity ?? 0).toFixed(2)} ${r.walletReturn == null ? '' : `<span class="${r.walletReturn > 0 ? 'up' : r.walletReturn < 0 ? 'down' : ''}">${pct(r.walletReturn)}</span>`}</td><td>$${(r.cash ?? 0).toFixed(2)}</td><td>${r.bets}</td><td>${r.open}</td><td>${r.settled ? `${r.won} / ${r.settled}` : '—'}</td><td>${signed(r.realised)}</td><td>${r.avgStake == null ? '—' : `$${r.avgStake.toFixed(0)}`}</td><td>${r.medianLagSec == null ? '—' : lag(r.medianLagSec)}</td></tr>`; }).join('')}</tbody>`;
     $('#strategies').querySelectorAll('tbody tr').forEach((tr) => tr.addEventListener('click', () => { filter = tr.dataset.f; sizing = tr.dataset.z; render(); }));
 
     $('#open-count').textContent = open.length ? `${open.length}` : '';

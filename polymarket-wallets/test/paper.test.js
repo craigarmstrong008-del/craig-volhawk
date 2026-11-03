@@ -4,7 +4,7 @@ import http from 'node:http';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { fillFromBook, decide, emptyState, summarizePaper, stakeFor, ensureBooks, bookCheck, PAPER_BOOKS, typicalBuy, recordError } from '../src/paper.js';
+import { fillFromBook, decide, emptyState, summarizePaper, stakeFor, ensureBooks, bookCheck, PAPER_BOOKS, typicalBuy, recordError, pctStake, bookEquity, splitBook } from '../src/paper.js';
 
 test('fills walk the order book', () => {
   const asks = [{ price: 0.5, size: 10 }, { price: 0.6, size: 100 }];
@@ -155,4 +155,21 @@ test('errors are kept with counts, addresses masked, at most 8 distinct', () => 
   assert.ok(keys[0].includes('HTTP 403') && !keys[0].includes('aaaa'));
   for (let i = 0; i < 20; i++) recordError(st, 'poll', new Error(`err ${i}`));
   assert.equal(Object.keys(st.errors).length, 8);
+});
+
+test('3% of wallet: stakes follow the wallet value, with a $5 floor and 10% cap', () => {
+  assert.equal(pctStake(500, 500, 0.03), 15);
+  assert.equal(pctStake(1000, 1000, 0.03), 30, 'grows with the wallet');
+  assert.equal(pctStake(400, 400, 0.03), 12, 'shrinks after losses');
+  assert.equal(pctStake(100, 100, 0.03), 5, 'never below $5');
+  assert.equal(pctStake(1000, 8, 0.03), 8, 'never more than the cash');
+  assert.equal(pctStake(1000, 1000, 0.2), 100, 'at most 10% of the wallet');
+  assert.ok(PAPER_BOOKS.includes('consensus-pct') && PAPER_BOOKS.includes('consensus4-pct'));
+  assert.ok(!PAPER_BOOKS.includes('top20-pct'), 'only consensus strategies get a % version');
+  assert.deepEqual(splitBook('consensus4-pct'), { strategy: 'consensus4', sizing: 'pct' });
+  const st = emptyState(20);
+  ensureBooks(st, 500);
+  st.books['consensus-pct'].cash = 470;
+  st.positions.push({ book: 'consensus-pct', status: 'open', cost: 30, shares: 60, mark: 0.75 });
+  assert.equal(bookEquity(st, 'consensus-pct'), 470 + 45, 'cash plus open bets at their latest price');
 });
