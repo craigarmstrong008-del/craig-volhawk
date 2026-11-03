@@ -20,6 +20,7 @@ async function step(name, fn, show) {
 
 const lb = await step('leaderboard MONTH/PNL x120 (3 cursor pages)', () => api.leaderboard({ timePeriod: 'MONTH', orderBy: 'PNL', total: 120 }),
   (r) => `${r.length} rows (${new Set(r.map((x) => x.proxyWallet)).size} unique), #1 ${JSON.stringify(pick(r[0], ['userName', 'proxyWallet', 'pnl', 'vol']))}`);
+await step('leaderboard MONTH/VOL', () => api.leaderboard({ timePeriod: 'MONTH', orderBy: 'VOL', total: 50 }), (r) => `${r.length} rows, #1 ${r[0]?.userName}`);
 const w = user || lb?.[0]?.proxyWallet;
 await step('activity last 3 days (cursor pages)', () => api.activity(w, now - 3 * 86400, now, { maxEvents: 3000 }),
   (r) => `${r.length} events, types ${[...new Set(r.map((e) => e.type))].join('/')}, trade ${JSON.stringify(pick(r.find((e) => e.type === 'TRADE'), ['asset', 'conditionId', 'side', 'price', 'usdcSize', 'timestamp', 'eventSlug', 'outcome']))}`);

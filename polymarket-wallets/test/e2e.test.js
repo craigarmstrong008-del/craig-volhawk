@@ -38,6 +38,7 @@ test('collect paginates, retries and feeds analysis', async () => {
       return res.writeHead(410).end(JSON.stringify({ error: 'Data API v1 has been retired' }));
     }
     if (u.pathname === '/v2/leaderboard') {
+      if (!['PNL', 'VOLUME'].includes(q.orderBy)) return res.writeHead(400).end(JSON.stringify({ error: 'sort_by must be PNL or VOLUME' }));
       if (first429) { first429 = false; res.writeHead(429, { 'retry-after': '0' }).end(); return; }
       return page(wallets.map((w, i) => ({ rank: i + 1, user_id: w.address, user_name: `t${i}`, pnl: 1, volume: 1, verified: false })), q, res);
     }

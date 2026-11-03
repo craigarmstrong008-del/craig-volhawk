@@ -85,7 +85,8 @@ export const normLeader = (r) => ({ ...r, proxyWallet: r.proxyWallet ?? r.userId
 /** Official leaderboard. timePeriod: DAY|WEEK|MONTH|ALL, orderBy: PNL|VOL. */
 export async function leaderboard({ timePeriod, orderBy, total = 100, category = 'OVERALL' }) {
   const out = [];
-  const params = { timePeriod, orderBy, limit: 50, category: category === 'OVERALL' ? undefined : category };
+  // v2 accepts PNL or VOLUME (v1's 'VOL' is rejected with HTTP 400).
+  const params = { timePeriod, orderBy: orderBy === 'VOL' ? 'VOLUME' : orderBy, limit: 50, category: category === 'OVERALL' ? undefined : category };
   for await (const items of pages('/v2/leaderboard', params, { maxPages: Math.ceil(total / 50) })) {
     out.push(...items.map(normLeader));
     if (out.length >= total) break;
