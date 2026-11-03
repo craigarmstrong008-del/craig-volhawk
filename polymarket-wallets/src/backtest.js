@@ -8,9 +8,11 @@ import { categorize } from './categorize.js';
 export const STRATEGIES = [
   { id: 'top20', name: 'Copy the top 20', desc: 'Copy every new buy of $500+ by the 20 wallets with the best first-half profit.', select: { top: 20, recentDays: 7 }, minUsd: 500 },
   { id: 'slow20', name: 'Copy the top 20 slow traders', desc: 'Same, but only wallets that averaged 20 trades a day or fewer, so their trades are realistic to copy.', select: { top: 20, maxTradesPerDay: 20, recentDays: 7 }, minUsd: 500 },
-  { id: 'consensus', name: 'Consensus of 3+', desc: 'Buy when 3 of the top 50 wallets have bought the same outcome within 24 hours.', select: { top: 50, recentDays: 7 }, minUsd: 500, consensus: { k: 3, windowH: 24, cooldownDays: 7 } },
-  { id: 'fade20', name: 'Fade the bottom 20', desc: 'Take the opposite side of buys of $1,000+ by the 20 wallets with the worst first-half profit.', select: { bottom: 20, recentDays: 7 }, minUsd: 1000, fade: true },
-  { id: 'all', name: 'Baseline: copy everyone', desc: 'A random sample of buys of $500+ by every wallet in the group. Each strategy should beat this to be worth anything.', select: { all: true }, minUsd: 500, sample: 3000 },
+  { id: 'consensus', name: 'Consensus of 3+', desc: 'Buy when 3 of the top 50 wallets have bought the same outcome within 24 hours. Skips prices above 85¢ and takes one bet per game.', select: { top: 50, recentDays: 7 }, minUsd: 500, consensus: { k: 3, windowH: 24, cooldownDays: 7 }, maxEntry: 0.85, oneBetPerEvent: true },
+  { id: 'consensus4', name: 'Consensus of 4+', desc: 'Stricter: 4 of the top 50 wallets on the same outcome within 24 hours. Skips prices above 85¢ and takes one bet per game.', select: { top: 50, recentDays: 7 }, minUsd: 500, consensus: { k: 4, windowH: 24, cooldownDays: 7 }, maxEntry: 0.85, oneBetPerEvent: true },
+  { id: 'consensus-raw', name: 'Consensus of 3+ (no filters)', desc: 'The original consensus rule, without the 85¢ cap or one-bet-per-game, kept in the backtest for comparison.', select: { top: 50, recentDays: 7 }, minUsd: 500, consensus: { k: 3, windowH: 24, cooldownDays: 7 }, paper: false },
+  { id: 'fade20', name: 'Fade the bottom 20', desc: 'Take the opposite side of buys of $1,000+ by the 20 wallets with the worst first-half profit. Backtest only: it reliably lost.', select: { bottom: 20, recentDays: 7 }, minUsd: 1000, fade: true, paper: false },
+  { id: 'all', paper: false, name: 'Baseline: copy everyone', desc: 'A random sample of buys of $500+ by every wallet in the group. Each strategy should beat this to be worth anything.', select: { all: true }, minUsd: 500, sample: 3000 },
 ];
 
 export const DELAYS = [
@@ -97,14 +99,18 @@ export function buildSignals(buys, strategy, wallets, { seed = 7 } = {}) {
     const { k, windowH, cooldownDays } = strategy.consensus;
     const recent = new Map(); // asset -> [{wallet,t}]
     const cooldown = new Map();
+    const eventCooldown = new Map(); // one bet per game: event -> cooldown end
     const out = [];
     for (const b of deduped) {
       const arr = (recent.get(b.asset) || []).filter((x) => b.t - x.t <= windowH * 3600 && x.wallet !== b.wallet);
       arr.push({ wallet: b.wallet, t: b.t });
       recent.set(b.asset, arr);
       if (arr.length >= k && !(cooldown.get(b.asset) > b.t)) {
+        const ev = eventKey(b);
+        if (strategy.oneBetPerEvent && eventCooldown.get(ev) > b.t) continue;
         out.push({ ...b, wallets: arr.map((x) => x.wallet) });
         cooldown.set(b.asset, b.t + cooldownDays * DAY);
+        if (strategy.oneBetPerEvent) eventCooldown.set(ev, b.t + cooldownDays * DAY);
       }
     }
     return out;
@@ -117,6 +123,9 @@ export function buildSignals(buys, strategy, wallets, { seed = 7 } = {}) {
   }
   return deduped;
 }
+
+/** The game/event a market belongs to: every spread, total and moneyline of one match share it. */
+export const eventKey = (b) => b.eventSlug || b.conditionId || b.asset;
 
 /** First price at or after ts within maxGap seconds; history = sorted [{t,p}]. */
 export function priceAfter(history, ts, maxGap = 3 * 3600) {
@@ -145,6 +154,7 @@ export function simulate(sig, delay, prices, outcomes, { stake = 100, slippage =
   // nobody copying would still buy it, and buying resolved losers at ~1c would fake huge losses.
   if (delay.seconds > 0 && (p <= 0.02 || p >= 0.98)) return { skip: 'market already decided' };
   if (sig.fade) p = 1 - p;
+  if (sig.maxEntry != null && p > sig.maxEntry) return { skip: 'favourite above cap' };
   const entry = p + slippage;
   if (entry >= 0.99 || entry <= 0.01) return { skip: 'price out of range' };
   let value = out ? out.value : hist.length ? hist[hist.length - 1].p : null;
@@ -191,7 +201,7 @@ export function runBacktest({ stats, buys, prices, outcomes, split, end, opts = 
   const results = [];
   for (const s of STRATEGIES) {
     const wallets = selectWallets(stats, s.select);
-    const signals = buildSignals(buys, s, wallets).map((x) => ({ ...x, fade: !!s.fade }));
+    const signals = buildSignals(buys, s, wallets).map((x) => ({ ...x, fade: !!s.fade, maxEntry: s.maxEntry ?? null }));
     const byDelay = {};
     for (const d of DELAYS) {
       const trades = [];

@@ -1,7 +1,7 @@
 (() => {
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const NAMES = { top20: 'Copy the top 20', slow20: 'Slow top 20', consensus: 'Consensus of 3+', fade20: 'Fade the bottom 20' };
+  const NAMES = { top20: 'Copy the top 20', slow20: 'Slow top 20', consensus: 'Consensus of 3+', consensus4: 'Consensus of 4+', fade20: 'Fade the bottom 20 (retired)' };
   const baseOf = (book) => String(book || '').replace(/-sized$/, '');
   const isSized = (book) => String(book || '').endsWith('-sized');
   const name = (id) => NAMES[baseOf(id)] || baseOf(id);
@@ -58,11 +58,12 @@
       $('#empty').hidden = false;
       return;
     }
-    const fresh = Date.now() / 1000 - (P.updatedAt || 0) < 45 * 60;
+    const checksFailing = P.errors && Object.keys(P.errors).length && (!P.lastPollOkAt || P.updatedAt - P.lastPollOkAt > 15 * 60);
+    const fresh = Date.now() / 1000 - (P.updatedAt || 0) < 45 * 60 && !checksFailing;
     const status = $('#status');
     status.hidden = false;
     status.className = `pill ${fresh ? 'live' : 'idle'}`;
-    status.textContent = fresh ? 'Agent running' : 'Agent between runs';
+    status.textContent = checksFailing ? 'Agent can’t read new trades' : fresh ? 'Agent running' : 'Agent between runs';
     $('#meta').textContent = `Updated ${ago(P.updatedAt)} · each book has a $${P.bankroll || 500} paper wallet · checks for new results every minute`;
 
     const books = Object.keys(P.summary);

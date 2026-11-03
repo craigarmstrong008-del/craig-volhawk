@@ -31,70 +31,91 @@ export async function get(path, params = {}, { retries = 6 } = {}) {
     }
     if (!res.ok) {
       const body = await res.text().catch(() => '');
-      // Paging past the API's offset ceiling returns 400 — treat as "no more data".
-      if (res.status === 400 && /offset|limit/i.test(body)) return [];
       throw new Error(`GET ${url} -> HTTP ${res.status} ${body.slice(0, 200)}`);
     }
     return res.json();
   }
 }
 
-const asArray = (j) => (Array.isArray(j) ? j : Array.isArray(j?.data) ? j.data : []);
+// ---- Data API v2 (v1 was retired: HTTP 410). Pages are cursor-only; fields are snake_case. ----
 
-/** Official leaderboard. timePeriod: DAY|WEEK|MONTH|ALL, orderBy: PNL|VOL. 50 per page. */
+const camelKey = (k) => k.replace(/_([a-z0-9])/g, (_, c) => c.toUpperCase());
+/** Recursively convert snake_case keys to the camelCase names the rest of the code uses. */
+export function camelize(o) {
+  if (Array.isArray(o)) return o.map(camelize);
+  if (o && typeof o === 'object') { const r = {}; for (const [k, v] of Object.entries(o)) r[camelKey(k)] = camelize(v); return r; }
+  return o;
+}
+const tsSec = (t) => { let x = num(t); if (!x && typeof t === 'string') x = Math.floor(Date.parse(t) / 1000) || 0; return x > 1e12 ? Math.floor(x / 1000) : x; };
+
+/** One v2 page: items (camelCased) and the cursor for the next page, if any. */
+export function pageOf(j) {
+  const items = Array.isArray(j) ? j : Array.isArray(j?.data) ? j.data : [];
+  const p = j?.pagination || {};
+  return { items: camelize(items), next: p.has_more === false ? null : (p.next_cursor || null) };
+}
+
+/** Follow next_cursor pages (the original params must be repeated alongside the cursor). */
+export async function* pages(path, params, { maxPages = 100 } = {}) {
+  let cursor = null;
+  for (let i = 0; i < maxPages; i++) {
+    const { items, next } = pageOf(await get(path, cursor ? { ...params, cursor } : params));
+    yield items;
+    if (!next || !items.length) break;
+    cursor = next;
+  }
+}
+
+// v1-compatible shapes for the rest of the code.
+export const normActivity = (e) => ({ ...e, asset: String(e.asset ?? e.tokenId ?? ''), timestamp: tsSec(e.timestamp) });
+export const normPosition = (p) => ({
+  ...p,
+  asset: String(p.asset ?? p.tokenId ?? ''),
+  size: num(p.size ?? p.currentSize),
+  curPrice: num(p.curPrice ?? p.currentPrice),
+  currentValue: num(p.currentValue),
+  cashPnl: num(p.cashPnl ?? p.unrealizedPnl),
+  initialValue: num(p.initialValue ?? p.totalCostUsdc),
+  totalBought: num(p.totalBought ?? p.totalSize),
+  realizedPnl: num(p.realizedPnl),
+  timestamp: tsSec(p.timestamp ?? p.lastEventAt),
+});
+export const normLeader = (r) => ({ ...r, proxyWallet: r.proxyWallet ?? r.userId, vol: num(r.vol ?? r.volume), pnl: num(r.pnl), verifiedBadge: r.verifiedBadge ?? r.verified });
+
+/** Official leaderboard. timePeriod: DAY|WEEK|MONTH|ALL, orderBy: PNL|VOL. */
 export async function leaderboard({ timePeriod, orderBy, total = 100, category = 'OVERALL' }) {
   const out = [];
-  for (let offset = 0; offset < total; offset += 50) {
-    const page = asArray(await get('/v1/leaderboard', {
-      timePeriod, orderBy, limit: 50, offset, category: category === 'OVERALL' ? undefined : category,
-    }));
-    out.push(...page);
-    if (page.length < 50) break;
+  // v2 accepts PNL or VOLUME (v1's 'VOL' is rejected with HTTP 400).
+  const params = { timePeriod, orderBy: orderBy === 'VOL' ? 'VOLUME' : orderBy, limit: 50, category: category === 'OVERALL' ? undefined : category };
+  for await (const items of pages('/v2/leaderboard', params, { maxPages: Math.ceil(total / 50) })) {
+    out.push(...items.map(normLeader));
+    if (out.length >= total) break;
   }
   return out.slice(0, total);
 }
 
 const eventKey = (e) => `${e.transactionHash}|${e.asset}|${e.type}|${e.side}|${e.size}|${e.timestamp}`;
 
-/**
- * All on-chain activity (TRADE, REDEEM, SPLIT, MERGE, REWARD, CONVERSION) in [start, end].
- * Walks backwards with a moving `end` cursor so the API offset ceiling never truncates busy wallets.
- */
+/** All on-chain activity (TRADE, REDEEM, SPLIT, MERGE, REWARD, CONVERSION) in [start, end], newest first. */
 export async function activity(user, start, end, { maxEvents = 25000, pageSize = 500 } = {}) {
   const seen = new Map();
-  let cursor = end;
-  let offset = 0;
-  while (seen.size < maxEvents) {
-    const page = asArray(await get('/activity', {
-      user, start, end: cursor, limit: pageSize, offset, sortBy: 'TIMESTAMP', sortDirection: 'DESC',
-    }));
-    if (!page.length) break;
-    let added = 0;
-    for (const e of page) { const k = eventKey(e); if (!seen.has(k)) { seen.set(k, e); added++; } }
-    if (page.length < pageSize) break;
-    const minTs = Math.min(...page.map((e) => num(e.timestamp)));
-    if (minTs <= start) break;
-    if (minTs === cursor || added === 0) {
-      // Whole page shares one timestamp: step through it with offset, then move on.
-      offset += pageSize;
-      if (offset > 3000) { cursor = minTs - 1; offset = 0; }
-    } else {
-      cursor = minTs; offset = 0; // inclusive; duplicates are removed by key
-    }
+  const params = { user, start, end, limit: pageSize, sortBy: 'TIMESTAMP', sortDirection: 'DESC' };
+  for await (const items of pages('/v2/activity', params, { maxPages: Math.ceil(maxEvents / pageSize) + 1 })) {
+    for (const raw of items) { const e = normActivity(raw); const k = eventKey(e); if (!seen.has(k)) seen.set(k, e); }
+    if (seen.size >= maxEvents) break;
+    if (items.length && Math.min(...items.map((x) => tsSec(x.timestamp))) < start) break;
   }
-  return [...seen.values()].filter((e) => num(e.timestamp) >= start && num(e.timestamp) <= end);
+  return [...seen.values()].filter((e) => e.timestamp >= start && e.timestamp <= end);
 }
 
-/** Closed (resolved/exited) positions, newest first, until older than `start`. */
+/** Closed positions, newest first, until older than `start`. */
 export async function closedPositions(user, start, { maxPages = 120 } = {}) {
   const out = [];
-  for (let p = 0; p < maxPages; p++) {
-    const page = asArray(await get('/closed-positions', {
-      user, limit: 50, offset: p * 50, sortBy: 'TIMESTAMP', sortDirection: 'DESC',
-    }));
+  const params = { user, status: 'CLOSED', limit: 200, sortBy: 'TIMESTAMP', sortDirection: 'DESC' };
+  for await (const items of pages('/v2/positions', params, { maxPages })) {
+    const page = items.map(normPosition);
     out.push(...page);
-    if (page.length < 50) break;
-    if (Math.min(...page.map((x) => num(x.timestamp))) < start) break;
+    if (page.length && Math.min(...page.map((x) => x.timestamp)) < start) break;
   }
   return out;
 }
@@ -102,18 +123,14 @@ export async function closedPositions(user, start, { maxPages = 120 } = {}) {
 /** Current open positions. */
 export async function positions(user, { maxPages = 10 } = {}) {
   const out = [];
-  for (let p = 0; p < maxPages; p++) {
-    const page = asArray(await get('/positions', { user, limit: 500, offset: p * 500, sizeThreshold: 1 }));
-    out.push(...page);
-    if (page.length < 500) break;
-  }
-  return out;
+  for await (const items of pages('/v2/positions', { user, limit: 500 }, { maxPages })) out.push(...items.map(normPosition));
+  return out.filter((p) => p.size >= 1);
 }
 
 export async function portfolioValue(user) {
-  const j = await get('/value', { user });
-  const row = Array.isArray(j) ? j[0] : j;
-  return num(row?.value);
+  const j = await get('/v2/value', { user });
+  const row = Array.isArray(j) ? j[0] : j?.data ?? j;
+  return num(Array.isArray(row) ? row[0]?.value : row?.value);
 }
 
 // The old user-pnl-api.polymarket.com host was retired (HTTP 410) in favour of data-api /v2/user-pnl.
@@ -142,7 +159,9 @@ const seriesOf = (j) => {
   return [];
 };
 
-const PNL_KEYS = ['p', 'pnl', 'value', 'cumulativePnl', 'cumulative_pnl', 'totalPnl', 'total_pnl', 'cashPnl', 'cash_pnl', 'profit'];
+// economic_pnl is the all-in cumulative PnL after fees (the probe showed realized_market_pnl, the first
+// 'pnl' field, is realised-only), so it is preferred.
+const PNL_KEYS = ['p', 'pnl', 'economic_pnl', 'economicPnl', 'position_pnl', 'positionPnl', 'value', 'cumulativePnl', 'cumulative_pnl', 'totalPnl', 'total_pnl', 'cashPnl', 'cash_pnl', 'profit'];
 /** One history point -> {t (seconds), p}, whatever the API calls its fields. */
 export function normPoint(x) {
   if (!x || typeof x !== 'object') return null;
@@ -221,6 +240,6 @@ export async function midpoint(tokenId) {
 
 /** Recent trades for one wallet after `since` (exclusive), newest first. */
 export async function recentTrades(user, since, { limit = 100 } = {}) {
-  const j = await get('/activity', { user, type: 'TRADE', start: since + 1, limit, sortBy: 'TIMESTAMP', sortDirection: 'DESC' }, { retries: 3 });
-  return Array.isArray(j) ? j : [];
+  const j = await get('/v2/activity', { user, type: 'TRADE', start: since + 1, limit, sortBy: 'TIMESTAMP', sortDirection: 'DESC' }, { retries: 3 });
+  return pageOf(j).items.map(normActivity);
 }

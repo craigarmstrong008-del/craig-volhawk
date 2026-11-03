@@ -37,6 +37,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Check every Data API call against the live API
+        run: node src/smoke.js
       - run: npm test
       - name: Collect last 90 days
         env:
