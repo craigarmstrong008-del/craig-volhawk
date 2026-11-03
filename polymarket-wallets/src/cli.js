@@ -75,8 +75,11 @@ async function runBacktest(o) {
 async function runPaperCmd(o) {
   const state = await runPaper({ dataDir: DATA, minutes: Number(o.minutes || 60), pollSec: Number(o.poll || 30), stake: Number(o.stake || 20), bankroll: Number(o.bankroll || 500), maxBetsPerDay: Number(o['max-per-day'] || 40) });
   const summary = summarizePaper(state);
-  const out = { updatedAt: state.updatedAt, startedAt: state.startedAt, stake: state.stake, bankroll: Number(o.bankroll || 500), summary, skipped: state.skipped, positions: state.positions.slice(-400).reverse(), log: state.log.slice(-60).reverse() };
+  const out = { updatedAt: state.updatedAt, startedAt: state.startedAt, stake: state.stake, bankroll: Number(o.bankroll || 500), summary, skipped: state.skipped, errors: state.errors || {}, pollOk: state.pollOk || 0, lastPollOkAt: state.lastPollOkAt || null, positions: state.positions.slice(-400).reverse(), log: state.log.slice(-60).reverse() };
   await fs.writeFile(path.join(DASH, 'paper.js'), `window.PAPER = ${JSON.stringify(out)};\n`);
+  const errs = Object.entries(state.errors || {}).sort((a, b) => b[1].last - a[1].last);
+  if (errs.length) { console.log('\nrecent errors:'); errs.forEach(([m, e]) => console.log(`  x${e.count} ${m}`)); }
+  console.log(`successful wallet checks so far: ${state.pollOk || 0}; last at ${state.lastPollOkAt ? new Date(state.lastPollOkAt * 1000).toISOString() : 'never'}`);
   console.log('\npaper results (settled bets only count toward return):');
   for (const [id, r] of Object.entries(summary)) console.log(`  ${id.padEnd(16)} wallet $${r.equity.toFixed(2)} of $${r.start} (cash $${r.cash.toFixed(2)}), bets ${r.bets}, open ${r.open}, settled ${r.settled}, won ${r.won}, realised ${r.realised.toFixed(2)}, median lag ${r.medianLagSec ?? '-'}s`);
 }

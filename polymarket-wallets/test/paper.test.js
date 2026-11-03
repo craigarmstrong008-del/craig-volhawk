@@ -4,7 +4,7 @@ import http from 'node:http';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { fillFromBook, decide, emptyState, summarizePaper, stakeFor, ensureBooks, bookCheck, PAPER_BOOKS, typicalBuy } from '../src/paper.js';
+import { fillFromBook, decide, emptyState, summarizePaper, stakeFor, ensureBooks, bookCheck, PAPER_BOOKS, typicalBuy, recordError } from '../src/paper.js';
 
 test('fills walk the order book', () => {
   const asks = [{ price: 0.5, size: 10 }, { price: 0.6, size: 100 }];
@@ -125,4 +125,16 @@ test('agent loop: detects a new buy, prices it from the book, settles it', async
     server.close();
     await fs.rm(dir, { recursive: true, force: true });
   }
+});
+
+test('errors are kept with counts, addresses masked, at most 8 distinct', () => {
+  const st = emptyState(20);
+  recordError(st, 'poll', new Error('GET https://x/activity?user=0x' + 'a'.repeat(40) + ' -> HTTP 403 blocked'));
+  recordError(st, 'poll', new Error('GET https://x/activity?user=0x' + 'b'.repeat(40) + ' -> HTTP 403 blocked'));
+  const keys = Object.keys(st.errors);
+  assert.equal(keys.length, 1, 'same error for different wallets is one entry');
+  assert.equal(st.errors[keys[0]].count, 2);
+  assert.ok(keys[0].includes('HTTP 403') && !keys[0].includes('aaaa'));
+  for (let i = 0; i < 20; i++) recordError(st, 'poll', new Error(`err ${i}`));
+  assert.equal(Object.keys(st.errors).length, 8);
 });

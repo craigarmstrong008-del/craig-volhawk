@@ -58,11 +58,12 @@
       $('#empty').hidden = false;
       return;
     }
-    const fresh = Date.now() / 1000 - (P.updatedAt || 0) < 45 * 60;
+    const checksFailing = P.errors && Object.keys(P.errors).length && (!P.lastPollOkAt || P.updatedAt - P.lastPollOkAt > 15 * 60);
+    const fresh = Date.now() / 1000 - (P.updatedAt || 0) < 45 * 60 && !checksFailing;
     const status = $('#status');
     status.hidden = false;
     status.className = `pill ${fresh ? 'live' : 'idle'}`;
-    status.textContent = fresh ? 'Agent running' : 'Agent between runs';
+    status.textContent = checksFailing ? 'Agent can’t read new trades' : fresh ? 'Agent running' : 'Agent between runs';
     $('#meta').textContent = `Updated ${ago(P.updatedAt)} · each book has a $${P.bankroll || 500} paper wallet · checks for new results every minute`;
 
     const books = Object.keys(P.summary);
