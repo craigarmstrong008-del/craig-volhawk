@@ -37,9 +37,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Probe Polymarket Data API
-        continue-on-error: true
-        run: node src/probe.js "$(node -e "try{const w=require('./data/watchlist.json');console.log(w.strategies.top20[0].address)}catch{}")"
+      - name: Check every Data API call against the live API
+        run: node src/smoke.js
       - run: npm test
       - name: Collect last 90 days
         env:
