@@ -7,10 +7,27 @@ import { STRATEGIES, eventKey } from './backtest.js';
 import { DAY, num, pool, sleep } from './util.js';
 
 export const PAPER_STRATEGIES = STRATEGIES.filter((s) => !s.select.all && s.paper !== false).map((s) => s.id);
-export const SIZINGS = ['flat', 'sized'];
-/** A "book" is one strategy traded one way (flat $20 or conviction-sized), with its own paper wallet. */
-export const bookId = (strategy, sizing) => (sizing === 'flat' ? strategy : `${strategy}-sized`);
-export const PAPER_BOOKS = PAPER_STRATEGIES.flatMap((id) => SIZINGS.map((z) => bookId(id, z)));
+export const SIZINGS = ['flat', 'sized', 'pct'];
+/**
+ * A "book" is one strategy traded one way, with its own paper wallet: flat $20, conviction-sized
+ * $10-$50, or (for strategies with pctOfWallet) a fixed share of the wallet's current value.
+ */
+export const bookId = (strategy, sizing) => (sizing === 'flat' ? strategy : `${strategy}-${sizing}`);
+export const sizingsFor = (id) => (STRATEGIES.find((s) => s.id === id)?.pctOfWallet ? SIZINGS : SIZINGS.filter((z) => z !== 'pct'));
+export const PAPER_BOOKS = PAPER_STRATEGIES.flatMap((id) => sizingsFor(id).map((z) => bookId(id, z)));
+export const splitBook = (b) => { const m = String(b).match(/^(.*?)-(sized|pct)$/); return m ? { strategy: m[1], sizing: m[2] } : { strategy: String(b), sizing: 'flat' }; };
+
+/** A wallet's current value: cash plus open bets at their latest price (cost if never priced). */
+export function bookEquity(state, book) {
+  const open = state.positions.filter((p) => (p.book || p.strategy) === book && p.status === 'open');
+  return (state.books?.[book]?.cash ?? 0) + open.reduce((s, p) => s + (p.mark != null ? p.shares * p.mark : p.cost), 0);
+}
+
+/** Fixed-fraction stake: pct of the wallet's value, at least $5, at most 10% of value and never more than the cash. */
+export function pctStake(equity, cash, pct, { min = 5, maxShare = 0.1 } = {}) {
+  const want = Math.min(pct * equity, maxShare * equity, cash);
+  return want >= min ? Math.round(want * 100) / 100 : min;
+}
 
 /**
  * Stake for one bet. Flat: always `stake`. Sized: $10 for a trade the size of the wallet's typical
@@ -39,7 +56,7 @@ export function ensureBooks(state, bankroll) {
     const paidBack = ps.filter((p) => p.status !== 'open').reduce((s, p) => s + p.shares * (p.exit ?? 0), 0);
     state.books[b] = { start: bankroll, cash: bankroll - spent + paidBack };
   }
-  for (const p of state.positions) { if (!p.book) p.book = p.strategy; if (!p.sizing) p.sizing = 'flat'; }
+  for (const p of state.positions) { if (!p.book) p.book = p.strategy; if (!p.sizing) p.sizing = splitBook(p.book).sizing; }
   return state.books;
 }
 
@@ -148,7 +165,8 @@ export function summarizePaper(state) {
     const wallet = state.books?.[b] || { start: 0, cash: 0 };
     const equity = wallet.cash + openValue;
     by[b] = {
-      strategy: b.replace(/-sized$/, ''), sizing: b.endsWith('-sized') ? 'sized' : 'flat', retired: !PAPER_BOOKS.includes(b),
+      ...splitBook(b), retired: !PAPER_BOOKS.includes(b),
+      pctOfWallet: STRATEGIES.find((x) => x.id === splitBook(b).strategy)?.pctOfWallet ?? null,
       bets: ps.length, open: open.length, settled: settled.length,
       won: settled.filter((p) => p.pnl > 0).length, realised, staked, roi: staked ? realised / staked : null,
       unrealised: openValue - openCost, openCost,
@@ -235,9 +253,12 @@ export async function runPaper({ dataDir, minutes = 60, pollSec = 30, stake = 20
         try { tgt = await targetToken(want, markets); } catch { bump(state.skipped, `${want.strategy}: pricing error`); continue; }
         if (!tgt) { bump(state.skipped, `${want.strategy}: no opposite side`); continue; }
         let asks = null;
-        for (const sizing of SIZINGS) {
+        for (const sizing of sizingsFor(want.strategy)) {
           const book = bookId(want.strategy, sizing);
-          const amount = stakeFor(sizing, buy.usd, typical.get(buy.wallet), { stake, ...sized });
+          const pct = STRATEGIES.find((x) => x.id === want.strategy)?.pctOfWallet;
+          const amount = sizing === 'pct'
+            ? pctStake(bookEquity(state, book), state.books[book]?.cash ?? 0, pct)
+            : stakeFor(sizing, buy.usd, typical.get(buy.wallet), { stake, ...sized });
           const strat = STRATEGIES.find((x) => x.id === want.strategy);
           const why = bookCheck(state, book, buy.conditionId, want.day, amount, { maxBetsPerDay, event: strat.oneBetPerEvent ? eventKey(buy) : null });
           if (why) { bump(state.skipped, `${book}: ${why}`); continue; }
