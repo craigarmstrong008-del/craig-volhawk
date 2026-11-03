@@ -3,10 +3,10 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import * as api from './api.js';
-import { STRATEGIES } from './backtest.js';
+import { STRATEGIES, eventKey } from './backtest.js';
 import { DAY, num, pool, sleep } from './util.js';
 
-export const PAPER_STRATEGIES = STRATEGIES.filter((s) => !s.select.all).map((s) => s.id);
+export const PAPER_STRATEGIES = STRATEGIES.filter((s) => !s.select.all && s.paper !== false).map((s) => s.id);
 export const SIZINGS = ['flat', 'sized'];
 /** A "book" is one strategy traded one way (flat $20 or conviction-sized), with its own paper wallet. */
 export const bookId = (strategy, sizing) => (sizing === 'flat' ? strategy : `${strategy}-sized`);
@@ -107,8 +107,9 @@ export function decide(state, buy, watch) {
 }
 
 /** Per-book checks before pricing: one open bet per market, daily cap, enough cash. */
-export function bookCheck(state, book, conditionId, day, stake, { maxBetsPerDay = 40 } = {}) {
+export function bookCheck(state, book, conditionId, day, stake, { maxBetsPerDay = 40, event = null } = {}) {
   if (state.positions.some((p) => p.book === book && p.status === 'open' && p.conditionId === conditionId)) return 'already holding';
+  if (event && state.positions.some((p) => p.book === book && p.status === 'open' && eventKey(p) === event)) return 'already on this game';
   if ((state.daily[`${book}|${day}`] || 0) >= maxBetsPerDay) return 'daily cap';
   if ((state.books[book]?.cash ?? 0) < stake) return 'out of cash';
   return null;
@@ -133,7 +134,9 @@ const parseArr = (v) => { if (Array.isArray(v)) return v; try { const x = JSON.p
 
 export function summarizePaper(state) {
   const by = {};
-  for (const b of PAPER_BOOKS) {
+  // Current books, plus retired ones (e.g. fade20) that still hold bets, so their results stay visible.
+  const retired = Object.keys(state.books || {}).filter((b) => !PAPER_BOOKS.includes(b) && state.positions.some((p) => (p.book || p.strategy) === b));
+  for (const b of [...PAPER_BOOKS, ...retired]) {
     const ps = state.positions.filter((p) => (p.book || p.strategy) === b);
     const settled = ps.filter((p) => p.status !== 'open');
     const open = ps.filter((p) => p.status === 'open');
@@ -145,7 +148,7 @@ export function summarizePaper(state) {
     const wallet = state.books?.[b] || { start: 0, cash: 0 };
     const equity = wallet.cash + openValue;
     by[b] = {
-      strategy: b.replace(/-sized$/, ''), sizing: b.endsWith('-sized') ? 'sized' : 'flat',
+      strategy: b.replace(/-sized$/, ''), sizing: b.endsWith('-sized') ? 'sized' : 'flat', retired: !PAPER_BOOKS.includes(b),
       bets: ps.length, open: open.length, settled: settled.length,
       won: settled.filter((p) => p.pnl > 0).length, realised, staked, roi: staked ? realised / staked : null,
       unrealised: openValue - openCost, openCost,
@@ -235,13 +238,15 @@ export async function runPaper({ dataDir, minutes = 60, pollSec = 30, stake = 20
         for (const sizing of SIZINGS) {
           const book = bookId(want.strategy, sizing);
           const amount = stakeFor(sizing, buy.usd, typical.get(buy.wallet), { stake, ...sized });
-          const why = bookCheck(state, book, buy.conditionId, want.day, amount, { maxBetsPerDay });
+          const strat = STRATEGIES.find((x) => x.id === want.strategy);
+          const why = bookCheck(state, book, buy.conditionId, want.day, amount, { maxBetsPerDay, event: strat.oneBetPerEvent ? eventKey(buy) : null });
           if (why) { bump(state.skipped, `${book}: ${why}`); continue; }
           try {
             if (!asks) asks = (await api.book(tgt.token)).asks;
             const fill = fillFromBook(asks, amount);
             if (!fill) { bump(state.skipped, `${book}: not enough liquidity`); continue; }
             if (fill.avg >= 0.99) { bump(state.skipped, `${book}: price too high`); continue; }
+            if (strat.maxEntry != null && fill.avg > strat.maxEntry) { bump(state.skipped, `${book}: favourite above ${Math.round(strat.maxEntry * 100)}¢`); continue; }
             const detectedAt = Math.floor(Date.now() / 1000);
             const theirPrice = want.target === 'same' ? buy.price : 1 - buy.price;
             state.positions.push({

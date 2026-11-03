@@ -16,7 +16,8 @@ test('fills walk the order book', () => {
 
 const watch = {
   top20: [{ address: 'a' }], slow20: [{ address: 'a' }],
-  consensus: [{ address: 'a' }, { address: 'b' }, { address: 'c' }], fade20: [{ address: 'z' }],
+  consensus: [{ address: 'a' }, { address: 'b' }, { address: 'c' }, { address: 'd' }],
+  consensus4: [{ address: 'a' }, { address: 'b' }, { address: 'c' }, { address: 'd' }],
 };
 const buy = (wallet, t, extra = {}) => ({ wallet, t, asset: 'tok1', conditionId: 'c1', outcome: 'Yes', price: 0.4, usd: 2000, ...extra });
 
@@ -62,32 +63,55 @@ test('paper wallets: $500 each, existing bets are folded in, checks per book', (
   assert.equal(bookCheck(st, 'slow20', 'c9', '2026-01-01', 20), 'out of cash');
 });
 
-test('decide: consensus needs 3 distinct wallets in 24h, fade targets the other side', () => {
+test('decide: consensus needs 3 distinct wallets in 24h, consensus 4+ needs 4', () => {
   const st = emptyState(20);
-  assert.ok(!decide(st, buy('a', 0), watch).some((x) => x.strategy === 'consensus'));
-  assert.ok(!decide(st, buy('b', 600), watch).some((x) => x.strategy === 'consensus'));
-  const c = decide(st, buy('c', 1200), watch).find((x) => x.strategy === 'consensus');
-  assert.ok(c);
-  assert.deepEqual(c.wallets.sort(), ['a', 'b', 'c']);
-  const f = decide(emptyState(20), buy('z', 0), watch);
-  assert.equal(f.length, 1);
-  assert.equal(f[0].target, 'opposite');
+  const fires = (w, t) => decide(st, buy(w, t), watch).map((x) => x.strategy);
+  assert.ok(!fires('a', 0).includes('consensus'));
+  assert.ok(!fires('b', 600).includes('consensus'));
+  const third = fires('c', 1200);
+  assert.ok(third.includes('consensus') && !third.includes('consensus4'));
+  assert.ok(fires('d', 1800).includes('consensus4'));
+});
+
+test('one bet per game and no favourites above 85 cents', () => {
+  const st = emptyState(20);
+  ensureBooks(st, 500);
+  st.positions.push({ book: 'consensus', strategy: 'consensus', status: 'open', conditionId: 'spread-4.5', eventSlug: 'nba-tor-lac', cost: 20, shares: 40 });
+  assert.equal(bookCheck(st, 'consensus', 'spread-5.5', '2026-01-01', 20, { event: 'nba-tor-lac' }), 'already on this game');
+  assert.equal(bookCheck(st, 'consensus', 'other', '2026-01-01', 20, { event: 'nfl-chi-sea' }), null);
+  assert.equal(bookCheck(st, 'consensus-sized', 'spread-5.5', '2026-01-01', 20, { event: 'nba-tor-lac' }), null, 'per book');
+  assert.equal(PAPER_BOOKS.includes('fade20'), false, 'fade the bottom 20 is retired');
+  assert.equal(PAPER_BOOKS.includes('consensus4-sized'), true);
+});
+
+test('retired books with bets stay in the summary', () => {
+  const st = emptyState(20);
+  st.books = { fade20: { start: 500, cash: 480 } };
+  st.positions.push({ book: 'fade20', strategy: 'fade20', status: 'lost', cost: 20, shares: 30, exit: 0, pnl: -20, entry: 0.6, theirPrice: 0.4, lagSec: 5 });
+  ensureBooks(st, 500);
+  const sum = summarizePaper(st);
+  assert.equal(sum.fade20.retired, true);
+  assert.equal(sum.fade20.equity, 480);
+  assert.equal(sum.consensus4.retired, false);
 });
 
 test('agent loop: detects a new buy, prices it from the book, settles it', async () => {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'pmpaper-'));
-  await fs.writeFile(path.join(dir, 'watchlist.json'), JSON.stringify({ strategies: { top20: [{ address: '0xa' }], slow20: [], consensus: [], fade20: [{ address: '0xa' }] } }));
+  await fs.writeFile(path.join(dir, 'watchlist.json'), JSON.stringify({ strategies: { top20: [{ address: '0xa' }], slow20: [], consensus: [], consensus4: [] } }));
   const start = Math.floor(Date.now() / 1000);
   let polls = 0;
   const server = http.createServer((req, res) => {
     const u = new URL(req.url, 'http://x');
     const send = (j) => res.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify(j));
-    if (u.pathname === '/activity') {
+    if (u.pathname === '/activity') return res.writeHead(410).end('{"error":"Data API v1 has been retired"}');
+    if (u.pathname === '/v2/activity') {
+      // Data API v2 shape: {data:[snake_case items], pagination}.
       const since = +u.searchParams.get('start');
-      if (since < start - 86400) return send([1, 2, 3].map((k) => ({ type: 'TRADE', side: 'BUY', timestamp: start - k * 86400, asset: 'old', price: 0.5, usdcSize: 1000 }))); // 30-day history: typical $1,000
+      const v2 = (items) => send({ data: items, pagination: { has_more: false, next_cursor: null } });
+      if (since < start - 86400) return v2([1, 2, 3].map((k) => ({ type: 'TRADE', side: 'BUY', timestamp: start - k * 86400, token_id: 'old', price: 0.5, usdc_size: 1000 }))); // 30-day history: typical $1,000
       polls++;
       const t = start + 1;
-      return send(t >= since ? [{ type: 'TRADE', side: 'BUY', timestamp: t, asset: 'yes1', conditionId: 'c9', outcome: 'Yes', title: 'Test market', price: 0.4, usdcSize: 5000 }] : []);
+      return v2(t >= since ? [{ type: 'TRADE', side: 'BUY', timestamp: t, token_id: 'yes1', condition_id: 'c9', event_slug: 'ev9', outcome: 'Yes', title: 'Test market', price: 0.4, usdc_size: 5000 }] : []);
     }
     if (u.pathname === '/book') return send({ asks: [{ price: '0.45', size: '1000' }], bids: [] });
     if (u.pathname === '/markets') return send([{ conditionId: 'c9', closed: true, clobTokenIds: '["yes1","no1"]', outcomes: '["Yes","No"]', outcomePrices: '["1","0"]' }]);
@@ -105,22 +129,16 @@ test('agent loop: detects a new buy, prices it from the book, settles it', async
     assert.ok(polls >= 2, 'the wallet was polled again after the bet');
     const top = state.positions.filter((p) => p.book === 'top20');
     const topSized = state.positions.filter((p) => p.book === 'top20-sized');
-    const fade = state.positions.filter((p) => p.book === 'fade20');
     assert.equal(top.length, 1, 'one bet despite repeated polls');
     assert.equal(top[0].status, 'won');
     assert.ok(Math.abs(top[0].pnl - (20 / 0.45 - 20)) < 1e-6);
     assert.equal(topSized.length, 1);
     assert.equal(topSized[0].cost, 50, '$5,000 vs a typical $1,000 buy -> capped at $50');
-    assert.equal(fade.length, 1);
-    assert.equal(fade[0].token, 'no1');
-    assert.equal(fade[0].status, 'lost');
-    assert.equal(fade[0].pnl, -20);
     const sum = summarizePaper(state);
     assert.equal(sum.top20.won, 1);
     assert.ok(Math.abs(sum.top20.equity - (500 + 20 / 0.45 - 20)) < 1e-6, 'winnings paid back into the $500 wallet');
-    assert.equal(sum.fade20.equity, 480);
     const saved = JSON.parse(await fs.readFile(path.join(dir, 'paper', 'state.json'), 'utf8'));
-    assert.equal(saved.positions.length, 4, 'state persisted (flat + sized for each strategy)');
+    assert.equal(saved.positions.length, 2, 'state persisted (flat + sized)');
   } finally {
     server.close();
     await fs.rm(dir, { recursive: true, force: true });

@@ -1,7 +1,7 @@
 (() => {
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const NAMES = { top20: 'Copy the top 20', slow20: 'Slow top 20', consensus: 'Consensus of 3+', fade20: 'Fade the bottom 20' };
+  const NAMES = { top20: 'Copy the top 20', slow20: 'Slow top 20', consensus: 'Consensus of 3+', consensus4: 'Consensus of 4+', fade20: 'Fade the bottom 20 (retired)' };
   const baseOf = (book) => String(book || '').replace(/-sized$/, '');
   const isSized = (book) => String(book || '').endsWith('-sized');
   const name = (id) => NAMES[baseOf(id)] || baseOf(id);

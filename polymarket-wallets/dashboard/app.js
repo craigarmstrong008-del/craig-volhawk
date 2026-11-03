@@ -295,10 +295,10 @@
     const pctS = (x) => `${x > 0 ? '+' : ''}${(x * 100).toFixed(1)}%`;
     const roiCell = (x) => `<span class="${x > 0 ? 'up' : x < 0 ? 'down' : ''}">${pctS(x)}</span>`;
     const ciText = (ci) => (ci ? `90% range ${pctS(ci[0])} to ${pctS(ci[1])}` : 'too few bets for a range');
-    const colors = ['var(--s1)', 'var(--s2)', 'var(--s3)', 'var(--s4)', 'var(--s5)'];
+    const colors = ['var(--s1)', 'var(--s2)', 'var(--s3)', 'var(--s4)', 'var(--s5)', 'var(--s6)', 'var(--s7)'];
     $('#bt-intro').textContent = `Wallets were ranked on ${sd(B.start)} to ${sd(B.split)} (${B.trainDays} days). Their buys from ${sd(B.split)} to ${sd(B.end)} were then copied with $${B.opts.stake} per bet and ${Math.round(B.opts.slippage * 100)}¢ slippage.`;
     $('#bt-caveats').innerHTML = (B.caveats || []).map((c) => `<li>${esc(c)}</li>`).join('');
-    $('#bt-legend').innerHTML = B.strategies.map((s, i) => `<span><i style="background:${colors[i % 5]}"></i>${esc(s.name)}</span>`).join('');
+    $('#bt-legend').innerHTML = B.strategies.map((s, i) => `<span><i style="background:${colors[i % colors.length]}"></i>${esc(s.name)}</span>`).join('');
 
     // Line chart: ROI (y) across delays (x), one line per strategy.
     function chart() {
@@ -321,8 +321,8 @@
       B.strategies.forEach((s, si) => {
         const pts = B.delays.map((d, i) => ({ i, r: s.byDelay[d.id] })).filter((p) => p.r?.n);
         if (!pts.length) return;
-        svg += `<path d="${pts.map((p, k) => `${k ? 'L' : 'M'}${X(p.i).toFixed(1)},${Y(p.r.roi).toFixed(1)}`).join('')}" fill="none" stroke="${colors[si % 5]}" stroke-width="2" stroke-linejoin="round"/>`;
-        pts.forEach((p) => (svg += `<circle data-s="${si}" data-d="${p.i}" cx="${X(p.i)}" cy="${Y(p.r.roi)}" r="4.5" fill="${colors[si % 5]}" stroke="var(--surface)" stroke-width="2"/>`));
+        svg += `<path d="${pts.map((p, k) => `${k ? 'L' : 'M'}${X(p.i).toFixed(1)},${Y(p.r.roi).toFixed(1)}`).join('')}" fill="none" stroke="${colors[si % colors.length]}" stroke-width="2" stroke-linejoin="round"/>`;
+        pts.forEach((p) => (svg += `<circle data-s="${si}" data-d="${p.i}" cx="${X(p.i)}" cy="${Y(p.r.roi)}" r="4.5" fill="${colors[si % colors.length]}" stroke="var(--surface)" stroke-width="2"/>`));
       });
       svg += '</svg>';
       el.innerHTML = svg;
@@ -342,7 +342,7 @@
 
     // Summary table.
     const head = `<thead><tr><th class="l">Strategy</th><th>Wallets</th>${B.delays.map((d) => `<th>${esc(d.label)}</th>`).join('')}</tr></thead>`;
-    const body = B.strategies.map((s, si) => `<tr data-s="${si}"><td class="l"><span class="who"><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${colors[si % 5]}"></i>${esc(s.name)}</span></td><td>${s.walletCount}</td>${B.delays.map((d) => { const r = s.byDelay[d.id]; return `<td title="${esc(ciText(r.ci))}">${r.n ? roiCell(r.roi) : '—'} <span class="addr">${r.n}</span></td>`; }).join('')}</tr>`).join('');
+    const body = B.strategies.map((s, si) => `<tr data-s="${si}"><td class="l"><span class="who"><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${colors[si % colors.length]}"></i>${esc(s.name)}</span></td><td>${s.walletCount}</td>${B.delays.map((d) => { const r = s.byDelay[d.id]; return `<td title="${esc(ciText(r.ci))}">${r.n ? roiCell(r.roi) : '—'} <span class="addr">${r.n}</span></td>`; }).join('')}</tr>`).join('');
     $('#bt-table').innerHTML = head + `<tbody>${body}</tbody>`;
 
     const ss = $('#bt-strategy'), ds = $('#bt-delay');

@@ -58,6 +58,17 @@ test('consensus fires once when the 3rd distinct wallet buys within 24h', () => 
   assert.deepEqual(sigs[0].wallets.sort(), ['a', 'b', 'c']);
 });
 
+test('consensus filters: one bet per game and an 85 cent cap', () => {
+  const b = (wallet, t, asset, eventSlug, price = 0.4) => ({ wallet, t, asset, eventSlug, conditionId: asset, usd: 1000, price });
+  const buys = ['a', 'b', 'c'].flatMap((w, i) => [b(w, i * 60, 'spread45', 'nba-tor-lac'), b(w, i * 60 + 1, 'spread55', 'nba-tor-lac')]).sort((x, y) => x.t - y.t);
+  const all = new Set(['a', 'b', 'c']);
+  assert.equal(buildSignals(buys, S('consensus-raw'), all).length, 2, 'unfiltered rule bets both spreads of one game');
+  assert.equal(buildSignals(buys, S('consensus'), all).length, 1, 'filtered rule takes one bet per game');
+  const prices = new Map([['fav', [{ t: 0, p: 0.95 }]]]);
+  const r = simulate({ t: 0, asset: 'fav', price: 0.95, maxEntry: 0.85 }, D('0'), prices, new Map([['fav', { value: 1, resolved: true }]]));
+  assert.equal(r.skip, 'favourite above cap');
+});
+
 test('simulation: delays, slippage, fading and skips', () => {
   const hist = [{ t: 0, p: 0.4 }, { t: 1800, p: 0.5 }, { t: 7200, p: 0.6 }, { t: 30000, p: 0.9 }];
   const prices = new Map([['x', hist]]);
