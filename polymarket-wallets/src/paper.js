@@ -16,6 +16,7 @@ export const PAPER_VARIANTS = [
   variant({ id: 'consensus-noesports', name: 'Consensus 3+, no esports', desc: 'Consensus of 3+, but skips esports markets (Counter-Strike, LoL, Dota and similar).', skipEsports: true }),
   variant({ id: 'consensus-limit', name: 'Consensus 3+, limit at their price', desc: 'Consensus of 3+, but bids at the price the third wallet paid instead of taking the current asks. Unfilled bids are cancelled after 30 minutes.', limitAtTheirPrice: true, limitMinutes: 30 }),
   variant({ id: 'consensus-fast', name: 'Consensus 3+ within 1 hour', desc: 'Consensus of 3+, but the 3 wallets must all buy within 1 hour of each other (not 24).', consensus: { ...CONSENSUS.consensus, windowH: 1 } }),
+  variant({ id: 'consensus-pregame', name: 'Consensus 3+, before the game only', desc: 'Consensus of 3+, but no bet once the game has started. Markets without a game time (not sports) are still bet.', preGameOnly: true }),
 ];
 const ALL_STRATEGIES = [...STRATEGIES, ...PAPER_VARIANTS];
 export const strategyOf = (id) => ALL_STRATEGIES.find((s) => s.id === id);
@@ -27,6 +28,20 @@ export const SIZINGS = ['flat', 'sized', 'pct'];
 /** Esports markets, by title or by the event slug's game prefix (e.g. "cs2-furia-faze-…", "lol-dk-blg-…"). */
 const ESPORTS_TITLE = /\b(LoL|League of Legends|Dota ?2?|CS2|CS:GO|Counter-Strike|Valorant|Overwatch|Rocket League|e-?sports?|Call of Duty|Rainbow Six|StarCraft|Mobile Legends|Honor of Kings|PUBG)\b/i;
 const ESPORTS_SLUG = /^(cs2|csgo|lol|dota2|val|valorant|cod|r6|r6s|ow|rl|mlbb|hok|sc2|pubg)-/i;
+/**
+ * Scheduled start of the game a market is about, in unix seconds, or null if it has none.
+ * Gamma gives sports markets a `gameStartTime` like "2026-11-03 19:00:00+00"; events may carry `startTime`.
+ */
+export function parseGameStart(m) {
+  const raw = m?.gameStartTime ?? m?.game_start_time ?? m?.events?.[0]?.startTime ?? m?.eventStartTime ?? null;
+  if (raw == null || raw === '') return null;
+  if (typeof raw === 'number') return raw > 1e12 ? Math.floor(raw / 1000) : raw;
+  let t = String(raw).trim().replace(' ', 'T');
+  if (/[+-]\d\d$/.test(t)) t += ':00';
+  const ms = Date.parse(t);
+  return Number.isFinite(ms) ? Math.floor(ms / 1000) : null;
+}
+
 export const isEsports = (m) => ESPORTS_TITLE.test(m.title || '') || ESPORTS_SLUG.test(m.eventSlug || '') || ESPORTS_SLUG.test(m.slug || '');
 /**
  * A "book" is one strategy traded one way, with its own paper wallet: flat $20, conviction-sized
@@ -241,6 +256,15 @@ export async function runPaper({ dataDir, minutes = 60, pollSec = 30, stake = 20
   log(`paper agent: ${wallets.length} wallets, ${PAPER_BOOKS.length} books ($${bankroll} paper wallet each; flat $${stake}, sized $${sized.base}-$${sized.max}), ${minutes} min` + (reset ? ` (${reset} wallets start fresh; older trades are ignored)` : ''));
 
   const markets = new Map();
+  const gameStarts = new Map();
+  const gameStartOf = async (conditionId) => {
+    if (!conditionId) return null;
+    if (!gameStarts.has(conditionId)) {
+      const m = (await api.marketsByCondition([conditionId]).catch(() => []))[0];
+      gameStarts.set(conditionId, m ? parseGameStart(m) : null);
+    }
+    return gameStarts.get(conditionId);
+  };
   const save = async () => {
     const now = Math.floor(Date.now() / 1000);
     state.updatedAt = now;
@@ -264,6 +288,7 @@ export async function runPaper({ dataDir, minutes = 60, pollSec = 30, stake = 20
       token: o.token, conditionId: o.conditionId, title: o.title, slug: o.slug, eventSlug: o.eventSlug,
       outcome: o.outcome, wallets: o.wallets, theirPrice: o.theirPrice, theirTs: o.theirTs, theirUsd: o.theirUsd, theirTypicalUsd: o.theirTypicalUsd,
       detectedAt, lagSec: detectedAt - o.theirTs, entry: fill.avg, bestAsk: fill.bestAsk, shares: fill.shares, cost: o.amount,
+      gameStart: o.gameStart ?? null, inPlay: o.gameStart ? detectedAt >= o.gameStart : null,
       ...(o.limit != null ? { limit: o.limit } : {}),
     });
     state.books[o.book].cash -= o.amount;
@@ -299,6 +324,8 @@ export async function runPaper({ dataDir, minutes = 60, pollSec = 30, stake = 20
         if (!tgt) { bump(state.skipped, `${want.strategy}: no opposite side`); continue; }
         const strat = strategyOf(want.strategy);
         const theirPrice = want.target === 'same' ? buy.price : 1 - buy.price;
+        const gameStart = await gameStartOf(buy.conditionId);
+        if (strat.preGameOnly && gameStart && Date.now() / 1000 >= gameStart) { bump(state.skipped, `${want.strategy}: game already started`); continue; }
         let asks = null;
         for (const sizing of sizingsFor(want.strategy)) {
           const book = bookId(want.strategy, sizing);
@@ -309,7 +336,7 @@ export async function runPaper({ dataDir, minutes = 60, pollSec = 30, stake = 20
           if (why) { bump(state.skipped, `${book}: ${why}`); continue; }
           try {
             if (!asks) asks = (await api.book(tgt.token)).asks;
-            const order = { book, strategy: want.strategy, sizing, token: tgt.token, outcome: tgt.outcome, conditionId: buy.conditionId, title: buy.title, slug: buy.slug, eventSlug: buy.eventSlug, wallets: want.wallets, theirPrice, theirTs: buy.t, theirUsd: buy.usd, theirTypicalUsd: typical.get(buy.wallet) ?? null, day: want.day, amount };
+            const order = { book, strategy: want.strategy, sizing, token: tgt.token, outcome: tgt.outcome, conditionId: buy.conditionId, title: buy.title, slug: buy.slug, eventSlug: buy.eventSlug, wallets: want.wallets, theirPrice, theirTs: buy.t, theirUsd: buy.usd, theirTypicalUsd: typical.get(buy.wallet) ?? null, gameStart, day: want.day, amount };
             if (strat.limitAtTheirPrice) {
               // Bid at their price: fill now only from asks at or below it, otherwise wait for the price to come back.
               const fill = fillFromBook(asks.filter((a) => a.price <= theirPrice + 1e-9), amount);

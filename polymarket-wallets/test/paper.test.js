@@ -4,7 +4,7 @@ import http from 'node:http';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { fillFromBook, decide, emptyState, summarizePaper, stakeFor, ensureBooks, bookCheck, PAPER_BOOKS, typicalBuy, recordError, pctStake, bookEquity, splitBook, isEsports, PAPER_STRATEGIES } from '../src/paper.js';
+import { fillFromBook, decide, emptyState, summarizePaper, stakeFor, ensureBooks, bookCheck, PAPER_BOOKS, typicalBuy, recordError, pctStake, bookEquity, splitBook, isEsports, PAPER_STRATEGIES, parseGameStart } from '../src/paper.js';
 
 test('fills walk the order book', () => {
   const asks = [{ price: 0.5, size: 10 }, { price: 0.6, size: 100 }];
@@ -110,7 +110,7 @@ test('agent loop: detects a new buy, prices it from the book, settles it', async
       const v2 = (items) => send({ data: items, pagination: { has_more: false, next_cursor: null } });
       if (since < start - 86400) return v2([1, 2, 3].map((k) => ({ type: 'TRADE', side: 'BUY', timestamp: start - k * 86400, token_id: 'old', price: 0.5, usdc_size: 1000 }))); // 30-day history: typical $1,000
       polls++;
-      const t = start + 1;
+      const t = start + 30; // ahead of the agent's start, however slow the machine, so it counts as new
       return v2(t >= since ? [{ type: 'TRADE', side: 'BUY', timestamp: t, token_id: 'yes1', condition_id: 'c9', event_slug: 'ev9', outcome: 'Yes', title: 'Test market', price: 0.4, usdc_size: 5000 }] : []);
     }
     if (u.pathname === '/book') return send({ asks: [{ price: '0.45', size: '1000' }], bids: [] });
@@ -212,12 +212,12 @@ test('agent loop: limit book bids at their price, fills only when the asks come 
     if (u.pathname === '/v2/activity') {
       const since = +u.searchParams.get('start');
       const i = wallets.indexOf(u.searchParams.get('user'));
-      const t = start + 1 + i;
+      const t = start + 30 + i;
       const items = since > start - 86400 && t >= since ? [{ type: 'TRADE', side: 'BUY', timestamp: t, token_id: 'yes1', condition_id: 'c9', event_slug: 'ev9', outcome: 'Yes', title: 'Test market', price: 0.4, usdc_size: 2000 }] : [];
       return send({ data: items, pagination: { has_more: false, next_cursor: null } });
     }
     if (u.pathname === '/book') return send({ asks: [{ price: ask, size: '1000' }], bids: [] });
-    if (u.pathname === '/markets') return send([{ conditionId: 'c9', closed: false, clobTokenIds: '["yes1","no1"]', outcomes: '["Yes","No"]', outcomePrices: '["0.5","0.5"]' }]);
+    if (u.pathname === '/markets') return send([{ conditionId: 'c9', closed: false, clobTokenIds: '["yes1","no1"]', outcomes: '["Yes","No"]', outcomePrices: '["0.5","0.5"]', gameStartTime: '2020-01-01 00:00:00+00' }]);
     if (u.pathname === '/midpoint') return send({ mid: '0.5' });
     res.writeHead(404).end();
   });
@@ -231,6 +231,10 @@ test('agent loop: limit book bids at their price, fills only when the asks come 
     const plain = state.positions.filter((p) => p.book === 'consensus');
     assert.equal(plain.length, 1, 'plain consensus takes the 45c ask');
     assert.ok(Math.abs(plain[0].entry - 0.45) < 1e-9);
+    assert.equal(plain[0].gameStart, Date.UTC(2020, 0, 1) / 1000, 'game start recorded on the bet');
+    assert.equal(plain[0].inPlay, true);
+    assert.equal(state.positions.filter((p) => p.book === 'consensus-pregame').length, 0, 'pre-game book skips a game in progress');
+    assert.equal(state.skipped['consensus-pregame: game already started'], 1);
     assert.equal(state.positions.filter((p) => p.book === 'consensus-limit').length, 0, 'no fill above their 40c');
     assert.equal(state.pending.length, 1, 'bid waits');
     assert.equal(summarizePaper(state)['consensus-limit'].waiting, 1);
@@ -253,4 +257,13 @@ test('agent loop: limit book bids at their price, fills only when the asks come 
     server.close();
     await fs.rm(dir, { recursive: true, force: true });
   }
+});
+
+test('game start times parse from Gamma formats', () => {
+  assert.equal(parseGameStart({ gameStartTime: '2026-11-03 19:00:00+00' }), Date.UTC(2026, 10, 3, 19) / 1000);
+  assert.equal(parseGameStart({ gameStartTime: '2026-11-03T19:00:00Z' }), Date.UTC(2026, 10, 3, 19) / 1000);
+  assert.equal(parseGameStart({ events: [{ startTime: '2026-11-03T19:30:00Z' }] }), Date.UTC(2026, 10, 3, 19, 30) / 1000);
+  assert.equal(parseGameStart({ question: 'Will X win the election?' }), null, 'non-sports market has no game time');
+  assert.equal(parseGameStart({ gameStartTime: 'TBD' }), null);
+  assert.ok(PAPER_BOOKS.includes('consensus-pregame') && !PAPER_BOOKS.includes('consensus-pregame-sized'));
 });
