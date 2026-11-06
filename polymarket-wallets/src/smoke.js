@@ -32,3 +32,12 @@ await step('positions (open)', () => api.positions(w),
   (r) => `${r.length} open, ${JSON.stringify(pick(r[0], ['asset', 'size', 'avgPrice', 'curPrice', 'currentValue', 'cashPnl', 'redeemable', 'endDate']))}`);
 await step('portfolioValue', () => api.portfolioValue(w), (r) => `$${Math.round(r)}`);
 await step('pnlSeries (economic_pnl)', () => api.pnlSeries(w), (r) => `${r.length} points, last ${JSON.stringify(r.at(-1))}`);
+const recent = await api.recentTrades(w, now - 3 * 86400, { limit: 100 }).catch(() => []);
+const cond = recent.find((e) => /vs\.?\s/i.test(e.title || ''))?.conditionId || recent[0]?.conditionId;
+await step('gamma market game start (paper pre-game book)', async () => {
+  const { parseGameStart } = await import('./paper.js');
+  const m = (await api.marketsByCondition([cond]))[0];
+  if (!m) return { title: `no gamma market for ${cond} (informational, not a failure)`, keys: {}, events: [], parsed: null };
+  const keys = Object.keys(m).filter((k) => /start|time/i.test(k));
+  return { title: m.question || m.title, keys: Object.fromEntries(keys.map((k) => [k, m[k]])), events: (m.events || []).map((e) => e.startTime ?? null), parsed: parseGameStart(m) };
+}, (r) => `${String(r.title).slice(0, 50)} parsed=${r.parsed ? new Date(r.parsed * 1000).toISOString() : 'none'} ${JSON.stringify(r.keys)} events.startTime=${JSON.stringify(r.events)}`);

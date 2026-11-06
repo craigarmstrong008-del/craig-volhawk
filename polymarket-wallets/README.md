@@ -56,6 +56,8 @@ Strategies: copy the top 20, copy the top 20 slow traders (20 trades a day or fe
   - **No esports**: skips Counter-Strike, LoL, Dota and similar markets.
   - **Limit at their price**: bids at the price the third wallet paid instead of taking the asks. It cancels after 30 minutes if not filled.
   - **Within 1 hour**: the three wallets must all buy within 1 hour of each other, not 24.
+  - **Before the game only**: no bet once the game has started, using the game time from Polymarket's market data. Markets without a game time, which are not sports, are still bet.
+- Every bet records the game's start time (`gameStart`) and whether it was placed during the game (`inPlay`), so results can be split by before versus during the game.
 - State is kept in `data/paper/state.json`, and results appear in the **Paper trading** tab.
 
 `.github/workflows/polymarket-paper.yml` runs the agent in roughly 5.5-hour stretches, saving progress every 30 minutes. Scheduled runs only fire once the workflow is on the repository's default branch. Until then it runs when its files change, or locally with the command above.
