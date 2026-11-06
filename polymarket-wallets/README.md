@@ -52,6 +52,10 @@ Strategies: copy the top 20, copy the top 20 slow traders (20 trades a day or fe
 
 - Limits: one open bet per strategy per market, and at most 40 bets per strategy per day.
 - Only trades made after the agent starts count. After a gap of more than 10 minutes, the backlog is skipped rather than traded late.
+- Experiment books, which run in paper trading only. Each is Consensus of 3+ at a flat $20 with one change, so it can be compared directly with the plain consensus book:
+  - **No esports**: skips Counter-Strike, LoL, Dota and similar markets.
+  - **Limit at their price**: bids at the price the third wallet paid instead of taking the asks. It cancels after 30 minutes if not filled.
+  - **Within 1 hour**: the three wallets must all buy within 1 hour of each other, not 24.
 - State is kept in `data/paper/state.json`, and results appear in the **Paper trading** tab.
 
 `.github/workflows/polymarket-paper.yml` runs the agent in roughly 5.5-hour stretches, saving progress every 30 minutes. Scheduled runs only fire once the workflow is on the repository's default branch. Until then it runs when its files change, or locally with the command above.

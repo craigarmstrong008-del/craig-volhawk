@@ -1,7 +1,7 @@
 (() => {
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const NAMES = { top20: 'Copy the top 20', slow20: 'Slow top 20', consensus: 'Consensus of 3+', consensus4: 'Consensus of 4+', fade20: 'Fade the bottom 20 (retired)' };
+  const NAMES = { top20: 'Copy the top 20', slow20: 'Slow top 20', consensus: 'Consensus of 3+', consensus4: 'Consensus of 4+', 'consensus-noesports': 'Consensus 3+, no esports', 'consensus-limit': 'Consensus 3+, limit at their price', 'consensus-fast': 'Consensus 3+ within 1 hour', fade20: 'Fade the bottom 20 (retired)' };
   const baseOf = (book) => String(book || '').replace(/-(sized|pct)$/, '');
   const sizingOf = (book) => (/-pct$/.test(String(book || '')) ? 'pct' : /-sized$/.test(String(book || '')) ? 'sized' : 'flat');
   const isSized = (book) => sizingOf(book) === 'sized';

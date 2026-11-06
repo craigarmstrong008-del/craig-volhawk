@@ -4,7 +4,7 @@ import http from 'node:http';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { fillFromBook, decide, emptyState, summarizePaper, stakeFor, ensureBooks, bookCheck, PAPER_BOOKS, typicalBuy, recordError, pctStake, bookEquity, splitBook } from '../src/paper.js';
+import { fillFromBook, decide, emptyState, summarizePaper, stakeFor, ensureBooks, bookCheck, PAPER_BOOKS, typicalBuy, recordError, pctStake, bookEquity, splitBook, isEsports, PAPER_STRATEGIES } from '../src/paper.js';
 
 test('fills walk the order book', () => {
   const asks = [{ price: 0.5, size: 10 }, { price: 0.6, size: 100 }];
@@ -172,4 +172,85 @@ test('3% of wallet: stakes follow the wallet value, with a $5 floor and 10% cap'
   st.books['consensus-pct'].cash = 470;
   st.positions.push({ book: 'consensus-pct', status: 'open', cost: 30, shares: 60, mark: 0.75 });
   assert.equal(bookEquity(st, 'consensus-pct'), 470 + 45, 'cash plus open bets at their latest price');
+});
+
+test('experiment books: no esports, fast consensus, limit bids; each is flat $20 only', () => {
+  for (const b of ['consensus-noesports', 'consensus-limit', 'consensus-fast']) assert.ok(PAPER_BOOKS.includes(b), b);
+  assert.ok(!PAPER_BOOKS.includes('consensus-limit-sized') && !PAPER_BOOKS.includes('consensus-fast-pct'), 'flat only');
+  assert.deepEqual(splitBook('consensus-noesports'), { strategy: 'consensus-noesports', sizing: 'flat' });
+  assert.ok(isEsports({ title: 'Counter-Strike: FURIA vs FaZe - Map 1 Winner' }));
+  assert.ok(isEsports({ title: 'Total Kills Over/Under 24.5 in Game 1?', eventSlug: 'lol-dk-blg-2026-11-03' }));
+  assert.ok(!isEsports({ title: 'Rolex Paris Masters: Arthur Fils vs Taylor Fritz', eventSlug: 'atp-fils-fritz-2026-11-03' }));
+
+  // Wallets 1 hour apart: plain consensus (24h window) fires, the 1-hour version does not.
+  const st = emptyState(20);
+  const fires = (w, t, extra) => decide(st, buy(w, t, extra), watch).map((x) => x.strategy);
+  fires('a', 0); fires('b', 3600);
+  const third = fires('c', 7200);
+  assert.ok(third.includes('consensus') && third.includes('consensus-noesports') && third.includes('consensus-limit'));
+  assert.ok(!third.includes('consensus-fast'), 'needs all 3 within 1 hour');
+  assert.ok(fires('d', 7300).includes('consensus4'), 'the short window does not drop buyers the 24h strategies still need');
+
+  // Esports never counts for the no-esports book.
+  const st2 = emptyState(20);
+  const esp = { asset: 'tokE', conditionId: 'cE', eventSlug: 'cs2-furia-faze-2026-11-02', title: 'Counter-Strike: FURIA vs FaZe (BO3)' };
+  const f2 = ['a', 'b', 'c'].map((w, i) => decide(st2, buy(w, i * 60, esp), watch).map((x) => x.strategy)).at(-1);
+  assert.ok(f2.includes('consensus') && !f2.includes('consensus-noesports'));
+  assert.ok(st2.skipped['consensus-noesports: esports'] >= 3);
+  assert.ok(PAPER_STRATEGIES.indexOf('consensus') < PAPER_STRATEGIES.indexOf('consensus-fast'));
+});
+
+test('agent loop: limit book bids at their price, fills only when the asks come down to it', async () => {
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'pmlimit-'));
+  const wallets = ['0xa', '0xb', '0xc'];
+  await fs.writeFile(path.join(dir, 'watchlist.json'), JSON.stringify({ strategies: { top20: [], slow20: [], consensus: wallets.map((address) => ({ address })), consensus4: [] } }));
+  const start = Math.floor(Date.now() / 1000);
+  let ask = '0.45';
+  const server = http.createServer((req, res) => {
+    const u = new URL(req.url, 'http://x');
+    const send = (j) => res.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify(j));
+    if (u.pathname === '/v2/activity') {
+      const since = +u.searchParams.get('start');
+      const i = wallets.indexOf(u.searchParams.get('user'));
+      const t = start + 1 + i;
+      const items = since > start - 86400 && t >= since ? [{ type: 'TRADE', side: 'BUY', timestamp: t, token_id: 'yes1', condition_id: 'c9', event_slug: 'ev9', outcome: 'Yes', title: 'Test market', price: 0.4, usdc_size: 2000 }] : [];
+      return send({ data: items, pagination: { has_more: false, next_cursor: null } });
+    }
+    if (u.pathname === '/book') return send({ asks: [{ price: ask, size: '1000' }], bids: [] });
+    if (u.pathname === '/markets') return send([{ conditionId: 'c9', closed: false, clobTokenIds: '["yes1","no1"]', outcomes: '["Yes","No"]', outcomePrices: '["0.5","0.5"]' }]);
+    if (u.pathname === '/midpoint') return send({ mid: '0.5' });
+    res.writeHead(404).end();
+  });
+  await new Promise((r) => server.listen(0, r));
+  const base = `http://127.0.0.1:${server.address().port}`;
+  Object.assign(process.env, { PM_DATA_API: base, PM_CLOB_API: base, PM_GAMMA_API: base });
+  try {
+    const { runPaper } = await import('../src/paper.js');
+    const run = () => runPaper({ dataDir: dir, minutes: 0.01, pollSec: 1, settleEveryMin: 0, log: () => {} });
+    let state = await run();
+    const plain = state.positions.filter((p) => p.book === 'consensus');
+    assert.equal(plain.length, 1, 'plain consensus takes the 45c ask');
+    assert.ok(Math.abs(plain[0].entry - 0.45) < 1e-9);
+    assert.equal(state.positions.filter((p) => p.book === 'consensus-limit').length, 0, 'no fill above their 40c');
+    assert.equal(state.pending.length, 1, 'bid waits');
+    assert.equal(summarizePaper(state)['consensus-limit'].waiting, 1);
+    assert.equal(bookCheck(state, 'consensus-limit', 'c9', '2026-01-01', 20), 'bid already waiting');
+
+    // An expired bid elsewhere is cancelled; ours fills once the ask drops to 40c.
+    const file = path.join(dir, 'paper', 'state.json');
+    const saved = JSON.parse(await fs.readFile(file, 'utf8'));
+    saved.pending.push({ ...saved.pending[0], token: 'zz', conditionId: 'cz', eventSlug: 'evz', limit: 0.3, expiresAt: start - 1 });
+    await fs.writeFile(file, JSON.stringify(saved));
+    ask = '0.40';
+    state = await run();
+    const lim = state.positions.filter((p) => p.book === 'consensus-limit');
+    assert.equal(lim.length, 1);
+    assert.ok(Math.abs(lim[0].entry - 0.4) < 1e-9 && lim[0].limit === 0.4);
+    assert.equal(state.pending.length, 0, 'filled and expired bids are both gone');
+    assert.equal(state.skipped['consensus-limit: bid not filled'], 1);
+    assert.ok(Math.abs(state.books['consensus-limit'].cash - 480) < 1e-9);
+  } finally {
+    server.close();
+    await fs.rm(dir, { recursive: true, force: true });
+  }
 });

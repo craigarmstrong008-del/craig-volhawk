@@ -382,7 +382,7 @@
     const btn = document.querySelector('[data-tab="paper"]');
     if (!P || !P.summary) { $('#pp-empty').hidden = false; $('#pp-body').hidden = true; return; }
     const names = Object.fromEntries((window.BACKTEST?.strategies || []).map((s) => [s.id, s.name]));
-    const nm = (id) => esc(`${names[String(id).replace(/-(sized|pct)$/, '')] || id}${String(id).endsWith('-sized') ? ' (sized)' : String(id).endsWith('-pct') ? ' (3% of wallet)' : ''}`);
+    const nm = (id) => esc(`${names[String(id).replace(/-(sized|pct)$/, '')] || P.summary[id]?.name || id}${String(id).endsWith('-sized') ? ' (sized)' : String(id).endsWith('-pct') ? ' (3% of wallet)' : ''}`);
     const when = (ts) => (ts ? new Date(ts * 1000).toISOString().slice(0, 16).replace('T', ' ') + ' UTC' : '—');
     $('#pp-meta').textContent = `Running since ${when(P.startedAt)}. Last update ${when(P.updatedAt)} (${ago(P.updatedAt)}). Flat $20 and conviction-sized $10–$50 bets, a $${P.bankroll || 500} paper wallet per strategy, no real orders.`;
     const all = Object.values(P.summary);

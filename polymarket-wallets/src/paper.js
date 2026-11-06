@@ -6,14 +6,34 @@ import * as api from './api.js';
 import { STRATEGIES, eventKey } from './backtest.js';
 import { DAY, num, pool, sleep } from './util.js';
 
-export const PAPER_STRATEGIES = STRATEGIES.filter((s) => !s.select.all && s.paper !== false).map((s) => s.id);
+/**
+ * Paper-only experiments: each is "Consensus of 3+" with exactly one thing changed, traded flat $20,
+ * so it can be compared like for like with the plain consensus book. They follow consensus's wallets.
+ */
+const CONSENSUS = STRATEGIES.find((s) => s.id === 'consensus');
+const variant = (v) => ({ ...CONSENSUS, pctOfWallet: null, sizings: ['flat'], watchFrom: 'consensus', ...v });
+export const PAPER_VARIANTS = [
+  variant({ id: 'consensus-noesports', name: 'Consensus 3+, no esports', desc: 'Consensus of 3+, but skips esports markets (Counter-Strike, LoL, Dota and similar).', skipEsports: true }),
+  variant({ id: 'consensus-limit', name: 'Consensus 3+, limit at their price', desc: 'Consensus of 3+, but bids at the price the third wallet paid instead of taking the current asks. Unfilled bids are cancelled after 30 minutes.', limitAtTheirPrice: true, limitMinutes: 30 }),
+  variant({ id: 'consensus-fast', name: 'Consensus 3+ within 1 hour', desc: 'Consensus of 3+, but the 3 wallets must all buy within 1 hour of each other (not 24).', consensus: { ...CONSENSUS.consensus, windowH: 1 } }),
+];
+const ALL_STRATEGIES = [...STRATEGIES, ...PAPER_VARIANTS];
+export const strategyOf = (id) => ALL_STRATEGIES.find((s) => s.id === id);
+const MAX_WINDOW_H = Math.max(...ALL_STRATEGIES.filter((s) => s.consensus).map((s) => s.consensus.windowH));
+
+export const PAPER_STRATEGIES = [...STRATEGIES.filter((s) => !s.select.all && s.paper !== false), ...PAPER_VARIANTS].map((s) => s.id);
 export const SIZINGS = ['flat', 'sized', 'pct'];
+
+/** Esports markets, by title or by the event slug's game prefix (e.g. "cs2-furia-faze-…", "lol-dk-blg-…"). */
+const ESPORTS_TITLE = /\b(LoL|League of Legends|Dota ?2?|CS2|CS:GO|Counter-Strike|Valorant|Overwatch|Rocket League|e-?sports?|Call of Duty|Rainbow Six|StarCraft|Mobile Legends|Honor of Kings|PUBG)\b/i;
+const ESPORTS_SLUG = /^(cs2|csgo|lol|dota2|val|valorant|cod|r6|r6s|ow|rl|mlbb|hok|sc2|pubg)-/i;
+export const isEsports = (m) => ESPORTS_TITLE.test(m.title || '') || ESPORTS_SLUG.test(m.eventSlug || '') || ESPORTS_SLUG.test(m.slug || '');
 /**
  * A "book" is one strategy traded one way, with its own paper wallet: flat $20, conviction-sized
  * $10-$50, or (for strategies with pctOfWallet) a fixed share of the wallet's current value.
  */
 export const bookId = (strategy, sizing) => (sizing === 'flat' ? strategy : `${strategy}-${sizing}`);
-export const sizingsFor = (id) => (STRATEGIES.find((s) => s.id === id)?.pctOfWallet ? SIZINGS : SIZINGS.filter((z) => z !== 'pct'));
+export const sizingsFor = (id) => { const s = strategyOf(id); return s?.sizings || (s?.pctOfWallet ? SIZINGS : SIZINGS.filter((z) => z !== 'pct')); };
 export const PAPER_BOOKS = PAPER_STRATEGIES.flatMap((id) => sizingsFor(id).map((z) => bookId(id, z)));
 export const splitBook = (b) => { const m = String(b).match(/^(.*?)-(sized|pct)$/); return m ? { strategy: m[1], sizing: m[2] } : { strategy: String(b), sizing: 'flat' }; };
 
@@ -73,7 +93,7 @@ export function fillFromBook(asks, stake) {
 }
 
 export function emptyState(stake) {
-  return { version: 1, startedAt: Math.floor(Date.now() / 1000), stake, lastSeen: {}, recent: {}, dedupe: {}, daily: {}, skipped: {}, positions: [], log: [] };
+  return { version: 1, startedAt: Math.floor(Date.now() / 1000), stake, lastSeen: {}, recent: {}, dedupe: {}, daily: {}, skipped: {}, positions: [], pending: [], log: [] };
 }
 
 const bump = (o, k) => (o[k] = (o[k] || 0) + 1);
@@ -97,20 +117,24 @@ export function decide(state, buy, watch) {
   const wants = [];
   const day = new Date(buy.t * 1000).toISOString().slice(0, 10);
   for (const id of PAPER_STRATEGIES) {
-    const s = STRATEGIES.find((x) => x.id === id);
-    const list = watch[id] || [];
+    const s = strategyOf(id);
+    const list = watch[id] || (s.watchFrom ? watch[s.watchFrom] : null) || [];
     if (!list.some((w) => w.address === buy.wallet)) continue;
     if (buy.usd < s.minUsd) continue;
+    if (s.skipEsports && isEsports(buy)) { bump(state.skipped, `${id}: esports`); continue; }
     const dk = `${id}|${buy.wallet}|${buy.asset}`;
     if (state.dedupe[dk] && buy.t - state.dedupe[dk] < DAY) continue;
     state.dedupe[dk] = buy.t;
 
     let wallets = [buy.wallet];
     if (s.consensus) {
+      // One shared list of recent buyers per outcome, kept for the longest window any strategy uses;
+      // each strategy then counts only the buyers inside its own window.
       const rk = buy.asset;
-      const arr = (state.recent[rk] || []).filter((x) => buy.t - x.t <= s.consensus.windowH * 3600 && x.wallet !== buy.wallet);
-      arr.push({ wallet: buy.wallet, t: buy.t });
-      state.recent[rk] = arr;
+      const all = (state.recent[rk] || []).filter((x) => buy.t - x.t <= MAX_WINDOW_H * 3600 && x.wallet !== buy.wallet);
+      all.push({ wallet: buy.wallet, t: buy.t });
+      state.recent[rk] = all;
+      const arr = all.filter((x) => buy.t - x.t <= s.consensus.windowH * 3600);
       if (arr.length < s.consensus.k) continue;
       const ck = `${id}|cool|${buy.asset}`;
       if (state.dedupe[ck] && buy.t < state.dedupe[ck]) { bump(state.skipped, `${id}: cooldown`); continue; }
@@ -127,6 +151,8 @@ export function decide(state, buy, watch) {
 export function bookCheck(state, book, conditionId, day, stake, { maxBetsPerDay = 40, event = null } = {}) {
   if (state.positions.some((p) => p.book === book && p.status === 'open' && p.conditionId === conditionId)) return 'already holding';
   if (event && state.positions.some((p) => p.book === book && p.status === 'open' && eventKey(p) === event)) return 'already on this game';
+  const waiting = (state.pending || []).filter((o) => o.book === book);
+  if (waiting.some((o) => o.conditionId === conditionId || (event && eventKey(o) === event))) return 'bid already waiting';
   if ((state.daily[`${book}|${day}`] || 0) >= maxBetsPerDay) return 'daily cap';
   if ((state.books[book]?.cash ?? 0) < stake) return 'out of cash';
   return null;
@@ -166,7 +192,9 @@ export function summarizePaper(state) {
     const equity = wallet.cash + openValue;
     by[b] = {
       ...splitBook(b), retired: !PAPER_BOOKS.includes(b),
-      pctOfWallet: STRATEGIES.find((x) => x.id === splitBook(b).strategy)?.pctOfWallet ?? null,
+      name: strategyOf(splitBook(b).strategy)?.name ?? null,
+      pctOfWallet: strategyOf(splitBook(b).strategy)?.pctOfWallet ?? null,
+      waiting: (state.pending || []).filter((o) => o.book === b).length,
       bets: ps.length, open: open.length, settled: settled.length,
       won: settled.filter((p) => p.pnl > 0).length, realised, staked, roi: staked ? realised / staked : null,
       unrealised: openValue - openCost, openCost,
@@ -197,6 +225,7 @@ export async function runPaper({ dataDir, minutes = 60, pollSec = 30, stake = 20
   let reset = 0;
   for (const w of wallets) if (!state.lastSeen[w] || now0 - state.lastSeen[w] > maxGapMin * 60) { state.lastSeen[w] = now0; reset++; }
   ensureBooks(state, bankroll);
+  state.pending = state.pending || [];
   // Each wallet's typical copy-sized buy: the median of its own buys at or above the smallest copy
   // trigger, over its last 500 trades (30 days at most). Large orders fill as many small trades, so
   // comparing against all fills would make every copied buy look like maximum conviction.
@@ -225,6 +254,22 @@ export async function runPaper({ dataDir, minutes = 60, pollSec = 30, stake = 20
     await fs.rename(tmp, stateFile);
   };
   const note = (msg) => { const line = `${new Date().toISOString().slice(0, 19)}Z ${msg}`; state.log.push(line); log(`  ${line}`); };
+  /** Record a filled paper bet (after the price limits) and take its cost from the book's cash. */
+  const openBet = (o, fill, strat) => {
+    if (fill.avg >= 0.99) { bump(state.skipped, `${o.book}: price too high`); return; }
+    if (strat?.maxEntry != null && fill.avg > strat.maxEntry) { bump(state.skipped, `${o.book}: favourite above ${Math.round(strat.maxEntry * 100)}¢`); return; }
+    const detectedAt = Math.floor(Date.now() / 1000);
+    state.positions.push({
+      id: `${o.book}-${o.token}-${detectedAt}`, book: o.book, strategy: o.strategy, sizing: o.sizing, status: 'open',
+      token: o.token, conditionId: o.conditionId, title: o.title, slug: o.slug, eventSlug: o.eventSlug,
+      outcome: o.outcome, wallets: o.wallets, theirPrice: o.theirPrice, theirTs: o.theirTs, theirUsd: o.theirUsd, theirTypicalUsd: o.theirTypicalUsd,
+      detectedAt, lagSec: detectedAt - o.theirTs, entry: fill.avg, bestAsk: fill.bestAsk, shares: fill.shares, cost: o.amount,
+      ...(o.limit != null ? { limit: o.limit } : {}),
+    });
+    state.books[o.book].cash -= o.amount;
+    state.daily[`${o.book}|${o.day}`] = (state.daily[`${o.book}|${o.day}`] || 0) + 1;
+    note(`${o.book}: bought ${o.outcome} on "${(o.title || '').slice(0, 60)}" for $${o.amount} at ${(fill.avg * 100).toFixed(1)}¢ (they paid ${(o.theirPrice * 100).toFixed(1)}¢ with $${Math.round(o.theirUsd)}, ${detectedAt - o.theirTs}s ago)`);
+  };
 
   const deadline = Date.now() + minutes * 60e3;
   let lastSettle = 0;
@@ -252,35 +297,48 @@ export async function runPaper({ dataDir, minutes = 60, pollSec = 30, stake = 20
         let tgt;
         try { tgt = await targetToken(want, markets); } catch { bump(state.skipped, `${want.strategy}: pricing error`); continue; }
         if (!tgt) { bump(state.skipped, `${want.strategy}: no opposite side`); continue; }
+        const strat = strategyOf(want.strategy);
+        const theirPrice = want.target === 'same' ? buy.price : 1 - buy.price;
         let asks = null;
         for (const sizing of sizingsFor(want.strategy)) {
           const book = bookId(want.strategy, sizing);
-          const pct = STRATEGIES.find((x) => x.id === want.strategy)?.pctOfWallet;
           const amount = sizing === 'pct'
-            ? pctStake(bookEquity(state, book), state.books[book]?.cash ?? 0, pct)
+            ? pctStake(bookEquity(state, book), state.books[book]?.cash ?? 0, strat.pctOfWallet)
             : stakeFor(sizing, buy.usd, typical.get(buy.wallet), { stake, ...sized });
-          const strat = STRATEGIES.find((x) => x.id === want.strategy);
           const why = bookCheck(state, book, buy.conditionId, want.day, amount, { maxBetsPerDay, event: strat.oneBetPerEvent ? eventKey(buy) : null });
           if (why) { bump(state.skipped, `${book}: ${why}`); continue; }
           try {
             if (!asks) asks = (await api.book(tgt.token)).asks;
+            const order = { book, strategy: want.strategy, sizing, token: tgt.token, outcome: tgt.outcome, conditionId: buy.conditionId, title: buy.title, slug: buy.slug, eventSlug: buy.eventSlug, wallets: want.wallets, theirPrice, theirTs: buy.t, theirUsd: buy.usd, theirTypicalUsd: typical.get(buy.wallet) ?? null, day: want.day, amount };
+            if (strat.limitAtTheirPrice) {
+              // Bid at their price: fill now only from asks at or below it, otherwise wait for the price to come back.
+              const fill = fillFromBook(asks.filter((a) => a.price <= theirPrice + 1e-9), amount);
+              if (fill) { openBet(order, fill, strat); continue; }
+              const placedAt = Math.floor(Date.now() / 1000);
+              state.pending.push({ ...order, limit: theirPrice, placedAt, expiresAt: placedAt + (strat.limitMinutes || 30) * 60 });
+              note(`${book}: bid $${amount} at ${(theirPrice * 100).toFixed(1)}¢ for ${tgt.outcome} on "${(buy.title || '').slice(0, 60)}" (asks start at ${asks[0] ? (asks[0].price * 100).toFixed(1) : '?'}¢)`);
+              continue;
+            }
             const fill = fillFromBook(asks, amount);
             if (!fill) { bump(state.skipped, `${book}: not enough liquidity`); continue; }
-            if (fill.avg >= 0.99) { bump(state.skipped, `${book}: price too high`); continue; }
-            if (strat.maxEntry != null && fill.avg > strat.maxEntry) { bump(state.skipped, `${book}: favourite above ${Math.round(strat.maxEntry * 100)}¢`); continue; }
-            const detectedAt = Math.floor(Date.now() / 1000);
-            const theirPrice = want.target === 'same' ? buy.price : 1 - buy.price;
-            state.positions.push({
-              id: `${book}-${tgt.token}-${detectedAt}`, book, strategy: want.strategy, sizing, status: 'open',
-              token: tgt.token, conditionId: buy.conditionId, title: buy.title, slug: buy.slug, eventSlug: buy.eventSlug,
-              outcome: tgt.outcome, wallets: want.wallets, theirPrice, theirTs: buy.t, theirUsd: buy.usd, theirTypicalUsd: typical.get(buy.wallet) ?? null,
-              detectedAt, lagSec: detectedAt - buy.t, entry: fill.avg, bestAsk: fill.bestAsk, shares: fill.shares, cost: amount,
-            });
-            state.books[book].cash -= amount;
-            state.daily[`${book}|${want.day}`] = (state.daily[`${book}|${want.day}`] || 0) + 1;
-            note(`${book}: bought ${tgt.outcome} on "${(buy.title || '').slice(0, 60)}" for $${amount} at ${(fill.avg * 100).toFixed(1)}¢ (they paid ${(theirPrice * 100).toFixed(1)}¢ with $${Math.round(buy.usd)}, ${detectedAt - buy.t}s ago)`);
+            openBet(order, fill, strat);
           } catch { bump(state.skipped, `${book}: pricing error`); }
         }
+      }
+    }
+
+    // 2b. Resting bids: fill from asks at or below the bid, or cancel once they expire.
+    for (const o of [...state.pending]) {
+      const now = Math.floor(Date.now() / 1000);
+      let fill = null;
+      try { fill = fillFromBook((await api.book(o.token)).asks.filter((a) => a.price <= o.limit + 1e-9), o.amount); } catch { /* try again next cycle */ }
+      if (fill && (state.books[o.book]?.cash ?? 0) >= o.amount) {
+        state.pending.splice(state.pending.indexOf(o), 1);
+        openBet(o, fill, strategyOf(o.strategy));
+      } else if (now >= o.expiresAt) {
+        state.pending.splice(state.pending.indexOf(o), 1);
+        bump(state.skipped, `${o.book}: bid not filled`);
+        note(`${o.book}: bid at ${(o.limit * 100).toFixed(1)}¢ on "${(o.title || '').slice(0, 60)}" cancelled unfilled`);
       }
     }
 
