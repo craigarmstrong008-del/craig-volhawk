@@ -33,6 +33,9 @@ Analyses top Polymarket wallets (90-day window), builds a static dashboard, and 
 - Pull/rebase before pushing, since the bot pushes to the same branch.
 - It only touches `polymarket-wallets/data/paper` and `dashboard/paper.js`; keep it that way.
 
+## Subagents (`.claude/agents/`)
+- `risk-reviewer`: read-only reviewer for TP/SL math, breakout logic, and live-order gating. Run it after any change to `agent.js`, `trigger.js` or `price.js`.
+
 ## Hooks (`.claude/`)
 - `guard.js` (PreToolUse): denies access to secrets/keypairs, denies live Jupiter order submission unless `VOLHAWK_ALLOW_LIVE=1`, asks before an edit adds a `submitOrder(` call.
 - `check-syntax.js` (PostToolUse): runs `node --check` on edited `.js` files.
