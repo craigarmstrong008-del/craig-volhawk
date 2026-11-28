@@ -1,5 +1,5 @@
 {
-  "generatedAt": 1795797833,
+  "generatedAt": 1795880198,
   "days": 90,
   "wallets": [
     {
@@ -13,15 +13,15 @@
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 1,
-          "pnl": 4727934.620570762,
-          "vol": 11098209.29898063
+          "pnl": 5336258.479916614,
+          "vol": 10733378.442618765
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 3,
-          "pnl": 1860953.9903671748,
-          "vol": 2199889.5173120024
+          "rank": 1,
+          "pnl": 2370668.3500294094,
+          "vol": 2086360.9215240004
         }
       ]
     },
@@ -36,89 +36,29 @@
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 2,
-          "pnl": 4285841.367865309,
-          "vol": 201065488.7383813
+          "pnl": 4846240.24866016,
+          "vol": 205704035.21442237
         },
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 2,
-          "pnl": 4285841.367865309,
-          "vol": 201065488.7383813
+          "pnl": 4846240.24866016,
+          "vol": 205704035.21442237
         },
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 11,
-          "pnl": 7942844.238868,
-          "vol": 1493409054.9570158
+          "rank": 10,
+          "pnl": 8371429.2723860005,
+          "vol": 1504618541.1313963
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 2,
-          "pnl": 2066586.6256696437,
-          "vol": 48778250.44204999
-        }
-      ]
-    },
-    {
-      "address": "0x511f9c771449162349795d17becf8b37031acbe1",
-      "name": "Bigggggggg",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 3,
-          "pnl": 3316702.1318433406,
-          "vol": 7199025.644687999
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 4,
-          "pnl": 1742506.9357712017,
-          "vol": 1494776.765852
-        }
-      ]
-    },
-    {
-      "address": "0x0d6a1ada6d7ff785ab4b7263d9ce8e2baa85aa98",
-      "name": "keeptheblueflagflyinghigh",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 4,
-          "pnl": 3233005.398014701,
-          "vol": 125098695.93084599
-        },
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 3,
-          "pnl": 3233005.398014701,
-          "vol": 125098695.93084599
-        },
-        {
-          "timePeriod": "ALL",
-          "orderBy": "PNL",
-          "rank": 50,
-          "pnl": 3173758.97992,
-          "vol": 137653403.13357788
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 1,
-          "pnl": 2081163.3628744695,
-          "vol": 39502680.14867692
+          "rank": 8,
+          "pnl": 1365803.0472815873,
+          "vol": 56061235.53727
         }
       ]
     },
@@ -132,16 +72,166 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
+          "rank": 3,
+          "pnl": 3593873.815031913,
+          "vol": 10767949.965409027
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 4,
+          "pnl": 1892563.0000091249,
+          "vol": 1477232.4973370016
+        }
+      ]
+    },
+    {
+      "address": "0x511f9c771449162349795d17becf8b37031acbe1",
+      "name": "Bigggggggg",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 4,
+          "pnl": 3449109.8060771693,
+          "vol": 7164106.926155009
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 3,
+          "pnl": 1959393.0852898774,
+          "vol": 1630873.3562229997
+        }
+      ]
+    },
+    {
+      "address": "0x0d6a1ada6d7ff785ab4b7263d9ce8e2baa85aa98",
+      "name": "keeptheblueflagflyinghigh",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
           "rank": 5,
-          "pnl": 2973795.849173158,
-          "vol": 10905137.691701028
+          "pnl": 3338115.2579830815,
+          "vol": 129764806.87177786
+        },
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 3,
+          "pnl": 3338115.2579830815,
+          "vol": 129764806.87177786
+        },
+        {
+          "timePeriod": "ALL",
+          "orderBy": "PNL",
+          "rank": 48,
+          "pnl": 3385035.314747,
+          "vol": 144187797.66868377
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
           "rank": 5,
-          "pnl": 1247569.8968444285,
-          "vol": 1344192.8507420002
+          "pnl": 1843291.08632113,
+          "vol": 41706447.02316497
+        }
+      ]
+    },
+    {
+      "address": "0xd218e474776403a330142299f7796e8ba32eb5c9",
+      "name": "cigarettes",
+      "xUsername": "friendlyping",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 6,
+          "pnl": 2574192.548155505,
+          "vol": 19984353.781128064
+        },
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 53,
+          "pnl": 2574192.548155505,
+          "vol": 19984353.781128064
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 6,
+          "pnl": 1593229.7479602464,
+          "vol": 4953288.100990999
+        }
+      ]
+    },
+    {
+      "address": "0x12d6cccfc7470a3f4bafc53599a4779cbf2cf2a8",
+      "name": "classified",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-2637613-f573f7f0-53b7-4a8d-b884-fec7b37d1b7d.png",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 7,
+          "pnl": 2438766.674339345,
+          "vol": 11978622.276761997
+        },
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 99,
+          "pnl": 2438766.674339345,
+          "vol": 11978622.276761997
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 2,
+          "pnl": 2369924.507602857,
+          "vol": 2174804.698336
+        }
+      ]
+    },
+    {
+      "address": "0x821dab0565ebf5b327f51db06223fdcfe01acf16",
+      "name": "Flaznorp",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 8,
+          "pnl": 1842796.110329655,
+          "vol": 282163699.68988216
+        },
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 1,
+          "pnl": 1842796.110329655,
+          "vol": 282163699.68988216
+        },
+        {
+          "timePeriod": "ALL",
+          "orderBy": "PNL",
+          "rank": 62,
+          "pnl": 2540341.670822,
+          "vol": 674430739.0849649
         }
       ]
     },
@@ -155,9 +245,9 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 6,
-          "pnl": 2052777.3447249176,
-          "vol": 1560882.6704850462
+          "rank": 9,
+          "pnl": 1839598.4262134419,
+          "vol": 1410770.8000050501
         }
       ]
     },
@@ -171,15 +261,15 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 7,
-          "pnl": 1804668.3751717238,
+          "rank": 10,
+          "pnl": 1800054.8777451194,
           "vol": 22118.260000000002
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 33,
-          "pnl": 305073.0021950751,
+          "rank": 39,
+          "pnl": 283121.80634066294,
           "vol": 0
         }
       ]
@@ -194,105 +284,36 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 8,
-          "pnl": 1674533.8482796417,
-          "vol": 75135077.76037198
+          "rank": 11,
+          "pnl": 1536791.1262010264,
+          "vol": 72716732.02025416
         },
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 8,
-          "pnl": 1674533.8482796417,
-          "vol": 75135077.76037198
+          "rank": 9,
+          "pnl": 1536791.1262010264,
+          "vol": 72716732.02025416
         },
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 38,
-          "pnl": 3873706.312006,
-          "vol": 551101145.5266488
+          "rank": 36,
+          "pnl": 3976980.941159,
+          "vol": 555066346.9465654
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 23,
-          "pnl": 423384.68636368314,
-          "vol": 18157432.758634984
+          "rank": 27,
+          "pnl": 413965.79893324146,
+          "vol": 19921120.411608025
         }
       ]
     },
     {
-      "address": "0x983eedfbd75803602e4a6e6ea9aab6dc6b9c6748",
-      "name": "3edmond.dantes",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 9,
-          "pnl": 1428376.4003840005,
-          "vol": 11372471.365012001
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 7,
-          "pnl": 1096399.7472920006,
-          "vol": 5896476.2397489995
-        }
-      ]
-    },
-    {
-      "address": "0xd218e474776403a330142299f7796e8ba32eb5c9",
-      "name": "cigarettes",
-      "xUsername": "friendlyping",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 10,
-          "pnl": 1300715.0065282872,
-          "vol": 19573722.498619076
-        },
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 53,
-          "pnl": 1300715.0065282872,
-          "vol": 19573722.498619076
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 29,
-          "pnl": 315586.5862820812,
-          "vol": 4673810.463856003
-        }
-      ]
-    },
-    {
-      "address": "0xa2cd4ccda9a1f95949df7a3355c4c2daa0642ba0",
-      "name": "0xA2cd4CcdA9A1f95949DF7A3355C4c2DAa0642Ba0-1729178570395",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 11,
-          "pnl": 1237393.1361537206,
-          "vol": 3360284.149433
-        }
-      ]
-    },
-    {
-      "address": "0xcb8deb73fbdd20b366d51c91e6e2c80365368d08",
-      "name": "pleaseletmealone",
+      "address": "0xb0c85813a7a4428f1139ff91d3118a92c391fe7f",
+      "name": "0xb0c85813a7a4428f1139ff91d3118a92c391fe5",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -301,252 +322,15 @@
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 12,
-          "pnl": 1184310.1230821875,
-          "vol": 7441064.598850036
+          "pnl": 1466468.4504787673,
+          "vol": 7995893.791989097
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 9,
-          "pnl": 673401.9700044758,
-          "vol": 3011891.1774560036
-        }
-      ]
-    },
-    {
-      "address": "0x1387d145aaf01f6e33b66525dda6e1f51f6955f8",
-      "name": "Lucerys",
-      "xUsername": "CorlysBro",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-9666742-fc749fa8-5b28-46cd-b7af-0a6c94d07b16.gif",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 13,
-          "pnl": 1181266.8483577464,
-          "vol": 5421313.980848029
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 19,
-          "pnl": 486605.8115027462,
-          "vol": 873765.9540619991
-        }
-      ]
-    },
-    {
-      "address": "0xb994506ea08bc59adbbf1b341fb71014b7e75673",
-      "name": "plimzo814",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 14,
-          "pnl": 1154987.0894615022,
-          "vol": 813722.4506050001
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 6,
-          "pnl": 1162753.598179997,
-          "vol": 527114.7847150001
-        }
-      ]
-    },
-    {
-      "address": "0x0259b2054f046fe0ee8f3e075fdb85fc3ba9769e",
-      "name": "fantasy7788",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 15,
-          "pnl": 1118557.8601595738,
-          "vol": 24840183.736585002
-        },
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 40,
-          "pnl": 1118557.8601595738,
-          "vol": 24840183.736585002
-        }
-      ]
-    },
-    {
-      "address": "0x9c9fe391bf7ba8701bc97c9e561a46cbce11e2d2",
-      "name": "feeder-or-predator",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-9701958-8393a766-30cf-4e63-bbd5-5fb77c3558e6.png",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 16,
-          "pnl": 1110545.1863746135,
-          "vol": 3481393.1678989995
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 66,
-          "pnl": 128985.53215804783,
-          "vol": 1362642.1274429995
-        }
-      ]
-    },
-    {
-      "address": "0x1f5f9fa318fbda8350ac143b4df657287df850fa",
-      "name": "glpgb",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 17,
-          "pnl": 1100314.0532129235,
-          "vol": 3907360.848037011
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 34,
-          "pnl": 286986.45999204204,
-          "vol": 330929.447103
-        }
-      ]
-    },
-    {
-      "address": "0x821dab0565ebf5b327f51db06223fdcfe01acf16",
-      "name": "Flaznorp",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 18,
-          "pnl": 1049101.9286528204,
-          "vol": 280282332.27696514
-        },
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 1,
-          "pnl": 1049101.9286528204,
-          "vol": 280282332.27696514
-        },
-        {
-          "timePeriod": "ALL",
-          "orderBy": "PNL",
-          "rank": 63,
-          "pnl": 2435134.891502,
-          "vol": 663853196.1454877
-        }
-      ]
-    },
-    {
-      "address": "0xa2cced8bfae7d645f7f437fb76becf2fcbb70cbc",
-      "name": "justwins",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 19,
-          "pnl": 1031282.185196506,
-          "vol": 8672955.928018998
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 52,
-          "pnl": 184242.99438858032,
-          "vol": 1377606.4445099998
-        }
-      ]
-    },
-    {
-      "address": "0x67542c3219b37fd1610aad290676ff91cdbfe3bc",
-      "name": "gmpm2",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 20,
-          "pnl": 1002457.3092302647,
-          "vol": 11715092.513919
-        },
-        {
-          "timePeriod": "ALL",
-          "orderBy": "PNL",
-          "rank": 57,
-          "pnl": 2825344.630885,
-          "vol": 132386117.34104596
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 11,
-          "pnl": 641355.2736476401,
-          "vol": 3217328.809615
-        }
-      ]
-    },
-    {
-      "address": "0x684baa57c338c2549aec0aa3f034f695d72a8409",
-      "name": "monkeymashingkeyboard",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 21,
-          "pnl": 996604.1226438802,
-          "vol": 17896517.413695004
-        },
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 58,
-          "pnl": 996604.1226438802,
-          "vol": 17896517.413695004
-        }
-      ]
-    },
-    {
-      "address": "0x87a71804212f1ebbecaa486f269e961c4d408cea",
-      "name": "8m1",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 22,
-          "pnl": 980406.3767051501,
-          "vol": 1852.869572
+          "rank": 7,
+          "pnl": 1474708.1636736363,
+          "vol": 1387783.2537489983
         }
       ]
     },
@@ -560,29 +344,29 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 23,
-          "pnl": 952505.3547196188,
-          "vol": 67269534.21473797
+          "rank": 13,
+          "pnl": 1454867.75500153,
+          "vol": 68531705.20932898
         },
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 12,
-          "pnl": 952505.3547196188,
-          "vol": 67269534.21473797
+          "rank": 10,
+          "pnl": 1454867.75500153,
+          "vol": 68531705.20932898
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 18,
-          "pnl": 522550.21142917837,
-          "vol": 18865567.922241993
+          "rank": 10,
+          "pnl": 1118557.9655451926,
+          "vol": 22116213.978546
         }
       ]
     },
     {
-      "address": "0xc4d1a863e9cc45d02ba22d3a1ae9ba7822018ce8",
-      "name": "0xc4d1a863e9cc45d02ba22d3a1ae9ba7822018ce",
+      "address": "0xcb8deb73fbdd20b366d51c91e6e2c80365368d08",
+      "name": "pleaseletmealone",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -590,9 +374,39 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 24,
-          "pnl": 859988.3745855845,
-          "vol": 2049998.3187950004
+          "rank": 14,
+          "pnl": 1391391.8924522602,
+          "vol": 7980495.993252037
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 15,
+          "pnl": 870671.934831678,
+          "vol": 3246048.295638002
+        }
+      ]
+    },
+    {
+      "address": "0x1387d145aaf01f6e33b66525dda6e1f51f6955f8",
+      "name": "Lucerys",
+      "xUsername": "CorlysBro",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-9666742-fc749fa8-5b28-46cd-b7af-0a6c94d07b16.gif",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 15,
+          "pnl": 1371282.148128711,
+          "vol": 5000544.496263052
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 17,
+          "pnl": 791737.9349867953,
+          "vol": 928410.4274220014
         }
       ]
     },
@@ -606,23 +420,297 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 25,
-          "pnl": 838099.0407276807,
-          "vol": 89382344.96820393
+          "rank": 16,
+          "pnl": 1259724.9431672653,
+          "vol": 92143269.28627093
         },
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 6,
-          "pnl": 838099.0407276807,
-          "vol": 89382344.96820393
+          "pnl": 1259724.9431672653,
+          "vol": 92143269.28627093
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
+          "rank": 14,
+          "pnl": 963584.0201207348,
+          "vol": 19832761.514849007
+        }
+      ]
+    },
+    {
+      "address": "0xa2cd4ccda9a1f95949df7a3355c4c2daa0642ba0",
+      "name": "0xA2cd4CcdA9A1f95949DF7A3355C4c2DAa0642Ba0-1729178570395",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
           "rank": 17,
-          "pnl": 526984.7147790206,
-          "vol": 18617368.275372993
+          "pnl": 1237871.3430740004,
+          "vol": 3360284.149433
+        }
+      ]
+    },
+    {
+      "address": "0x983eedfbd75803602e4a6e6ea9aab6dc6b9c6748",
+      "name": "3edmond.dantes",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 18,
+          "pnl": 1229804.9370840006,
+          "vol": 10846623.447436001
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 13,
+          "pnl": 1056757.4445920005,
+          "vol": 5762407.2397489995
+        }
+      ]
+    },
+    {
+      "address": "0x9c9fe391bf7ba8701bc97c9e561a46cbce11e2d2",
+      "name": "feeder-or-predator",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-9701958-8393a766-30cf-4e63-bbd5-5fb77c3558e6.png",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 19,
+          "pnl": 1181239.0231737732,
+          "vol": 3696255.800828
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 53,
+          "pnl": 201590.72909600788,
+          "vol": 1641388.146829
+        }
+      ]
+    },
+    {
+      "address": "0x58b3380f71bd6c706dd398a5e60bde55fa3a653c",
+      "name": "timetowander",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 20,
+          "pnl": 1153252.6231490928,
+          "vol": 12732483.046503013
+        },
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 84,
+          "pnl": 1153252.6231490928,
+          "vol": 12732483.046503013
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 12,
+          "pnl": 1068086.6188605188,
+          "vol": 4479124.286123
+        }
+      ]
+    },
+    {
+      "address": "0x1f5f9fa318fbda8350ac143b4df657287df850fa",
+      "name": "glpgb",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 21,
+          "pnl": 1132936.8632900296,
+          "vol": 3944853.353741009
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 31,
+          "pnl": 375879.4223670558,
+          "vol": 431503.1609540002
+        }
+      ]
+    },
+    {
+      "address": "0x684baa57c338c2549aec0aa3f034f695d72a8409",
+      "name": "monkeymashingkeyboard",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 22,
+          "pnl": 1117704.7762660752,
+          "vol": 17257410.224766
+        },
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 62,
+          "pnl": 1117704.7762660752,
+          "vol": 17257410.224766
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 42,
+          "pnl": 280147.089318056,
+          "vol": 3057709.0571999997
+        }
+      ]
+    },
+    {
+      "address": "0xb994506ea08bc59adbbf1b341fb71014b7e75673",
+      "name": "plimzo814",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 23,
+          "pnl": 1102496.1412363336,
+          "vol": 1656724.4773140003
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 11,
+          "pnl": 1100716.6863621064,
+          "vol": 1370116.8114240002
+        }
+      ]
+    },
+    {
+      "address": "0xc1b5f266564e6d4907cf84bdf5a8f91621ef5d85",
+      "name": "kaxel78",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 24,
+          "pnl": 1013626.0254278909,
+          "vol": 1892027.1071610018
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 19,
+          "pnl": 657430.8465723904,
+          "vol": 282978.90427900007
+        }
+      ]
+    },
+    {
+      "address": "0x67542c3219b37fd1610aad290676ff91cdbfe3bc",
+      "name": "gmpm2",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 25,
+          "pnl": 958990.2537711947,
+          "vol": 11835462.894700002
+        },
+        {
+          "timePeriod": "ALL",
+          "orderBy": "PNL",
+          "rank": 57,
+          "pnl": 2780973.055332,
+          "vol": 132506487.72182706
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 22,
+          "pnl": 597145.2278885702,
+          "vol": 3337699.1903959997
+        }
+      ]
+    },
+    {
+      "address": "0x87a71804212f1ebbecaa486f269e961c4d408cea",
+      "name": "8m1",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 26,
+          "pnl": 946961.9699547001,
+          "vol": 1852.869572
+        }
+      ]
+    },
+    {
+      "address": "0xf68a281980f8c13828e84e147e3822381d6e5b1b",
+      "name": "CUTJALENHURTS",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-2123373-5abab646-195a-40a6-a6c0-1cd0038506fd.png",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 27,
+          "pnl": 945537.0349321242,
+          "vol": 31263797.334398016
+        },
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 28,
+          "pnl": 945537.0349321242,
+          "vol": 31263797.334398016
+        },
+        {
+          "timePeriod": "ALL",
+          "orderBy": "PNL",
+          "rank": 79,
+          "pnl": 2132687.0163189997,
+          "vol": 236391206.12977675
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 26,
+          "pnl": 429558.5144937205,
+          "vol": 10387807.768933
         }
       ]
     },
@@ -636,82 +724,29 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 26,
-          "pnl": 806181.7115490006,
-          "vol": 32176234.181837004
+          "rank": 28,
+          "pnl": 927776.9278000004,
+          "vol": 25528260.691286005
         },
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 26,
-          "pnl": 806181.7115490006,
-          "vol": 32176234.181837004
+          "rank": 39,
+          "pnl": 927776.9278000004,
+          "vol": 25528260.691286005
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 13,
+          "rank": 23,
           "pnl": 579115.0809220003,
           "vol": 5821590.137206001
         }
       ]
     },
     {
-      "address": "0x018d6c652ca2f1d428a1186faafcf03b537eac8a",
-      "name": "GetsOnBase",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-10109476-8b7785f1-44e6-408e-968b-56ee9e97b052.png",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 27,
-          "pnl": 790948.0604763252,
-          "vol": 2282736.151218
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 54,
-          "pnl": 175540.08395532495,
-          "vol": 943956.54871
-        }
-      ]
-    },
-    {
-      "address": "0xee00ba338c59557141789b127927a55f5cc5cea1",
-      "name": "S-Works",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 28,
-          "pnl": 758100.3399511494,
-          "vol": 9525599.872504
-        },
-        {
-          "timePeriod": "ALL",
-          "orderBy": "PNL",
-          "rank": 35,
-          "pnl": 3991068.330274,
-          "vol": 231526308.59035563
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 45,
-          "pnl": 215664.29317917535,
-          "vol": 1541887.7109919996
-        }
-      ]
-    },
-    {
-      "address": "0xb0c85813a7a4428f1139ff91d3118a92c391fe7f",
-      "name": "0xb0c85813a7a4428f1139ff91d3118a92c391fe7",
+      "address": "0xa2cced8bfae7d645f7f437fb76becf2fcbb70cbc",
+      "name": "justwins",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -720,15 +755,8 @@
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 29,
-          "pnl": 756528.9917613185,
-          "vol": 8263408.979337107
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 10,
-          "pnl": 653355.6020027042,
-          "vol": 1136140.6308400005
+          "pnl": 904570.8206419358,
+          "vol": 9197858.886901999
         }
       ]
     },
@@ -743,51 +771,51 @@
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 30,
-          "pnl": 750458.3585139161,
-          "vol": 15028941.966318998
+          "pnl": 898540.0903971486,
+          "vol": 15169050.852754
         },
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 73,
-          "pnl": 750458.3585139161,
-          "vol": 15028941.966318998
+          "pnl": 898540.0903971486,
+          "vol": 15169050.852754
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 61,
-          "pnl": 160535.04673591733,
-          "vol": 4063112.4781319997
+          "rank": 34,
+          "pnl": 337163.43374614976,
+          "vol": 3978400.0251869997
         }
       ]
     },
     {
-      "address": "0xc1b5f266564e6d4907cf84bdf5a8f91621ef5d85",
-      "name": "kaxel78",
+      "address": "0x018d6c652ca2f1d428a1186faafcf03b537eac8a",
+      "name": "GetsOnBase",
       "xUsername": "",
       "verified": false,
-      "profileImage": "",
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-10109476-8b7785f1-44e6-408e-968b-56ee9e97b052.png",
       "boards": [
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 31,
-          "pnl": 742154.5340217721,
-          "vol": 1920916.1876459995
+          "pnl": 897343.7503260003,
+          "vol": 2670856.789489
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 25,
-          "pnl": 375003.4255842652,
-          "vol": 204617.16148700003
+          "rank": 40,
+          "pnl": 281935.77380499995,
+          "vol": 1332077.186981
         }
       ]
     },
     {
-      "address": "0xe40ecff63ec661d218a86c048186ac83389a9770",
-      "name": "lllllllIlll",
+      "address": "0x9703676286b93c2eca71ca96e8757104519a69c2",
+      "name": "AnonymousUsername",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -796,59 +824,114 @@
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 32,
-          "pnl": 741763.6720699994,
-          "vol": 12245678.550605003
+          "pnl": 881561.2530118322,
+          "vol": 15830013.850447983
         },
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 92,
-          "pnl": 741763.6720699994,
-          "vol": 12245678.550605003
+          "rank": 68,
+          "pnl": 881561.2530118322,
+          "vol": 15830013.850447983
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 35,
-          "pnl": 270848.6269459997,
-          "vol": 4191547.6291839993
+          "rank": 9,
+          "pnl": 1186682.5142216627,
+          "vol": 1996756.0324790005
         }
       ]
     },
     {
-      "address": "0xf68a281980f8c13828e84e147e3822381d6e5b1b",
-      "name": "CUTJALENHURTS",
+      "address": "0xc4d1a863e9cc45d02ba22d3a1ae9ba7822018ce8",
+      "name": "0xc4d1a863e9cc45d02ba22d3a1ae9ba7822018ce",
       "xUsername": "",
       "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-2123373-5abab646-195a-40a6-a6c0-1cd0038506fd.png",
+      "profileImage": "",
       "boards": [
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 33,
-          "pnl": 737706.0710762392,
-          "vol": 30701043.965135027
+          "pnl": 860016.234550077,
+          "vol": 2049998.3187950004
+        }
+      ]
+    },
+    {
+      "address": "0x0259b2054f046fe0ee8f3e075fdb85fc3ba9769e",
+      "name": "fantasy7788",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 34,
+          "pnl": 858727.2924138352,
+          "vol": 37491880.26762301
         },
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 30,
-          "pnl": 737706.0710762392,
-          "vol": 30701043.965135027
-        },
+          "rank": 24,
+          "pnl": 858727.2924138352,
+          "vol": 37491880.26762301
+        }
+      ]
+    },
+    {
+      "address": "0xeaab5847277e54bac3b3c63d4306f08208fdb786",
+      "name": "0xEaab5847277E54bAC3b3c63d4306F08208Fdb786-1795660926723",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
         {
-          "timePeriod": "ALL",
+          "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 82,
-          "pnl": 2065860.511128,
-          "vol": 234625239.03074008
+          "rank": 35,
+          "pnl": 855234.7414898593,
+          "vol": 20160
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 14,
-          "pnl": 578052.6592882415,
-          "vol": 9074072.915323999
+          "rank": 16,
+          "pnl": 855234.7414898593,
+          "vol": 20160
+        }
+      ]
+    },
+    {
+      "address": "0xee00ba338c59557141789b127927a55f5cc5cea1",
+      "name": "S-Works",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 36,
+          "pnl": 821123.6649467414,
+          "vol": 9711792.92108
+        },
+        {
+          "timePeriod": "ALL",
+          "orderBy": "PNL",
+          "rank": 33,
+          "pnl": 4053661.216489,
+          "vol": 231712501.63893166
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 38,
+          "pnl": 293133.0225137877,
+          "vol": 1670315.2064729996
         }
       ]
     },
@@ -862,84 +945,15 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 34,
-          "pnl": 704307.8650153676,
-          "vol": 4967023.385340997
-        }
-      ]
-    },
-    {
-      "address": "0x9ba7ae7ae11df2477c567d6a5aeb5b3bc9cf00ef",
-      "name": "8DDD",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-9122608-ae6f8f29-a0f2-4f95-830c-660d5f1b657a.gif",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 35,
-          "pnl": 668916.1812001277,
-          "vol": 2210972.0827790005
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 15,
-          "pnl": 572435.2027309627,
-          "vol": 581033.7225699999
-        }
-      ]
-    },
-    {
-      "address": "0x76eca4109d0dfe8649d5e3861dfccac67ae7d630",
-      "name": "hqb.prediction",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 36,
-          "pnl": 667767.9898144129,
-          "vol": 2429467.5504509993
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 44,
-          "pnl": 217284.86896185967,
-          "vol": 808122.8517059999
-        }
-      ]
-    },
-    {
-      "address": "0x2a69660046d7acc4ab204d7cc5ba78b0776cd2f7",
-      "name": "UpTheBlues",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
           "rank": 37,
-          "pnl": 660012.4487456593,
-          "vol": 33975619.52006606
-        },
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 25,
-          "pnl": 660012.4487456593,
-          "vol": 33975619.52006606
+          "pnl": 730165.4792551666,
+          "vol": 4768590.90365
         }
       ]
     },
     {
-      "address": "0xf28e42d20e4826f2b10a24bc952001697947cab2",
-      "name": "ethanaz",
+      "address": "0x212f7fc77c18c6ce34bb1dae43e9198ab19b7fd2",
+      "name": "Lajjhb",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -948,45 +962,45 @@
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 38,
-          "pnl": 652761.1125840002,
-          "vol": 11943523.328184001
-        },
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 99,
-          "pnl": 652761.1125840002,
-          "vol": 11943523.328184001
+          "pnl": 697140.4513221139,
+          "vol": 840214.620141
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 58,
-          "pnl": 165203.17824999994,
-          "vol": 908335.8899999998
+          "rank": 18,
+          "pnl": 660053.9705086909,
+          "vol": 395732.04050999996
         }
       ]
     },
     {
-      "address": "0xe5b70fd855af9258d9463992e4f1ed7987905ee3",
-      "name": "Mikal25",
+      "address": "0xe40ecff63ec661d218a86c048186ac83389a9770",
+      "name": "lllllllIlll",
       "xUsername": "",
       "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-3799716-9cfdae22-ef9f-4015-b6b5-b291633e129b.png",
+      "profileImage": "",
       "boards": [
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 39,
-          "pnl": 647436.0253906336,
-          "vol": 9536810.798169002
+          "pnl": 690142.3518363899,
+          "vol": 12426865.487658
+        },
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 89,
+          "pnl": 690142.3518363899,
+          "vol": 12426865.487658
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 32,
-          "pnl": 306360.2304491942,
-          "vol": 3796528.813340999
+          "rank": 51,
+          "pnl": 205678.83009738958,
+          "vol": 5397641.617831999
         }
       ]
     },
@@ -1001,8 +1015,153 @@
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 40,
-          "pnl": 609455.0218189993,
-          "vol": 9707264.197460001
+          "pnl": 682293.3757102247,
+          "vol": 7703283.792007001
+        }
+      ]
+    },
+    {
+      "address": "0x76eca4109d0dfe8649d5e3861dfccac67ae7d630",
+      "name": "hqb.prediction",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 41,
+          "pnl": 671027.0494591906,
+          "vol": 2293209.090451
+        }
+      ]
+    },
+    {
+      "address": "0x9ba7ae7ae11df2477c567d6a5aeb5b3bc9cf00ef",
+      "name": "8DDD",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-9122608-ae6f8f29-a0f2-4f95-830c-660d5f1b657a.gif",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 42,
+          "pnl": 668726.6811773102,
+          "vol": 2210972.0827789996
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 30,
+          "pnl": 388335.4403385617,
+          "vol": 542528.992196
+        }
+      ]
+    },
+    {
+      "address": "0xe5b70fd855af9258d9463992e4f1ed7987905ee3",
+      "name": "Mikal25",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-3799716-9cfdae22-ef9f-4015-b6b5-b291633e129b.png",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 43,
+          "pnl": 665247.1606388729,
+          "vol": 10639244.397284
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 37,
+          "pnl": 295998.7774741876,
+          "vol": 4994424.0507579995
+        }
+      ]
+    },
+    {
+      "address": "0xc023bee917480fed315d186a7b223f33c09a0fe8",
+      "name": "0xc023bee917480fed315d186a7b223f33c09a0fe8-1793567845085",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 44,
+          "pnl": 663130.1584924185,
+          "vol": 17515.232319999996
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 28,
+          "pnl": 410104.94881745847,
+          "vol": 14991.185748
+        }
+      ]
+    },
+    {
+      "address": "0xe015b5a2a299167be835a2fd1e86f09c49e06ffd",
+      "name": "PacersThreeandahalf",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 45,
+          "pnl": 645354.3578345898,
+          "vol": 12727268.293556996
+        },
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 85,
+          "pnl": 645354.3578345898,
+          "vol": 12727268.293556996
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 72,
+          "pnl": 138039.59760780074,
+          "vol": 3317331.120364
+        }
+      ]
+    },
+    {
+      "address": "0xf28e42d20e4826f2b10a24bc952001697947cab2",
+      "name": "ethanaz",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 46,
+          "pnl": 637315.7561840002,
+          "vol": 11976310.258184003
+        },
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 100,
+          "pnl": 637315.7561840002,
+          "vol": 11976310.258184003
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 78,
+          "pnl": 122691.95704999992,
+          "vol": 822619.4999999999
         }
       ]
     },
@@ -1016,9 +1175,32 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 41,
-          "pnl": 606428.0025228475,
-          "vol": 10657164.859664997
+          "rank": 47,
+          "pnl": 607316.7218246842,
+          "vol": 10548738.667003995
+        }
+      ]
+    },
+    {
+      "address": "0xda4f80ff247936340da3879803e6f00182a2d501",
+      "name": "glitzyhorse5822",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 48,
+          "pnl": 599248.9912834736,
+          "vol": 171975.17670999997
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 21,
+          "pnl": 599248.9912834736,
+          "vol": 171975.17670999997
         }
       ]
     },
@@ -1032,15 +1214,15 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 42,
-          "pnl": 586698.5773241125,
-          "vol": 172218.070579
+          "rank": 49,
+          "pnl": 580796.0851044711,
+          "vol": 172067.83583399997
         }
       ]
     },
     {
-      "address": "0x492442eab586f242b53bda933fd5de859c8a3782",
-      "name": "0x492442EaB586F242B53bDa933fD5dE859c8A3782-1766317541188",
+      "address": "0x2a69660046d7acc4ab204d7cc5ba78b0776cd2f7",
+      "name": "UpTheBlues",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -1048,62 +1230,16 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 43,
-          "pnl": 544879.60265,
-          "vol": 13605177.441737998
+          "rank": 50,
+          "pnl": 577515.6089447604,
+          "vol": 28482540.662142005
         },
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 79,
-          "pnl": 544879.60265,
-          "vol": 13605177.441737998
-        }
-      ]
-    },
-    {
-      "address": "0xc301c1e034e71e1a6ce9684f029c4674a00466aa",
-      "name": "Contestable-Parfait",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 44,
-          "pnl": 516256.6245672603,
-          "vol": 9266169.199997008
-        }
-      ]
-    },
-    {
-      "address": "0x9703676286b93c2eca71ca96e8757104519a69c2",
-      "name": "AnonymousUsername",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 45,
-          "pnl": 515464.792069927,
-          "vol": 15843798.79781898
-        },
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 68,
-          "pnl": 515464.792069927,
-          "vol": 15843798.79781898
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 8,
-          "pnl": 879800.9295791448,
-          "vol": 1721581.4241790003
+          "rank": 31,
+          "pnl": 577515.6089447604,
+          "vol": 28482540.662142005
         }
       ]
     },
@@ -1117,9 +1253,32 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 46,
-          "pnl": 492631.1898073233,
-          "vol": 11090071.886621954
+          "rank": 51,
+          "pnl": 577104.885122397,
+          "vol": 10837411.057883985
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 94,
+          "pnl": 104538.80134831456,
+          "vol": 1348956.3848089986
+        }
+      ]
+    },
+    {
+      "address": "0xc301c1e034e71e1a6ce9684f029c4674a00466aa",
+      "name": "Contestable-Parfait",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 52,
+          "pnl": 518699.2336333234,
+          "vol": 8909990.139655015
         }
       ]
     },
@@ -1133,32 +1292,9 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 47,
-          "pnl": 487448.81328199187,
-          "vol": 1127655.423038
-        }
-      ]
-    },
-    {
-      "address": "0xfed8ff0b541ce9a66d632aedebe81bdd1b2c4388",
-      "name": "JudgeLance",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 48,
-          "pnl": 486921.2060109099,
-          "vol": 1422031.118955
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 22,
-          "pnl": 432372.5914439348,
-          "vol": 1281452.037881
+          "rank": 53,
+          "pnl": 489398.9244125549,
+          "vol": 897633.2004189999
         }
       ]
     },
@@ -1172,21 +1308,21 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 49,
+          "rank": 54,
           "pnl": 483989.6717409997,
           "vol": 2834792.5051039997
         },
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 36,
+          "rank": 37,
           "pnl": 3952885.873218,
           "vol": 31229455.083512
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 20,
+          "rank": 25,
           "pnl": 483989.6717409997,
           "vol": 2834792.5051039997
         }
@@ -1202,147 +1338,16 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 50,
-          "pnl": 473122.15086863877,
-          "vol": 41504368.404553
-        },
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 19,
-          "pnl": 473122.15086863877,
-          "vol": 41504368.404553
-        }
-      ]
-    },
-    {
-      "address": "0x6575759174ad221bba9947bc3f18750ec769b198",
-      "name": "dromedaryy",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 51,
-          "pnl": 466439.9527760902,
-          "vol": 4951228.217602001
-        }
-      ]
-    },
-    {
-      "address": "0xc22b72b0fec23b797589ef6778bb6589e325deab",
-      "name": "anothercoin",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 52,
-          "pnl": 463200.0444026115,
-          "vol": 492828.5060629933
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 90,
-          "pnl": 93168.11526159759,
-          "vol": 44735.40700399992
-        }
-      ]
-    },
-    {
-      "address": "0x58b3380f71bd6c706dd398a5e60bde55fa3a653c",
-      "name": "timetowander",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 53,
-          "pnl": 460753.9944512581,
-          "vol": 15087768.63370601
-        },
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 72,
-          "pnl": 460753.9944512581,
-          "vol": 15087768.63370601
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 21,
-          "pnl": 441625.03382935445,
-          "vol": 4402620.288128999
-        }
-      ]
-    },
-    {
-      "address": "0xc023bee917480fed315d186a7b223f33c09a0fe8",
-      "name": "0xc023bee917480fed315d186a7b223f33c09a0fe8-1793567845085",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 54,
-          "pnl": 437077.736184694,
-          "vol": 14497.761729999998
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 48,
-          "pnl": 192639.77159369402,
-          "vol": 13918.48173
-        }
-      ]
-    },
-    {
-      "address": "0x94c4fe3b18435aa92024c7c1589537fcda3f43ca",
-      "name": "Railcool",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
           "rank": 55,
-          "pnl": 436051.6863301054,
-          "vol": 1190338.6482019997
-        }
-      ]
-    },
-    {
-      "address": "0xe015b5a2a299167be835a2fd1e86f09c49e06ffd",
-      "name": "PacersThreeandahalf",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 56,
-          "pnl": 429798.66834276856,
-          "vol": 12275578.076542001
+          "pnl": 476114.1135055295,
+          "vol": 38694776.870419905
         },
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 91,
-          "pnl": 429798.66834276856,
-          "vol": 12275578.076542001
+          "rank": 21,
+          "pnl": 476114.1135055295,
+          "vol": 38694776.870419905
         }
       ]
     },
@@ -1356,22 +1361,45 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 57,
-          "pnl": 419255.2294099592,
-          "vol": 5984260.73389
+          "rank": 56,
+          "pnl": 474086.4081361381,
+          "vol": 6257735.362728
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 50,
-          "pnl": 185998.41670988887,
-          "vol": 1417454.1086960002
+          "rank": 56,
+          "pnl": 193055.0689405663,
+          "vol": 1687570.525478
         }
       ]
     },
     {
-      "address": "0x9b129ad05bc0a8df3c73dfcc66fe75252daec2d5",
-      "name": "0x9b129aD05Bc0a8df3C73DfCC66fE75252DaEC2D5-1778811687225",
+      "address": "0xc22b72b0fec23b797589ef6778bb6589e325deab",
+      "name": "anothercoin",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 57,
+          "pnl": 462354.19143339037,
+          "vol": 462657.4035309833
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 77,
+          "pnl": 122841.86626365682,
+          "vol": 48316.3420999999
+        }
+      ]
+    },
+    {
+      "address": "0x492442eab586f242b53bda933fd5de859c8a3782",
+      "name": "0x492442EaB586F242B53bDa933fD5dE859c8A3782-1766317541188",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -1380,14 +1408,28 @@
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 58,
-          "pnl": 417517.4412561723,
-          "vol": 563108.4394510008
+          "pnl": 457385.42936000007,
+          "vol": 16011794.818338
+        },
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 66,
+          "pnl": 457385.42936000007,
+          "vol": 16011794.818338
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 35,
+          "pnl": 316354.66612100037,
+          "vol": 5386734.860188
         }
       ]
     },
     {
-      "address": "0xc9bfc7986767173b4f1c3fc9b2c6b255fc7381c0",
-      "name": "0xC9BFc7986767173b4f1c3FC9B2c6b255F",
+      "address": "0x6575759174ad221bba9947bc3f18750ec769b198",
+      "name": "dromedaryy",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -1396,44 +1438,30 @@
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 59,
-          "pnl": 414864.38733093056,
-          "vol": 8566539.068818998
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 84,
-          "pnl": 98637.69996400052,
-          "vol": 2236214.825263
+          "pnl": 444041.3739226995,
+          "vol": 4841755.300924
         }
       ]
     },
     {
-      "address": "0x9b89ef1f344d3e17b37ccdff3bccf62d04f04244",
-      "name": "Woaifacai",
-      "xUsername": "Woaifacai888",
+      "address": "0x94c4fe3b18435aa92024c7c1589537fcda3f43ca",
+      "name": "Railcool",
+      "xUsername": "",
       "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-8733429-5c0f8655-20cb-4548-befb-e172efcda82c.webp",
+      "profileImage": "",
       "boards": [
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 60,
-          "pnl": 408547.08919300005,
-          "vol": 15566755.394131
-        },
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 69,
-          "pnl": 408547.08919300005,
-          "vol": 15566755.394131
+          "pnl": 430533.528456175,
+          "vol": 1190338.6482019997
         }
       ]
     },
     {
-      "address": "0xb5d19b53c973be1097119c9ddc48fcb18fff6e35",
-      "name": "lastminwin",
+      "address": "0x0235dc24b38772bf3339a9e5ec5db3d3a05fcee5",
+      "name": "darkumbreon88",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -1442,8 +1470,8 @@
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 61,
-          "pnl": 401966.38438463194,
-          "vol": 4358936.946493
+          "pnl": 417813.43397500704,
+          "vol": 7168014.609264991
         }
       ]
     },
@@ -1458,31 +1486,15 @@
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 62,
-          "pnl": 396675.4792921151,
-          "vol": 10156978.490297992
+          "pnl": 416945.415165799,
+          "vol": 9956489.137228997
         },
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
           "rank": 84,
-          "pnl": 2001070.798417,
-          "vol": 148071420.17734733
-        }
-      ]
-    },
-    {
-      "address": "0x0235dc24b38772bf3339a9e5ec5db3d3a05fcee5",
-      "name": "darkumbreon88",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 63,
-          "pnl": 394709.6601616195,
-          "vol": 7166351.982939998
+          "pnl": 2001067.082433,
+          "vol": 148072692.27734756
         }
       ]
     },
@@ -1496,188 +1508,39 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 64,
-          "pnl": 381050.5202490884,
-          "vol": 10476038.903925007
+          "rank": 63,
+          "pnl": 414658.92513826047,
+          "vol": 10235725.131579995
         },
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
           "rank": 55,
-          "pnl": 2871904.714812,
-          "vol": 111845868.47771691
+          "pnl": 2875412.023252,
+          "vol": 112075412.03510292
         }
       ]
     },
     {
-      "address": "0xb4f978be63cdf75554b0b46a4262a6db597cc9a7",
-      "name": "0xb4F978BE63cDF75554b0B46a4262a6dB597cc9A7-1779258330186",
-      "xUsername": "",
+      "address": "0x9b89ef1f344d3e17b37ccdff3bccf62d04f04244",
+      "name": "Woaifacai",
+      "xUsername": "Woaifacai888",
       "verified": false,
-      "profileImage": "",
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-8733429-5c0f8655-20cb-4548-befb-e172efcda82c.webp",
       "boards": [
         {
           "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 65,
-          "pnl": 379825.78139916476,
-          "vol": 8280133.042307
-        }
-      ]
-    },
-    {
-      "address": "0x55b4af6a1cff148a307cad8ad098206a028e80ea",
-      "name": "StarryPath",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 66,
-          "pnl": 350065.53382785834,
-          "vol": 4277133.576926
-        }
-      ]
-    },
-    {
-      "address": "0xf4c95b636c71243531dfc82a97565a94c106f88c",
-      "name": "milkteaboba",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 67,
-          "pnl": 349375.166784278,
-          "vol": 9148004.919676
-        }
-      ]
-    },
-    {
-      "address": "0xdc41c39b95453c943174f369926018f6963bdd7e",
-      "name": "nigiri99",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-6961890-470a35e3-eb64-4606-924f-406b3e70ee1e.png",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 68,
-          "pnl": 347055.7549803485,
-          "vol": 59422841.22532098
-        },
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 13,
-          "pnl": 347055.7549803485,
-          "vol": 59422841.22532098
-        },
-        {
-          "timePeriod": "WEEK",
           "orderBy": "PNL",
           "rank": 64,
-          "pnl": 139191.25000100632,
-          "vol": 7242755.401982
-        }
-      ]
-    },
-    {
-      "address": "0x24ded84d901a743cfee095f8082b0f9f647183cb",
-      "name": "arjennnnn",
-      "xUsername": "rlverside0",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-1186575-4cfc1e02-620b-49aa-aafe-7cfab1642566.jpeg",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 69,
-          "pnl": 346066.144528489,
-          "vol": 4535238.760710999
-        }
-      ]
-    },
-    {
-      "address": "0xd1c769317bd15de7768a70d0214cf0bbcc531d2b",
-      "name": "033033033",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 70,
-          "pnl": 345294.549963668,
-          "vol": 12687461.175422998
+          "pnl": 408547.08919300017,
+          "vol": 15566755.394131005
         },
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 84,
-          "pnl": 345294.549963668,
-          "vol": 12687461.175422998
-        }
-      ]
-    },
-    {
-      "address": "0x216b0f7fb8cc78d5035ba8d4ee67a1e71d91d8a5",
-      "name": "greater-fools",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
           "rank": 71,
-          "pnl": 344500.84515644005,
-          "vol": 114273.82626500001
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 24,
-          "pnl": 393153.278831913,
-          "vol": 0
-        }
-      ]
-    },
-    {
-      "address": "0x24c8cf69a0e0a17eee21f69d29752bfa32e823e1",
-      "name": "debased",
-      "xUsername": "debased_PM",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/trump_farmer_b64c6dcd-13e2-4dda-b1c2-0fb46389fb22_1743074825403.png",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 72,
-          "pnl": 341044.8545030134,
-          "vol": 2924966.7865480008
-        }
-      ]
-    },
-    {
-      "address": "0x227f7ba7fcc35b7f8fc08aa6b075f5220da2a574",
-      "name": "Likaseent",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 73,
-          "pnl": 340456.06687527034,
-          "vol": 1439081.6398110066
+          "pnl": 408547.08919300017,
+          "vol": 15566755.394131005
         }
       ]
     },
@@ -1691,15 +1554,22 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 74,
-          "pnl": 337046.02892580605,
-          "vol": 7158686.577609997
+          "rank": 65,
+          "pnl": 394636.9664399201,
+          "vol": 7536276.857609001
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 64,
+          "pnl": 161219.80273992004,
+          "vol": 3725386.192757
         }
       ]
     },
     {
-      "address": "0xa3282d3e882501229c75d0caf134e62e3afb4977",
-      "name": "korda77",
+      "address": "0xb5d19b53c973be1097119c9ddc48fcb18fff6e35",
+      "name": "lastminwin",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -1707,9 +1577,172 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 75,
-          "pnl": 332078.2642629321,
-          "vol": 476596.4426799996
+          "rank": 66,
+          "pnl": 384430.066201411,
+          "vol": 4240529.133316998
+        }
+      ]
+    },
+    {
+      "address": "0x9f2fe025f84839ca81dd8e0338892605702d2ca8",
+      "name": "surfandturf",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 67,
+          "pnl": 380261.6436334734,
+          "vol": 25076234.65178199
+        },
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 41,
+          "pnl": 380261.6436334734,
+          "vol": 25076234.65178199
+        }
+      ]
+    },
+    {
+      "address": "0xc9bfc7986767173b4f1c3fc9b2c6b255fc7381c0",
+      "name": "0xC9BFc7986767173b4f1c3FC9B2c6b255F",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 68,
+          "pnl": 378978.3479175056,
+          "vol": 8722469.695541997
+        }
+      ]
+    },
+    {
+      "address": "0xd38b71f3e8ed1af71983e5c309eac3dfa9b35029",
+      "name": "primm",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 69,
+          "pnl": 362126.6854946509,
+          "vol": 20711173.935354013
+        },
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 48,
+          "pnl": 362126.6854946509,
+          "vol": 20711173.935354013
+        },
+        {
+          "timePeriod": "ALL",
+          "orderBy": "PNL",
+          "rank": 43,
+          "pnl": 3608346.536765,
+          "vol": 68769923.71449697
+        }
+      ]
+    },
+    {
+      "address": "0x24ded84d901a743cfee095f8082b0f9f647183cb",
+      "name": "arjennnnn",
+      "xUsername": "rlverside0",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-1186575-4cfc1e02-620b-49aa-aafe-7cfab1642566.jpeg",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 70,
+          "pnl": 361008.7717595716,
+          "vol": 4380154.770496
+        }
+      ]
+    },
+    {
+      "address": "0xb4f978be63cdf75554b0b46a4262a6db597cc9a7",
+      "name": "0xb4F978BE63cDF75554b0B46a4262a6dB597cc9A7-1779258330186",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 71,
+          "pnl": 357549.0833081798,
+          "vol": 7605405.800332001
+        }
+      ]
+    },
+    {
+      "address": "0xe1000ddb5f5025849765e29d051dfff78f5d4d41",
+      "name": "TeGeeLP",
+      "xUsername": "reaverTG",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 72,
+          "pnl": 352193.86626499996,
+          "vol": 989407.2355769998
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 50,
+          "pnl": 208852.9068,
+          "vol": 542183.36902
+        }
+      ]
+    },
+    {
+      "address": "0x216b0f7fb8cc78d5035ba8d4ee67a1e71d91d8a5",
+      "name": "greater-fools",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 73,
+          "pnl": 351578.36927980796,
+          "vol": 90450.34979900002
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 32,
+          "pnl": 366570.883287154,
+          "vol": 0
+        }
+      ]
+    },
+    {
+      "address": "0xf4c95b636c71243531dfc82a97565a94c106f88c",
+      "name": "milkteaboba",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 74,
+          "pnl": 351112.6470834781,
+          "vol": 9172400.607283
         }
       ]
     },
@@ -1723,250 +1756,25 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
+          "rank": 75,
+          "pnl": 350709.2785125527,
+          "vol": 507533.2919990011
+        }
+      ]
+    },
+    {
+      "address": "0x24c8cf69a0e0a17eee21f69d29752bfa32e823e1",
+      "name": "debased",
+      "xUsername": "debased_PM",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/trump_farmer_b64c6dcd-13e2-4dda-b1c2-0fb46389fb22_1743074825403.png",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
           "rank": 76,
-          "pnl": 331051.05542294064,
-          "vol": 517475.1313430009
-        }
-      ]
-    },
-    {
-      "address": "0x7d267c84251ade4b63e0438f0ffafe0e924cfdea",
-      "name": "tipsymacaw8737",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 77,
-          "pnl": 330753.420129,
-          "vol": 1273520.171937
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 27,
-          "pnl": 330753.420129,
-          "vol": 1273520.171937
-        }
-      ]
-    },
-    {
-      "address": "0x12d6cccfc7470a3f4bafc53599a4779cbf2cf2a8",
-      "name": "classified",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-2637613-f573f7f0-53b7-4a8d-b884-fec7b37d1b7d.png",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 78,
-          "pnl": 329392.6551194164,
-          "vol": 12032936.685062995
-        },
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 98,
-          "pnl": 329392.6551194164,
-          "vol": 12032936.685062995
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 42,
-          "pnl": 226080.3407151166,
-          "vol": 2389475.4704279997
-        }
-      ]
-    },
-    {
-      "address": "0x9f15613ebf1f36d4bc679e1211d1fc567cf9bdb3",
-      "name": "0x9f15613ebf1f36d4bc679e1211d1fc567cf9bdb3",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 79,
-          "pnl": 328033.2955427816,
-          "vol": 8449370.061743008
-        }
-      ]
-    },
-    {
-      "address": "0xeaab5847277e54bac3b3c63d4306f08208fdb786",
-      "name": "0xEaab5847277E54bAC3b3c63d4306F08208Fdb786-1795660926723",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 80,
-          "pnl": 323464.2675138596,
-          "vol": 20160
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 28,
-          "pnl": 323464.2675138596,
-          "vol": 20160
-        }
-      ]
-    },
-    {
-      "address": "0x8f9d3aa5b72ba0134fa7975d9c88e9852e706aed",
-      "name": "0x8f9d3aa5b72ba0134fa7975d9c88e9852e706aed",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 81,
-          "pnl": 318875.41162385704,
-          "vol": 0
-        }
-      ]
-    },
-    {
-      "address": "0x032eb1bc893940263ad0b01889f262fc232f2a9e",
-      "name": "purplegatto",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 82,
-          "pnl": 315992.9192586059,
-          "vol": 8867082.022687003
-        }
-      ]
-    },
-    {
-      "address": "0x8a8685a792c184e5c2ee8c7d4d4baba7c2c94998",
-      "name": "BrotherObama",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 83,
-          "pnl": 314757.87608700007,
-          "vol": 7268289.310921
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 30,
-          "pnl": 311582.527654,
-          "vol": 1803048.1697729998
-        }
-      ]
-    },
-    {
-      "address": "0xfa5f246bb1dbfe039dc7f4d3eede0d9808a86bfe",
-      "name": "CryptoScam",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-1280631-630c97dd-b33a-4316-8640-4999cc0b03ea.png",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 84,
-          "pnl": 310471.085974705,
-          "vol": 596700.5533459999
-        }
-      ]
-    },
-    {
-      "address": "0x77958accec3edfc6ea0194e8fb954647456b9a17",
-      "name": "0x77958accec3edfc6ea0194e8fb954647456b9a17",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 85,
-          "pnl": 309734.64901577146,
-          "vol": 1101393.8170860002
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 31,
-          "pnl": 308703.630135994,
-          "vol": 349153.40781500004
-        }
-      ]
-    },
-    {
-      "address": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
-      "name": "zb8",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-701281-61d7cfcb-c8bf-45cc-a3d8-6233c5af8a1c.png",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 86,
-          "pnl": 308780.5821819806,
-          "vol": 6889108.893910001
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 51,
-          "pnl": 185876.89162529382,
-          "vol": 751336.8523500002
-        }
-      ]
-    },
-    {
-      "address": "0x997cb45c25e94b4ee58c234ce1f211496a0d51f3",
-      "name": "lonmi2511",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 87,
-          "pnl": 299247.67743559455,
-          "vol": 2909656.8501539947
-        }
-      ]
-    },
-    {
-      "address": "0x7c3db723f1d4d8cb9c550095203b686cb11e5c6b",
-      "name": "Car",
-      "xUsername": "CarOnPolymarket",
-      "verified": true,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-501613-aa434e55-7732-41b1-9650-83a9d1d716ef.png",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 88,
-          "pnl": 296277.2993858919,
-          "vol": 6730718.833772005
+          "pnl": 350444.0192874376,
+          "vol": 2755079.0966120004
         }
       ]
     },
@@ -1980,16 +1788,227 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 89,
-          "pnl": 295192.4971834864,
-          "vol": 665797.448307001
+          "rank": 77,
+          "pnl": 348188.98013822275,
+          "vol": 655821.7843539986
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 57,
-          "pnl": 168907.0917293157,
-          "vol": 159192.5081610002
+          "rank": 47,
+          "pnl": 221987.275354278,
+          "vol": 168813.05032200008
+        }
+      ]
+    },
+    {
+      "address": "0xd1c769317bd15de7768a70d0214cf0bbcc531d2b",
+      "name": "033033033",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 78,
+          "pnl": 345219.2014553352,
+          "vol": 12250165.805422999
+        },
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 93,
+          "pnl": 345219.2014553352,
+          "vol": 12250165.805422999
+        }
+      ]
+    },
+    {
+      "address": "0x9b129ad05bc0a8df3c73dfcc66fe75252daec2d5",
+      "name": "0x9b129aD05Bc0a8df3C73DfCC66fE75252DaEC2D5-1778811687225",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 79,
+          "pnl": 342437.60536619957,
+          "vol": 520677.26260800136
+        }
+      ]
+    },
+    {
+      "address": "0x8a8685a792c184e5c2ee8c7d4d4baba7c2c94998",
+      "name": "BrotherObama",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 80,
+          "pnl": 338473.7443465148,
+          "vol": 7366864.047806999
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 43,
+          "pnl": 247203.63304783494,
+          "vol": 2373895.7305109994
+        }
+      ]
+    },
+    {
+      "address": "0xe040ffe586e21cb49449e8daf19b1cdff87a824f",
+      "name": "god83743894",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 81,
+          "pnl": 336332.64053111,
+          "vol": 667140.6076799989
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 69,
+          "pnl": 142708.0751931895,
+          "vol": 163764.14510499992
+        }
+      ]
+    },
+    {
+      "address": "0x227f7ba7fcc35b7f8fc08aa6b075f5220da2a574",
+      "name": "Likaseent",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 82,
+          "pnl": 331538.28348887194,
+          "vol": 1335454.9466559996
+        }
+      ]
+    },
+    {
+      "address": "0xa3282d3e882501229c75d0caf134e62e3afb4977",
+      "name": "korda77",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 83,
+          "pnl": 328018.8069259003,
+          "vol": 461459.2608219998
+        }
+      ]
+    },
+    {
+      "address": "0x55b4af6a1cff148a307cad8ad098206a028e80ea",
+      "name": "StarryPath",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 84,
+          "pnl": 324684.9567969718,
+          "vol": 4117732.5346790007
+        }
+      ]
+    },
+    {
+      "address": "0xdc41c39b95453c943174f369926018f6963bdd7e",
+      "name": "nigiri99",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-6961890-470a35e3-eb64-4606-924f-406b3e70ee1e.png",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 85,
+          "pnl": 321454.5593104216,
+          "vol": 58335697.00885198
+        },
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 13,
+          "pnl": 321454.5593104216,
+          "vol": 58335697.00885198
+        }
+      ]
+    },
+    {
+      "address": "0x8f9d3aa5b72ba0134fa7975d9c88e9852e706aed",
+      "name": "0x8f9d3aa5b72ba0134fa7975d9c88e9852e706aed",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 86,
+          "pnl": 313325.18217838503,
+          "vol": 0
+        }
+      ]
+    },
+    {
+      "address": "0x77958accec3edfc6ea0194e8fb954647456b9a17",
+      "name": "0x77958accec3edfc6ea0194e8fb954647456b9a17",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 87,
+          "pnl": 310473.25869975,
+          "vol": 1103146.4486650003
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 36,
+          "pnl": 306309.36713160196,
+          "vol": 350906.039394
+        }
+      ]
+    },
+    {
+      "address": "0xfa5f246bb1dbfe039dc7f4d3eede0d9808a86bfe",
+      "name": "CryptoScam",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-1280631-630c97dd-b33a-4316-8640-4999cc0b03ea.png",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 88,
+          "pnl": 310471.08564295,
+          "vol": 596700.5533459999
         }
       ]
     },
@@ -2003,15 +2022,31 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 90,
-          "pnl": 292385.436247,
-          "vol": 7477808.441293001
+          "rank": 89,
+          "pnl": 308285.64579000004,
+          "vol": 7438777.958953001
         }
       ]
     },
     {
-      "address": "0x9c99d17ed70d628cff56c5d7bec2eaf567137250",
-      "name": "dubdubdub2",
+      "address": "0x9f15613ebf1f36d4bc679e1211d1fc567cf9bdb3",
+      "name": "0x9f15613ebf1f36d4bc679e1211d1fc567cf9bdb3",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 90,
+          "pnl": 307733.8361158998,
+          "vol": 8038601.311594998
+        }
+      ]
+    },
+    {
+      "address": "0x032eb1bc893940263ad0b01889f262fc232f2a9e",
+      "name": "purplegatto",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -2020,8 +2055,15 @@
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 91,
-          "pnl": 290459.25848099985,
-          "vol": 1073869.6804279997
+          "pnl": 306684.253289906,
+          "vol": 8443768.992687007
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 83,
+          "pnl": 117475.995761306,
+          "vol": 1157545.1820619998
         }
       ]
     },
@@ -2036,8 +2078,40 @@
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 92,
-          "pnl": 290037.5269612372,
-          "vol": 3819273.3146160003
+          "pnl": 293865.6671763412,
+          "vol": 4005093.843005
+        }
+      ]
+    },
+    {
+      "address": "0x7c3db723f1d4d8cb9c550095203b686cb11e5c6b",
+      "name": "Car",
+      "xUsername": "CarOnPolymarket",
+      "verified": true,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-501613-aa434e55-7732-41b1-9650-83a9d1d716ef.png",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 93,
+          "pnl": 293515.51431561774,
+          "vol": 6043910.692637004
+        }
+      ]
+    },
+    {
+      "address": "0x9c99d17ed70d628cff56c5d7bec2eaf567137250",
+      "name": "dubdubdub2",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 94,
+          "pnl": 290459.25848099985,
+          "vol": 1073869.6804279997
         }
       ]
     },
@@ -2051,61 +2125,15 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 93,
-          "pnl": 289364.00952700013,
-          "vol": 1480753.957278
-        }
-      ]
-    },
-    {
-      "address": "0xd38b71f3e8ed1af71983e5c309eac3dfa9b35029",
-      "name": "primm",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 94,
-          "pnl": 280954.92682099604,
-          "vol": 19731229.026572004
-        },
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 52,
-          "pnl": 280954.92682099604,
-          "vol": 19731229.026572004
-        },
-        {
-          "timePeriod": "ALL",
-          "orderBy": "PNL",
-          "rank": 44,
-          "pnl": 3535703.335201,
-          "vol": 67781811.551359
-        }
-      ]
-    },
-    {
-      "address": "0x8191c793fd7edbadf0fae651f55c1da3b638da72",
-      "name": "dashattacker",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
           "rank": 95,
-          "pnl": 277105.8719488712,
-          "vol": 7593138.502144002
+          "pnl": 289364.975605065,
+          "vol": 1480560.741591
         }
       ]
     },
     {
-      "address": "0x0a39b3b29ab3b7dd753aa96fde4ecab3f2dbb0b9",
-      "name": "plonker2026",
+      "address": "0x2112103a575ebfc82e352e875ce22544fc12b871",
+      "name": "Cheongkokhin",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -2114,47 +2142,15 @@
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 96,
-          "pnl": 274225.0263019991,
-          "vol": 3983487.0690079993
+          "pnl": 288709.6896248689,
+          "vol": 2243645.2787389997
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 26,
-          "pnl": 364700.1810650001,
-          "vol": 1562861.135262
-        }
-      ]
-    },
-    {
-      "address": "0x43372356634781eea88d61bbdd7824cdce958882",
-      "name": "Anjun",
-      "xUsername": "AnjunPoly",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/luffy_%E6%88%91%E5%96%9C%E6%AC%A2%E4%BD%A0%E5%93%A6_1706802143401.png",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 97,
-          "pnl": 268894.95760697906,
-          "vol": 2655129.3348730016
-        }
-      ]
-    },
-    {
-      "address": "0x4ab94e53e702dbfba644b25f33310650e490077b",
-      "name": "Tan4321",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-9962862-7d86a4b1-950d-4626-9d3b-ad4ca1653fc5.png",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "PNL",
-          "rank": 98,
-          "pnl": 263312.30540800013,
-          "vol": 1507127.5144879997
+          "rank": 73,
+          "pnl": 137196.5514948689,
+          "vol": 1848118.1322169998
         }
       ]
     },
@@ -2168,15 +2164,54 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "PNL",
-          "rank": 99,
-          "pnl": 261830.47271882114,
-          "vol": 719464.9677280005
+          "rank": 97,
+          "pnl": 283480.0931949742,
+          "vol": 707778.3576880004
         }
       ]
     },
     {
-      "address": "0xe899b5ea69afb161da7a35597b6fe70398860899",
-      "name": "SlavaUkraini",
+      "address": "0x43372356634781eea88d61bbdd7824cdce958882",
+      "name": "Anjun",
+      "xUsername": "AnjunPoly",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/luffy_%E6%88%91%E5%96%9C%E6%AC%A2%E4%BD%A0%E5%93%A6_1706802143401.png",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 98,
+          "pnl": 283014.4726477951,
+          "vol": 2719166.341121001
+        }
+      ]
+    },
+    {
+      "address": "0xf4f381476cda20730dbfb9204d7dbdd1203da1a1",
+      "name": "hewhodoesit",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "PNL",
+          "rank": 99,
+          "pnl": 280223.0497895696,
+          "vol": 3663058.1328649996
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 87,
+          "pnl": 112517.0158059997,
+          "vol": 2268994.9643129995
+        }
+      ]
+    },
+    {
+      "address": "0x21f333307ac6d2e65ac82f014b3dd2b64cbc35e3",
+      "name": "hi774c",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -2185,8 +2220,22 @@
           "timePeriod": "MONTH",
           "orderBy": "PNL",
           "rank": 100,
-          "pnl": 261717.51540975925,
-          "vol": 1406625.4832000004
+          "pnl": 277125.60318992916,
+          "vol": 12103537.745903999
+        },
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 95,
+          "pnl": 277125.60318992916,
+          "vol": 12103537.745903999
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 89,
+          "pnl": 109521.34525473458,
+          "vol": 3046511.937879
         }
       ]
     },
@@ -2201,22 +2250,15 @@
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 4,
-          "pnl": 230894.27220886748,
-          "vol": 120650908.67170905
+          "pnl": 236909.15429638652,
+          "vol": 119308656.07720526
         },
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
           "rank": 4,
-          "pnl": 13617936.376668,
-          "vol": 1558110035.3514984
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 60,
-          "pnl": 162349.90103838962,
-          "vol": 26670571.259429924
+          "pnl": 13594924.364288,
+          "vol": 1561842882.3064005
         }
       ]
     },
@@ -2231,15 +2273,15 @@
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 5,
-          "pnl": -5699119.118182044,
-          "vol": 118882959.301315
+          "pnl": -4861270.86825306,
+          "vol": 115561117.72644195
         },
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 23,
-          "pnl": 4976014.554762,
-          "vol": 468330379.41408706
+          "rank": 28,
+          "pnl": 4436442.517107,
+          "vol": 469418774.4049696
         }
       ]
     },
@@ -2254,8 +2296,8 @@
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 7,
-          "pnl": -530267.2099996873,
-          "vol": 79901881.91361864
+          "pnl": -384783.30444973725,
+          "vol": 80134435.63481553
         }
       ]
     },
@@ -2269,32 +2311,9 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 9,
-          "pnl": -1484976.1590141344,
-          "vol": 73869071.22791699
-        }
-      ]
-    },
-    {
-      "address": "0xfe787d2da716d60e8acff57fb87eb13cd4d10319",
-      "name": "ferrariChampions2026",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 10,
-          "pnl": -774296.8279187938,
-          "vol": 71914703.95071588
-        },
-        {
-          "timePeriod": "ALL",
-          "orderBy": "PNL",
-          "rank": 56,
-          "pnl": 2829941.219802,
-          "vol": 1450518714.4909053
+          "rank": 8,
+          "pnl": -1359895.3737684458,
+          "vol": 77371617.79206198
         }
       ]
     },
@@ -2309,14 +2328,14 @@
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 11,
-          "pnl": -161892.99491908745,
-          "vol": 68294242.35443917
+          "pnl": -127707.80958584603,
+          "vol": 67734630.64516744
         }
       ]
     },
     {
-      "address": "0x88a6c8e00c4752a8c70d24025fa781fa046a7e77",
-      "name": "999585",
+      "address": "0xfe787d2da716d60e8acff57fb87eb13cd4d10319",
+      "name": "ferrariChampions2026",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -2324,32 +2343,16 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 14,
-          "pnl": -1775737.8946360068,
-          "vol": 53047492.34313201
-        }
-      ]
-    },
-    {
-      "address": "0x6d3c5bd13984b2de47c3a88ddc455309aab3d294",
-      "name": "VeryLucky888",
-      "xUsername": "TheVeryLucky888",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-3980992-50a3f24e-e4d8-4388-86ae-d9c063867f3e.webp",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 15,
-          "pnl": 234107.4651430218,
-          "vol": 52698613.803150155
+          "rank": 12,
+          "pnl": -891895.582626235,
+          "vol": 67395547.03575407
         },
         {
-          "timePeriod": "WEEK",
+          "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 49,
-          "pnl": 190701.02916406863,
-          "vol": 13208782.143702015
+          "rank": 56,
+          "pnl": 2829941.219802,
+          "vol": 1450518714.4909182
         }
       ]
     },
@@ -2363,9 +2366,25 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 16,
-          "pnl": -5091313.305473265,
-          "vol": 52355430.220794
+          "rank": 14,
+          "pnl": -5943214.613061711,
+          "vol": 55009329.912766
+        }
+      ]
+    },
+    {
+      "address": "0x88a6c8e00c4752a8c70d24025fa781fa046a7e77",
+      "name": "999585",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 15,
+          "pnl": -1728946.545946007,
+          "vol": 53291123.29162501
         }
       ]
     },
@@ -2379,9 +2398,32 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
+          "rank": 16,
+          "pnl": -933301.716229209,
+          "vol": 52199749.473511964
+        }
+      ]
+    },
+    {
+      "address": "0x6d3c5bd13984b2de47c3a88ddc455309aab3d294",
+      "name": "VeryLucky888",
+      "xUsername": "TheVeryLucky888",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-3980992-50a3f24e-e4d8-4388-86ae-d9c063867f3e.webp",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
           "rank": 17,
-          "pnl": -414366.27499744267,
-          "vol": 51751402.41828491
+          "pnl": 257656.64068223425,
+          "vol": 52088071.60215311
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 46,
+          "pnl": 236094.218759282,
+          "vol": 13873387.689940972
         }
       ]
     },
@@ -2396,15 +2438,15 @@
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 18,
-          "pnl": -41774.80723757771,
-          "vol": 42458099.16452202
+          "pnl": -177290.0077907322,
+          "vol": 43686167.25667605
         },
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 98,
-          "pnl": 1748135.775746,
-          "vol": 253411207.4158702
+          "rank": 95,
+          "pnl": 1767185.010359,
+          "vol": 255721854.78705615
         }
       ]
     },
@@ -2418,9 +2460,9 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 20,
-          "pnl": -236053.97524709522,
-          "vol": 40852783.71002479
+          "rank": 19,
+          "pnl": -204985.12441211546,
+          "vol": 40577293.2158856
         }
       ]
     },
@@ -2434,9 +2476,9 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 21,
-          "pnl": 180682.66089737875,
-          "vol": 39264475.22512787
+          "rank": 20,
+          "pnl": 232013.69189876306,
+          "vol": 40110871.535519
         }
       ]
     },
@@ -2451,8 +2493,8 @@
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 22,
-          "pnl": -526752.8543254071,
-          "vol": 37260446.141098715
+          "pnl": -407005.9866210693,
+          "vol": 38617410.39965681
         }
       ]
     },
@@ -2467,8 +2509,8 @@
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 23,
-          "pnl": -2466091.451031,
-          "vol": 36425452.039266005
+          "pnl": -1307591.7210430007,
+          "vol": 38485814.96158001
         }
       ]
     },
@@ -2482,9 +2524,9 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 24,
-          "pnl": -19721.07753207686,
-          "vol": 34762946.469976015
+          "rank": 25,
+          "pnl": -31269.156159413542,
+          "vol": 33849122.17616202
         }
       ]
     },
@@ -2498,9 +2540,9 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 27,
-          "pnl": -144488.89288198465,
-          "vol": 31656049.91116799
+          "rank": 26,
+          "pnl": -137230.81255443735,
+          "vol": 31672576.883664988
         }
       ]
     },
@@ -2514,25 +2556,9 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 28,
-          "pnl": -38628.03476100002,
-          "vol": 31609214.76813788
-        }
-      ]
-    },
-    {
-      "address": "0xa38a455bbdd4b68486548b7e19da99903f4f821d",
-      "name": "takeormake",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 29,
-          "pnl": -444421.1967633928,
-          "vol": 31382143.890419047
+          "rank": 27,
+          "pnl": -10797.107031570205,
+          "vol": 31481315.434593953
         }
       ]
     },
@@ -2546,22 +2572,22 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 31,
-          "pnl": 16664.968961460647,
-          "vol": 29354520.35742091
+          "rank": 29,
+          "pnl": 26416.400587300493,
+          "vol": 30313062.771530885
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 37,
-          "pnl": 249468.4258780004,
-          "vol": 8318629.713148003
+          "rank": 41,
+          "pnl": 281337.52365100046,
+          "vol": 9446057.683472
         }
       ]
     },
     {
-      "address": "0x893575c7d99542163c6b6e8a0fe5af0b6d217daa",
-      "name": "antec",
+      "address": "0xa38a455bbdd4b68486548b7e19da99903f4f821d",
+      "name": "takeormake",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -2569,9 +2595,9 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 32,
-          "pnl": 1592.9610106690961,
-          "vol": 26841484.862200994
+          "rank": 30,
+          "pnl": -380018.0440083766,
+          "vol": 29730497.140203997
         }
       ]
     },
@@ -2585,16 +2611,16 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 33,
-          "pnl": 51056.133703404244,
-          "vol": 26632107.35230492
+          "rank": 32,
+          "pnl": 116059.47517490237,
+          "vol": 27468257.363920737
         },
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 88,
-          "pnl": 94787.56066492472,
-          "vol": 7421935.03727698
+          "rank": 81,
+          "pnl": 120097.22406854149,
+          "vol": 7472999.365859992
         }
       ]
     },
@@ -2608,41 +2634,25 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
+          "rank": 33,
+          "pnl": 168606.60572069546,
+          "vol": 27248186.737408046
+        }
+      ]
+    },
+    {
+      "address": "0x893575c7d99542163c6b6e8a0fe5af0b6d217daa",
+      "name": "antec",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
           "rank": 34,
-          "pnl": 139713.3913143145,
-          "vol": 26482534.127496827
-        }
-      ]
-    },
-    {
-      "address": "0x758dac51ba3cc9a246a79787da9df11c5f425d9e",
-      "name": "a5533",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 35,
-          "pnl": -223279.92717847973,
-          "vol": 25989662.2563956
-        }
-      ]
-    },
-    {
-      "address": "0xa16a1302ca05463f30faebeb5c045767fde233a1",
-      "name": "pvc975",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 36,
-          "pnl": 51130.13693429169,
-          "vol": 25877189.614263
+          "pnl": -36130.02873299552,
+          "vol": 27097671.029728997
         }
       ]
     },
@@ -2656,16 +2666,9 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 37,
-          "pnl": 239821.0310148252,
-          "vol": 25850934.84126971
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 65,
-          "pnl": 136676.3864297847,
-          "vol": 7504072.552260998
+          "rank": 35,
+          "pnl": 238797.54389853636,
+          "vol": 26804464.284921706
         }
       ]
     },
@@ -2679,16 +2682,41 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 38,
-          "pnl": 178067.51937620476,
-          "vol": 25620714.494694933
-        },
+          "rank": 36,
+          "pnl": 185785.9169968171,
+          "vol": 26603429.179370932
+        }
+      ]
+    },
+    {
+      "address": "0xa16a1302ca05463f30faebeb5c045767fde233a1",
+      "name": "pvc975",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
         {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 92,
-          "pnl": 90515.4792569053,
-          "vol": 7399696.604352999
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 37,
+          "pnl": 41779.55390063752,
+          "vol": 26557406.089333948
+        }
+      ]
+    },
+    {
+      "address": "0x758dac51ba3cc9a246a79787da9df11c5f425d9e",
+      "name": "a5533",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 38,
+          "pnl": -261185.44227250683,
+          "vol": 25827026.56898904
         }
       ]
     },
@@ -2702,32 +2730,16 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 39,
-          "pnl": -196732.96556943134,
-          "vol": 24971740.641375
+          "rank": 40,
+          "pnl": -521043.98919362895,
+          "vol": 25219320.391854
         },
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
           "rank": 78,
-          "pnl": 2138051.269183,
-          "vol": 96930900.50912303
-        }
-      ]
-    },
-    {
-      "address": "0x9f2fe025f84839ca81dd8e0338892605702d2ca8",
-      "name": "surfandturf",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 41,
-          "pnl": 171688.71002399834,
-          "vol": 24568008.528060995
+          "pnl": 2141111.246055,
+          "vol": 97404210.02672705
         }
       ]
     },
@@ -2742,8 +2754,8 @@
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 42,
-          "pnl": -56722.26155751862,
-          "vol": 24373831.67803201
+          "pnl": -85760.5903479112,
+          "vol": 23965927.228812005
         }
       ]
     },
@@ -2758,8 +2770,8 @@
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 43,
-          "pnl": -481999.1183806729,
-          "vol": 24161239.994875014
+          "pnl": -302747.08939570666,
+          "vol": 23114738.15064404
         }
       ]
     },
@@ -2774,70 +2786,22 @@
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 44,
-          "pnl": -252438.0550466897,
-          "vol": 23230922.318114996
+          "pnl": -468327.34813905787,
+          "vol": 22360011.578164
         },
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 31,
-          "pnl": 4314856.586022,
-          "vol": 156244340.28574958
-        }
-      ]
-    },
-    {
-      "address": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
-      "name": "omnibus-076daa",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 45,
-          "pnl": -900770.4640434501,
-          "vol": 22468506.88175274
+          "rank": 27,
+          "pnl": 4453714.816978,
+          "vol": 156901389.85246956
         },
         {
-          "timePeriod": "ALL",
+          "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 77,
-          "pnl": 2149104.483948,
-          "vol": 181653921.78570893
-        }
-      ]
-    },
-    {
-      "address": "0xfc25f141ed27bb1787338d2c4e7f51e3a15e1f7f",
-      "name": "Malfunction.",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-1500258-c2ba7f97-e929-4525-b9ed-60ed0473df48.png",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 46,
-          "pnl": 94100.8005117196,
-          "vol": 21144456.099896993
-        }
-      ]
-    },
-    {
-      "address": "0x3dfb153c197d4c19d3b31c1ecd2c7b6860eeabaf",
-      "name": "0x3DFb153c197D4C19D3B31c1ecD2c7B6860eeabAf-1722957908185",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 47,
-          "pnl": -169616.2600985321,
-          "vol": 21102497.09708999
+          "rank": 52,
+          "pnl": 203787.0125486012,
+          "vol": 2350438.3790120003
         }
       ]
     },
@@ -2851,15 +2815,15 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 48,
-          "pnl": -1650049.687748552,
-          "vol": 21039178.943745017
+          "rank": 45,
+          "pnl": -1535818.4672023235,
+          "vol": 20987374.110297035
         }
       ]
     },
     {
-      "address": "0xc29198ad764bd6adaf7bb971a3757a689ece5d74",
-      "name": "SnakeBall",
+      "address": "0x076daa87c4fe1a85402a9b6b8e0a866224388d4c",
+      "name": "omnibus-076daa",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -2867,25 +2831,16 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 49,
-          "pnl": -29778.606222756345,
-          "vol": 20712513.963697664
-        }
-      ]
-    },
-    {
-      "address": "0x1610db79f753a80207e1d66716be9e91e627ae49",
-      "name": "NS13",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
+          "rank": 46,
+          "pnl": -989771.3078286283,
+          "vol": 20941361.075198926
+        },
         {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 50,
-          "pnl": -640641.1239590002,
-          "vol": 20421302.904128
+          "timePeriod": "ALL",
+          "orderBy": "PNL",
+          "rank": 76,
+          "pnl": 2160346.81766,
+          "vol": 181997921.80115557
         }
       ]
     },
@@ -2899,9 +2854,73 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
+          "rank": 47,
+          "pnl": 149246.69749370817,
+          "vol": 20758925.39361398
+        }
+      ]
+    },
+    {
+      "address": "0x3dfb153c197d4c19d3b31c1ecd2c7b6860eeabaf",
+      "name": "0x3DFb153c197D4C19D3B31c1ecD2c7B6860eeabAf-1722957908185",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 49,
+          "pnl": -311097.0846304759,
+          "vol": 20668489.707631007
+        }
+      ]
+    },
+    {
+      "address": "0xfc25f141ed27bb1787338d2c4e7f51e3a15e1f7f",
+      "name": "Malfunction.",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-1500258-c2ba7f97-e929-4525-b9ed-60ed0473df48.png",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 50,
+          "pnl": 124956.95172688435,
+          "vol": 20430903.088671993
+        }
+      ]
+    },
+    {
+      "address": "0x1610db79f753a80207e1d66716be9e91e627ae49",
+      "name": "NS13",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
           "rank": 51,
-          "pnl": 151375.84741401018,
-          "vol": 20280816.176540967
+          "pnl": -698254.7473790003,
+          "vol": 20061538.465757996
+        }
+      ]
+    },
+    {
+      "address": "0xc29198ad764bd6adaf7bb971a3757a689ece5d74",
+      "name": "SnakeBall",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 52,
+          "pnl": -29912.69598473167,
+          "vol": 20034648.645028908
         }
       ]
     },
@@ -2916,8 +2935,8 @@
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 54,
-          "pnl": -84121.4185779999,
-          "vol": 19386834.993822
+          "pnl": -94710.24230899988,
+          "vol": 19116662.279871
         }
       ]
     },
@@ -2932,24 +2951,8 @@
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 55,
-          "pnl": 22569.99249675976,
-          "vol": 19061812.406838946
-        }
-      ]
-    },
-    {
-      "address": "0x9f63eb94c9f8340930053f75aa74708b66e79551",
-      "name": "ludkaa",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 56,
-          "pnl": -972233.4235029998,
-          "vol": 18694528.393049
+          "pnl": 20404.36601773622,
+          "vol": 18941489.597140986
         }
       ]
     },
@@ -2963,55 +2966,32 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
+          "rank": 56,
+          "pnl": -390124.1982275583,
+          "vol": 18576397.659732014
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 66,
+          "pnl": 145758.141926146,
+          "vol": 4509340.563910998
+        }
+      ]
+    },
+    {
+      "address": "0x9f63eb94c9f8340930053f75aa74708b66e79551",
+      "name": "ludkaa",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
           "rank": 57,
-          "pnl": -460062.2721948994,
-          "vol": 18308030.331463013
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 80,
-          "pnl": 101256.49250506179,
-          "vol": 4861927.477862
-        }
-      ]
-    },
-    {
-      "address": "0x5b6331e7ff0831a3fe2ed12004747db1a9c911a4",
-      "name": "neutralwave23",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 59,
-          "pnl": -230410.48512918045,
-          "vol": 17848763.968136992
-        }
-      ]
-    },
-    {
-      "address": "0xbc43c8bfbc4d77c2fc9011adad38ba43b88996d3",
-      "name": "0xBc43c8bfBC4d77c2FC9011adaD38Ba43b88996d3-1765231687816",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 60,
-          "pnl": -1067728.0421505792,
-          "vol": 17631604.248448
-        },
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 16,
-          "pnl": 536493.4130545502,
-          "vol": 4922234.334733
+          "pnl": -936765.6919080978,
+          "vol": 17888916.663106006
         }
       ]
     },
@@ -3025,9 +3005,9 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 61,
-          "pnl": -1975704.301421444,
-          "vol": 17219962.57543087
+          "rank": 58,
+          "pnl": -2055668.4217480607,
+          "vol": 17770200.163755853
         }
       ]
     },
@@ -3041,9 +3021,48 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 62,
-          "pnl": 97956.12079200006,
-          "vol": 17005556.823207997
+          "rank": 59,
+          "pnl": 97349.51775400015,
+          "vol": 17711747.143095996
+        }
+      ]
+    },
+    {
+      "address": "0x5b6331e7ff0831a3fe2ed12004747db1a9c911a4",
+      "name": "neutralwave23",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 60,
+          "pnl": -206203.77028749685,
+          "vol": 17686909.833147943
+        }
+      ]
+    },
+    {
+      "address": "0xbc43c8bfbc4d77c2fc9011adad38ba43b88996d3",
+      "name": "0xBc43c8bfBC4d77c2FC9011adaD38Ba43b88996d3-1765231687816",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 61,
+          "pnl": -1024059.4030048689,
+          "vol": 17264122.290923
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 24,
+          "pnl": 513619.2729490001,
+          "vol": 4929737.965849
         }
       ]
     },
@@ -3058,24 +3077,8 @@
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 63,
-          "pnl": -151414.74301705207,
-          "vol": 16689654.780827232
-        }
-      ]
-    },
-    {
-      "address": "0xb52e8b3afd9f0f0d502a5a76494b42816d67285c",
-      "name": "1l2ihj34li12u34",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 64,
-          "pnl": 174835.59431270492,
-          "vol": 16510216.738306
+          "pnl": -203830.81595091103,
+          "vol": 16739122.813581167
         }
       ]
     },
@@ -3089,41 +3092,9 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 65,
-          "pnl": 256901.00806156243,
-          "vol": 16109396.338945
-        }
-      ]
-    },
-    {
-      "address": "0xa3c2ec158f222f3f4f5f4f57b113d761a4d3df3d",
-      "name": "0xA3c2EC158F222F3F4f5F4f57b113d761a4D3df3d-1774679893278",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 66,
-          "pnl": -442163.5676503394,
-          "vol": 16009040.301816015
-        }
-      ]
-    },
-    {
-      "address": "0x21f4c1a1be34a39a7bc20985df4b7e5a39fb691d",
-      "name": "CrouchPredictions",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 67,
-          "pnl": 75219.92024187,
-          "vol": 15874290.96136403
+          "rank": 64,
+          "pnl": 240241.45445475937,
+          "vol": 16423907.488624003
         }
       ]
     },
@@ -3137,9 +3108,57 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
+          "rank": 65,
+          "pnl": 111773.51299609907,
+          "vol": 16138387.200735006
+        }
+      ]
+    },
+    {
+      "address": "0xb52e8b3afd9f0f0d502a5a76494b42816d67285c",
+      "name": "1l2ihj34li12u34",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 67,
+          "pnl": 42440.82032165324,
+          "vol": 15853516.312323
+        }
+      ]
+    },
+    {
+      "address": "0xa3c2ec158f222f3f4f5f4f57b113d761a4d3df3d",
+      "name": "0xA3c2EC158F222F3F4f5F4f57b113d761a4D3df3d-1774679893278",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 69,
+          "pnl": -439783.86922287045,
+          "vol": 15656861.163122041
+        }
+      ]
+    },
+    {
+      "address": "0x21f4c1a1be34a39a7bc20985df4b7e5a39fb691d",
+      "name": "CrouchPredictions",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
           "rank": 70,
-          "pnl": 115026.25310594005,
-          "vol": 15221604.738751993
+          "pnl": 64794.51347064501,
+          "vol": 15602898.477638977
         }
       ]
     },
@@ -3153,25 +3172,9 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 71,
-          "pnl": 178646.26028899965,
-          "vol": 15162161.816276977
-        }
-      ]
-    },
-    {
-      "address": "0x85f031d069de300055900c4055c1baeb6bde3f67",
-      "name": "RJW1",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 74,
-          "pnl": -983941.2878267647,
-          "vol": 14950685.909573002
+          "rank": 72,
+          "pnl": 174900.55836343474,
+          "vol": 15330067.413482001
         }
       ]
     },
@@ -3185,41 +3188,25 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
+          "rank": 74,
+          "pnl": -18782.454727999928,
+          "vol": 14914149.242074996
+        }
+      ]
+    },
+    {
+      "address": "0x85f031d069de300055900c4055c1baeb6bde3f67",
+      "name": "RJW1",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
           "rank": 75,
-          "pnl": -18782.454727999844,
-          "vol": 14914149.242075
-        }
-      ]
-    },
-    {
-      "address": "0x26cf4a41eb49f0c560d32a2d2e4f45715e47c612",
-      "name": "technician2",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 76,
-          "pnl": -871654.0510030607,
-          "vol": 14212235.03919403
-        }
-      ]
-    },
-    {
-      "address": "0x26b46988d027c6c03cfa12a7c0c6d778be49b8a9",
-      "name": "kkookkoo",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 77,
-          "pnl": -431878.82489073643,
-          "vol": 14012811.399968002
+          "pnl": -743700.3043569893,
+          "vol": 14403481.450005002
         }
       ]
     },
@@ -3233,15 +3220,15 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 78,
-          "pnl": 133421.06788174453,
-          "vol": 13867322.25263501
+          "rank": 76,
+          "pnl": 127612.66512627405,
+          "vol": 14289888.887906998
         }
       ]
     },
     {
-      "address": "0x18c18e0c8c3154360b4f730ec8b9d8013ceb2183",
-      "name": "0x18C18e0c8c3154360B4F730eC8B9D8013Ceb2183-1766020654989",
+      "address": "0x1524177ecf66c7102c78d02df860fe8b9f2a61e1",
+      "name": "haiyoushui",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -3249,25 +3236,9 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 80,
-          "pnl": 62881.40940630015,
-          "vol": 13513165.111643009
-        }
-      ]
-    },
-    {
-      "address": "0xec981ed70ae69c5cbcac08c1ba063e734f6bafcd",
-      "name": "0xheavy888",
-      "xUsername": "elucidxte",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-676309-6a0dffb9-c330-4c71-8d8b-6a158f70b8b0.png",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 81,
-          "pnl": -29493.595091511495,
-          "vol": 13478873.320967976
+          "rank": 77,
+          "pnl": 73186.10132361767,
+          "vol": 14247456.62692
         }
       ]
     },
@@ -3281,9 +3252,73 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
+          "rank": 78,
+          "pnl": -88328.89992238049,
+          "vol": 13977067.483041998
+        }
+      ]
+    },
+    {
+      "address": "0x26cf4a41eb49f0c560d32a2d2e4f45715e47c612",
+      "name": "technician2",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 79,
+          "pnl": -843542.7612264231,
+          "vol": 13933632.388328055
+        }
+      ]
+    },
+    {
+      "address": "0xec981ed70ae69c5cbcac08c1ba063e734f6bafcd",
+      "name": "0xheavy888",
+      "xUsername": "elucidxte",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-676309-6a0dffb9-c330-4c71-8d8b-6a158f70b8b0.png",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 80,
+          "pnl": -23476.08177628703,
+          "vol": 13837656.580869008
+        }
+      ]
+    },
+    {
+      "address": "0x26b46988d027c6c03cfa12a7c0c6d778be49b8a9",
+      "name": "kkookkoo",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 81,
+          "pnl": -392986.94582699996,
+          "vol": 13728317.639520003
+        }
+      ]
+    },
+    {
+      "address": "0x18c18e0c8c3154360b4f730ec8b9d8013ceb2183",
+      "name": "0x18C18e0c8c3154360B4F730eC8B9D8013Ceb2183-1766020654989",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
           "rank": 82,
-          "pnl": 12687.33014852555,
-          "vol": 13425132.112235995
+          "pnl": 59980.291581630096,
+          "vol": 13357774.798174001
         }
       ]
     },
@@ -3298,104 +3333,8 @@
           "timePeriod": "MONTH",
           "orderBy": "VOL",
           "rank": 83,
-          "pnl": 12708.75929243496,
-          "vol": 13420084.361635003
-        }
-      ]
-    },
-    {
-      "address": "0x731a241767938bb23d1b2fac4c9cd2f3cea9033f",
-      "name": "CoinTrick",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-3308274-9505b702-ffef-4ab7-b7c1-4dba8902f31d.png",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 85,
-          "pnl": 9991.251447302871,
-          "vol": 12619916.993427003
-        }
-      ]
-    },
-    {
-      "address": "0x21ffd2b7a212a6f277ed3eca1a9f8efcbca90d71",
-      "name": "Haradwaith",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-1267746-f048109a-fad4-4227-b402-113358f50961.png",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 86,
-          "pnl": 223178.9374260265,
-          "vol": 12545782.131671138
-        }
-      ]
-    },
-    {
-      "address": "0x122cb94c437ea5e6f088c6c0c143c592ab8efbed",
-      "name": "Cb94C437EA5e6f088c6c0C143c592ab8EFBed",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 87,
-          "pnl": 76230.19626837097,
-          "vol": 12491483.024210006
-        }
-      ]
-    },
-    {
-      "address": "0x1524177ecf66c7102c78d02df860fe8b9f2a61e1",
-      "name": "haiyoushui",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 88,
-          "pnl": 78255.90838595966,
-          "vol": 12472307.764982998
-        }
-      ]
-    },
-    {
-      "address": "0x1bc32be106439240f59aa25668e613831a5cdc6e",
-      "name": "0x1bc32be106439240f59aa25668e613831a5cdc6e",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 89,
-          "pnl": 153615.01900242976,
-          "vol": 12426723.632187985
-        }
-      ]
-    },
-    {
-      "address": "0x3e9ff2dbf2a6356ee47049e9f3c43a70cb55d57f",
-      "name": "vtcchampion53",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 90,
-          "pnl": 23144.23476000024,
-          "vol": 12358716.65
+          "pnl": 10993.628811714967,
+          "vol": 13349767.271509007
         }
       ]
     },
@@ -3409,9 +3348,112 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 93,
-          "pnl": -878396.2458569012,
-          "vol": 12245340.982058913
+          "rank": 86,
+          "pnl": -847679.1332342278,
+          "vol": 12498921.110805012
+        }
+      ]
+    },
+    {
+      "address": "0x1bc32be106439240f59aa25668e613831a5cdc6e",
+      "name": "0x1bc32be106439240f59aa25668e613831a5cdc6e",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 87,
+          "pnl": 230715.858423,
+          "vol": 12492315.174754007
+        }
+      ]
+    },
+    {
+      "address": "0xe4a57385a34b0b32fd86be72efd25cda41003cad",
+      "name": "chubbytoro",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 88,
+          "pnl": 179734.84053794472,
+          "vol": 12484500.741578
+        },
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 20,
+          "pnl": 619378.2962828196,
+          "vol": 4368847.047488
+        }
+      ]
+    },
+    {
+      "address": "0x21ffd2b7a212a6f277ed3eca1a9f8efcbca90d71",
+      "name": "Haradwaith",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-1267746-f048109a-fad4-4227-b402-113358f50961.png",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 90,
+          "pnl": 211393.7850017362,
+          "vol": 12385849.001558691
+        }
+      ]
+    },
+    {
+      "address": "0x3e9ff2dbf2a6356ee47049e9f3c43a70cb55d57f",
+      "name": "vtcchampion53",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 91,
+          "pnl": 23166.071610000243,
+          "vol": 12338145.350000001
+        }
+      ]
+    },
+    {
+      "address": "0xc8ab97a9089a9ff7e6ef0688e6e591a066946418",
+      "name": "ArmageddonRewardsBilly",
+      "xUsername": "Eltonma",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/rewardsiconbilly_637fb65a-1112-49bc-9376-3fb6d377cde0_1738970845400.png",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 92,
+          "pnl": 203264.9146618296,
+          "vol": 12254809.892409
+        }
+      ]
+    },
+    {
+      "address": "0x731a241767938bb23d1b2fac4c9cd2f3cea9033f",
+      "name": "CoinTrick",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-3308274-9505b702-ffef-4ab7-b7c1-4dba8902f31d.png",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 94,
+          "pnl": 8965.337327627814,
+          "vol": 12143353.67342699
         }
       ]
     },
@@ -3425,41 +3467,25 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 94,
-          "pnl": 118576.07793815999,
-          "vol": 12238634.019898005
-        }
-      ]
-    },
-    {
-      "address": "0x21f333307ac6d2e65ac82f014b3dd2b64cbc35e3",
-      "name": "hi774c",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 95,
-          "pnl": 215314.40215790982,
-          "vol": 12102899.599392986
-        }
-      ]
-    },
-    {
-      "address": "0x77d9009e5e22d8b7187530c862dd058949b906ed",
-      "name": "BLASTSLAM9WINNER",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
           "rank": 96,
-          "pnl": 103546.37434299989,
-          "vol": 12092118.684444008
+          "pnl": 112334.13272036499,
+          "vol": 12065997.344064996
+        }
+      ]
+    },
+    {
+      "address": "0x122cb94c437ea5e6f088c6c0c143c592ab8efbed",
+      "name": "Cb94C437EA5e6f088c6c0C143c592ab8EFBed",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "MONTH",
+          "orderBy": "VOL",
+          "rank": 97,
+          "pnl": 74436.74000846739,
+          "vol": 12059171.957273997
         }
       ]
     },
@@ -3473,25 +3499,9 @@
         {
           "timePeriod": "MONTH",
           "orderBy": "VOL",
-          "rank": 97,
-          "pnl": 29406.57248992555,
-          "vol": 12055844.699810997
-        }
-      ]
-    },
-    {
-      "address": "0x3f975d4186c87b3b4a39997cc37e71cc70ca4059",
-      "name": "llllllllloooo",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-5217753-2b34e5ec-ccbd-48de-bd5c-c6b0014e7c45.png",
-      "boards": [
-        {
-          "timePeriod": "MONTH",
-          "orderBy": "VOL",
-          "rank": 100,
-          "pnl": 42476.68263890363,
-          "vol": 11897276.751662005
+          "rank": 98,
+          "pnl": 30512.505356957525,
+          "vol": 11988010.007189011
         }
       ]
     },
@@ -3633,7 +3643,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 10,
+          "rank": 11,
           "pnl": 8350187.803676,
           "vol": 19001698.927902043
         }
@@ -3825,7 +3835,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 24,
+          "rank": 23,
           "pnl": 4901231.747174,
           "vol": 529047703.70599174
         }
@@ -3841,7 +3851,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 25,
+          "rank": 24,
           "pnl": 4804855.613376,
           "vol": 9949068.653841998
         }
@@ -3857,7 +3867,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 26,
+          "rank": 25,
           "pnl": 4711276.915635999,
           "vol": 64340008.648626
         }
@@ -3873,7 +3883,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 27,
+          "rank": 26,
           "pnl": 4526176.046975,
           "vol": 185491941.63208297
         }
@@ -3889,7 +3899,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 28,
+          "rank": 29,
           "pnl": 4420552.662704,
           "vol": 12348296.010426
         }
@@ -3905,7 +3915,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 29,
+          "rank": 30,
           "pnl": 4395477.552393,
           "vol": 440534708.20661145
         }
@@ -3921,7 +3931,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 30,
+          "rank": 31,
           "pnl": 4328170.583566,
           "vol": 17115020.886495
         }
@@ -3939,7 +3949,7 @@
           "orderBy": "PNL",
           "rank": 32,
           "pnl": 4149050.063376,
-          "vol": 54987267.87997199
+          "vol": 54987267.879971996
         }
       ]
     },
@@ -3953,7 +3963,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 33,
+          "rank": 34,
           "pnl": 4049827.094103,
           "vol": 9457725.03433801
         }
@@ -3969,9 +3979,9 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 34,
+          "rank": 35,
           "pnl": 4041295.899505,
-          "vol": 248465653.6569519
+          "vol": 248465653.6569522
         }
       ]
     },
@@ -3985,7 +3995,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 37,
+          "rank": 38,
           "pnl": 3915054.813028,
           "vol": 477310797.1358591
         }
@@ -4065,9 +4075,9 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 43,
+          "rank": 44,
           "pnl": 3547038.048434,
-          "vol": 8005463.485680999
+          "vol": 8005463.485681001
         }
       ]
     },
@@ -4129,7 +4139,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 48,
+          "rank": 49,
           "pnl": 3321181.458669,
           "vol": 18556768.40156995
         }
@@ -4145,7 +4155,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 49,
+          "rank": 50,
           "pnl": 3193101.450399,
           "vol": 51251433.932824
         }
@@ -4289,9 +4299,9 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 62,
+          "rank": 63,
           "pnl": 2532009.196393,
-          "vol": 259663776.56501636
+          "vol": 259668214.43191135
         }
       ]
     },
@@ -4322,8 +4332,8 @@
           "timePeriod": "ALL",
           "orderBy": "PNL",
           "rank": 65,
-          "pnl": 2406015.30342,
-          "vol": 310549551.30377424
+          "pnl": 2406070.136871,
+          "vol": 310553062.99377376
         }
       ]
     },
@@ -4338,8 +4348,8 @@
           "timePeriod": "ALL",
           "orderBy": "PNL",
           "rank": 66,
-          "pnl": 2369575.705114,
-          "vol": 503637159.28294533
+          "pnl": 2369949.755114,
+          "vol": 503702595.4583885
         }
       ]
     },
@@ -4354,8 +4364,8 @@
           "timePeriod": "ALL",
           "orderBy": "PNL",
           "rank": 67,
-          "pnl": 2355198.608361,
-          "vol": 101205265.13615206
+          "pnl": 2355012.417615,
+          "vol": 101205777.23615213
         }
       ]
     },
@@ -4402,8 +4412,8 @@
           "timePeriod": "ALL",
           "orderBy": "PNL",
           "rank": 70,
-          "pnl": 2307660.158128,
-          "vol": 94448760.01698191
+          "pnl": 2308759.90376,
+          "vol": 94558316.12705733
         }
       ]
     },
@@ -4440,22 +4450,6 @@
       ]
     },
     {
-      "address": "0x83720820a8aa6c3f20ad71850e7a1a17d16c5223",
-      "name": "Jsram",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "ALL",
-          "orderBy": "PNL",
-          "rank": 73,
-          "pnl": 2202285.549257,
-          "vol": 75658837.14677241
-        }
-      ]
-    },
-    {
       "address": "0xa9878e59934ab507f9039bcb917c1bae0451141d",
       "name": "ilovecircle",
       "xUsername": "",
@@ -4465,9 +4459,25 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 74,
+          "rank": 73,
           "pnl": 2202179.12223,
           "vol": 53212926.95867673
+        }
+      ]
+    },
+    {
+      "address": "0x83720820a8aa6c3f20ad71850e7a1a17d16c5223",
+      "name": "Jsram",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "ALL",
+          "orderBy": "PNL",
+          "rank": 74,
+          "pnl": 2201741.376406,
+          "vol": 75844734.82934935
         }
       ]
     },
@@ -4497,9 +4507,9 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 76,
+          "rank": 77,
           "pnl": 2150291.574477,
-          "vol": 98384826.1840713
+          "vol": 98384826.18407132
         }
       ]
     },
@@ -4513,7 +4523,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 79,
+          "rank": 80,
           "pnl": 2097480.476401,
           "vol": 5237151.235279997
         }
@@ -4529,7 +4539,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 80,
+          "rank": 81,
           "pnl": 2093362.982851,
           "vol": 3655046.602725004
         }
@@ -4545,7 +4555,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 81,
+          "rank": 82,
           "pnl": 2093219.175225,
           "vol": 13650894.241731998
         }
@@ -4563,7 +4573,7 @@
           "orderBy": "PNL",
           "rank": 83,
           "pnl": 2050432.672904,
-          "vol": 200578645.4125223
+          "vol": 200578645.4125222
         }
       ]
     },
@@ -4626,8 +4636,8 @@
           "timePeriod": "ALL",
           "orderBy": "PNL",
           "rank": 88,
-          "pnl": 1958135.671651,
-          "vol": 132459923.49641167
+          "pnl": 1961505.436746,
+          "vol": 132542066.19413564
         }
       ]
     },
@@ -4680,22 +4690,6 @@
       ]
     },
     {
-      "address": "0x924379a79c64b77ad5816ad362122a5f6228658e",
-      "name": "Kch-Temp",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "ALL",
-          "orderBy": "PNL",
-          "rank": 92,
-          "pnl": 1847326.864231,
-          "vol": 58386261.409736976
-        }
-      ]
-    },
-    {
       "address": "0xd1c537b2a7cba8d365e111bffb9de7b205e2cbd0",
       "name": "weatherman12",
       "xUsername": "",
@@ -4705,7 +4699,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 93,
+          "rank": 92,
           "pnl": 1826971.362818,
           "vol": 45849716.23284202
         }
@@ -4721,7 +4715,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 94,
+          "rank": 93,
           "pnl": 1804584.624644,
           "vol": 4938242.256861002
         }
@@ -4737,7 +4731,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 95,
+          "rank": 94,
           "pnl": 1795764.949701,
           "vol": 27116007.477603994
         }
@@ -4785,7 +4779,7 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 99,
+          "rank": 98,
           "pnl": 1734991.312074,
           "vol": 35069680.775492996
         }
@@ -4801,25 +4795,25 @@
         {
           "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 100,
+          "rank": 99,
           "pnl": 1707693.179169,
           "vol": 70796809.404623
         }
       ]
     },
     {
-      "address": "0xe4a57385a34b0b32fd86be72efd25cda41003cad",
-      "name": "chubbytoro",
+      "address": "0x5b4ec9c06b284ee52c41a761974d836992880232",
+      "name": "ramadamaramadam",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
       "boards": [
         {
-          "timePeriod": "WEEK",
+          "timePeriod": "ALL",
           "orderBy": "PNL",
-          "rank": 12,
-          "pnl": 588136.4040665899,
-          "vol": 2848693.4126989995
+          "rank": 100,
+          "pnl": 1698568.502088,
+          "vol": 26769545.610498
         }
       ]
     },
@@ -4833,15 +4827,15 @@
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 36,
-          "pnl": 250391.10898681503,
-          "vol": 296273.8421710001
+          "rank": 29,
+          "pnl": 403090.4687406209,
+          "vol": 439736.6940689998
         }
       ]
     },
     {
-      "address": "0xaa6c296af0ceea224b56fb7ee1e9cab1ccabe2d0",
-      "name": "ax2026",
+      "address": "0x0a39b3b29ab3b7dd753aa96fde4ecab3f2dbb0b9",
+      "name": "plonker2026",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -4849,9 +4843,9 @@
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 38,
-          "pnl": 246831.0795434951,
-          "vol": 2103660.0272680004
+          "rank": 33,
+          "pnl": 365536.0754686351,
+          "vol": 1612660.279061
         }
       ]
     },
@@ -4865,25 +4859,9 @@
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 39,
-          "pnl": 237913.45044699998,
+          "rank": 44,
+          "pnl": 237913.450447,
           "vol": 1126149.941954
-        }
-      ]
-    },
-    {
-      "address": "0xa3358ec2bd77abb2287f8d0db21597fa98cd7624",
-      "name": "streajjkti888",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 40,
-          "pnl": 235407.39909899994,
-          "vol": 799355.1565889999
         }
       ]
     },
@@ -4897,47 +4875,15 @@
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 41,
-          "pnl": 231938.03486633996,
+          "rank": 45,
+          "pnl": 237781.42416633997,
           "vol": 527812.699992
         }
       ]
     },
     {
-      "address": "0x285faa3e3d1465cf3ff1bff1e1d14891f5b8495f",
-      "name": "yabanci",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-9955204-667b321f-632d-48a0-bf4e-764ca9e66dbb.png",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 43,
-          "pnl": 223791.00131700013,
-          "vol": 2550183.2652669996
-        }
-      ]
-    },
-    {
-      "address": "0x72638c8d939fd0205925025b1183d8db4a360851",
-      "name": "soforth",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-9985432-7b51a91c-c65b-4585-b80b-0cda52f27066.png",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 46,
-          "pnl": 195047.2278709643,
-          "vol": 2269661.045870998
-        }
-      ]
-    },
-    {
-      "address": "0x237ed451df8c2ac9fbcfc02b6bfa51124ac5c6d7",
-      "name": "crgmegeg",
+      "address": "0xaa6c296af0ceea224b56fb7ee1e9cab1ccabe2d0",
+      "name": "ax2026",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -4945,9 +4891,9 @@
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 47,
-          "pnl": 193323.40746500003,
-          "vol": 359306.680813
+          "rank": 48,
+          "pnl": 219447.9698609601,
+          "vol": 2288709.174090001
         }
       ]
     },
@@ -4961,73 +4907,9 @@
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 53,
-          "pnl": 179809.7986854788,
-          "vol": 220905.02776000006
-        }
-      ]
-    },
-    {
-      "address": "0xec1fe51724fefc0b238514e88837dbcaa07bd325",
-      "name": "0xEC1Fe51724FeFc0b238514E88837dbcaA07Bd325-1772737525030",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 55,
-          "pnl": 170966.5848724965,
-          "vol": 475079.89028100006
-        }
-      ]
-    },
-    {
-      "address": "0x56280cd4cf8f902b3971338ddb04038e9dbfabbc",
-      "name": "Po1yamory",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/logo_3_bc3c4e0e-4210-4cb2-81ab-75d2d5926fb1_1737441554995.webp",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 56,
-          "pnl": 170651.33348309292,
-          "vol": 1004359.0712519999
-        }
-      ]
-    },
-    {
-      "address": "0x3e03eaee9fa9d188e2a15e8bfd9c34b95e44b571",
-      "name": "nimble-mellow-comet",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 59,
-          "pnl": 162704.16191906302,
-          "vol": 462625.25717899995
-        }
-      ]
-    },
-    {
-      "address": "0x6fa69c6041a670b8bb97a77c62f4f65bd8b1a570",
-      "name": "bagelraspberryrabbit",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 62,
-          "pnl": 158350.0817211865,
-          "vol": 38553.869837
+          "rank": 49,
+          "pnl": 217996.79550372422,
+          "vol": 266492.75419300003
         }
       ]
     },
@@ -5041,15 +4923,15 @@
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 63,
-          "pnl": 143968.18496503186,
-          "vol": 2047928.7341230009
+          "rank": 54,
+          "pnl": 194905.7299990418,
+          "vol": 1972518.934082001
         }
       ]
     },
     {
-      "address": "0x054964a95e2cb3fc2105a62a1edf3da44979c052",
-      "name": "COMEONDUDE",
+      "address": "0x237ed451df8c2ac9fbcfc02b6bfa51124ac5c6d7",
+      "name": "crgmegeg",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -5057,31 +4939,31 @@
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 67,
-          "pnl": 128130.03064499996,
-          "vol": 509105.50249600003
+          "rank": 55,
+          "pnl": 193323.40746500003,
+          "vol": 359306.680813
         }
       ]
     },
     {
-      "address": "0x853c37a959a5791b849e3f3225c7f5963746bd03",
-      "name": "WarriorPooh",
+      "address": "0x285faa3e3d1465cf3ff1bff1e1d14891f5b8495f",
+      "name": "yabanci",
       "xUsername": "",
       "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-4523860-1b2d84e9-15fb-4bed-a92e-6ca1555ceaf8.jpg",
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-9955204-667b321f-632d-48a0-bf4e-764ca9e66dbb.png",
       "boards": [
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 68,
-          "pnl": 123490.39519766431,
-          "vol": 397384.83031800005
+          "rank": 57,
+          "pnl": 193004.7764503552,
+          "vol": 2834402.266493
         }
       ]
     },
     {
-      "address": "0xd776f0a066fd3014ecfac89cfd414440982bffeb",
-      "name": "bomber",
+      "address": "0xa3358ec2bd77abb2287f8d0db21597fa98cd7624",
+      "name": "streajjkti888",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -5089,41 +4971,9 @@
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 69,
-          "pnl": 122590.55997600003,
-          "vol": 566206.7716610001
-        }
-      ]
-    },
-    {
-      "address": "0xdf8616e18da2ad636713f4bf4367794e810606bb",
-      "name": "ljhggk",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-10201598-cd8e45d7-f5f5-4b53-aa71-1b6837c945c9.png",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 70,
-          "pnl": 119865.53512180102,
-          "vol": 192892.131414
-        }
-      ]
-    },
-    {
-      "address": "0x7d2f82da7ae8c910bd1e89475be705d313daef1a",
-      "name": "TheOpportunist",
-      "xUsername": "0xMso",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-3140031-4a217649-3c14-46aa-90d9-49a028401674.jpg",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 71,
-          "pnl": 114398.65853090797,
-          "vol": 528321.507141
+          "rank": 58,
+          "pnl": 189614.15259899996,
+          "vol": 700190.1317380001
         }
       ]
     },
@@ -5137,15 +4987,15 @@
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 72,
-          "pnl": 114297.3270344664,
-          "vol": 43037.57902299999
+          "rank": 59,
+          "pnl": 179100.95363087088,
+          "vol": 55399.20086700001
         }
       ]
     },
     {
-      "address": "0xbf78b2bea5bfadbc4f7522d1896db21ba9334ae9",
-      "name": "bbbbbbbbzzz",
+      "address": "0xec1fe51724fefc0b238514e88837dbcaa07bd325",
+      "name": "0xEC1Fe51724FeFc0b238514E88837dbcaA07Bd325-1772737525030",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -5153,15 +5003,47 @@
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 73,
-          "pnl": 113189.476649809,
-          "vol": 188564.009038
+          "rank": 60,
+          "pnl": 175658.14698428696,
+          "vol": 566749.682056
         }
       ]
     },
     {
-      "address": "0xf72e22e2becac755ee39cbe4e22863dd41df5358",
-      "name": "bmilabs",
+      "address": "0x0224bb9eb0a5c9fd261ac9123a72cbdd5748292a",
+      "name": "zb8",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-701281-61d7cfcb-c8bf-45cc-a3d8-6233c5af8a1c.png",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 61,
+          "pnl": 172131.17939692482,
+          "vol": 751336.8523500002
+        }
+      ]
+    },
+    {
+      "address": "0x6cd517eaa88ba717fa3aa3d5047feb0ce387f2cf",
+      "name": "AlexLiu",
+      "xUsername": "liu_web3",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-123824-976a76d7-614a-4a5c-a24d-312e65d43dd7.webp",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 62,
+          "pnl": 168614.9448588439,
+          "vol": 36388.936752
+        }
+      ]
+    },
+    {
+      "address": "0x3e03eaee9fa9d188e2a15e8bfd9c34b95e44b571",
+      "name": "nimble-mellow-comet",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -5169,15 +5051,15 @@
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 74,
-          "pnl": 109837.070268591,
-          "vol": 112670.825313
+          "rank": 63,
+          "pnl": 161964.6873393585,
+          "vol": 453451.25327899994
         }
       ]
     },
     {
-      "address": "0xa3fec54e1310fb6a05191420c9d44df4087caac5",
-      "name": "tian888",
+      "address": "0x6fa69c6041a670b8bb97a77c62f4f65bd8b1a570",
+      "name": "bagelraspberryrabbit",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -5185,121 +5067,9 @@
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 75,
-          "pnl": 108477.72892300002,
-          "vol": 505083.10539200006
-        }
-      ]
-    },
-    {
-      "address": "0x95c6c9a6727ed203e97230dda61ab19a020e1508",
-      "name": "DelidelaDele",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 76,
-          "pnl": 107899.56203000004,
-          "vol": 492879.0812339999
-        }
-      ]
-    },
-    {
-      "address": "0xb7632365a9edc5be7239295bf559e8cd98a8d3a5",
-      "name": "0xB7632365a9EDC5bE7239295BF559e8cd98a8d3a5-1769632303424",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 77,
-          "pnl": 106568.8382186705,
-          "vol": 384395.576699
-        }
-      ]
-    },
-    {
-      "address": "0x8f28821a0be0f8d51bdb46a9a6295e8069edcae2",
-      "name": "82727skjwojq",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 78,
-          "pnl": 104465.73826095501,
-          "vol": 201418.842305
-        }
-      ]
-    },
-    {
-      "address": "0x2112103a575ebfc82e352e875ce22544fc12b871",
-      "name": "Cheongkokhin",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 79,
-          "pnl": 101387.599621,
-          "vol": 1721791.159767
-        }
-      ]
-    },
-    {
-      "address": "0xc3cd1d612bbf9fbf80da5a9bff0b0470cb46816c",
-      "name": "UbuntuTrading",
-      "xUsername": "buckyandlucky",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/IMG_4858_2e745132-95d1-4edf-bd2f-e0cb566889c8_1733232634396.jpeg",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 81,
-          "pnl": 101090.8678230823,
-          "vol": 359857.7252310003
-        }
-      ]
-    },
-    {
-      "address": "0x72a0d79b4325638bc2bcfc9a2b8a380c2d81c059",
-      "name": "0x898ca742482eab3A4a015DA6928f8edC9BF3DA39-1782562025853",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 82,
-          "pnl": 100366.51046599998,
-          "vol": 0
-        }
-      ]
-    },
-    {
-      "address": "0xb3d36421d0576fffc203e1800a3cdb9bca9c66ff",
-      "name": "Srodt",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 83,
-          "pnl": 99560.09672730301,
-          "vol": 71297.002518
+          "rank": 65,
+          "pnl": 147297.59808005596,
+          "vol": 78999.128803
         }
       ]
     },
@@ -5313,9 +5083,9 @@
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 85,
-          "pnl": 96624.83076500002,
-          "vol": 595997.4845690001
+          "rank": 67,
+          "pnl": 145531.89229604,
+          "vol": 784937.5311210001
         }
       ]
     },
@@ -5329,137 +5099,41 @@
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 86,
-          "pnl": 95345.81089035445,
-          "vol": 443497.2102810002
+          "rank": 68,
+          "pnl": 143878.613426456,
+          "vol": 596381.8765350007
         }
       ]
     },
     {
-      "address": "0xf4f381476cda20730dbfb9204d7dbdd1203da1a1",
-      "name": "hewhodoesit",
-      "xUsername": "",
+      "address": "0x7d2f82da7ae8c910bd1e89475be705d313daef1a",
+      "name": "TheOpportunist",
+      "xUsername": "0xMso",
       "verified": false,
-      "profileImage": "",
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-3140031-4a217649-3c14-46aa-90d9-49a028401674.jpg",
       "boards": [
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 87,
-          "pnl": 94965.98456186967,
-          "vol": 2030190.2646420002
+          "rank": 70,
+          "pnl": 139211.69580542497,
+          "vol": 577152.691642
         }
       ]
     },
     {
-      "address": "0x783d703bad79eb631f39f10ce3b1dddd70679a35",
-      "name": "JaneEyre",
-      "xUsername": "",
+      "address": "0xc3cd1d612bbf9fbf80da5a9bff0b0470cb46816c",
+      "name": "UbuntuTrading",
+      "xUsername": "buckyandlucky",
       "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-6333519-b5cfb0ff-4d37-4bd9-8b19-bc3b1af941d6.webp",
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/IMG_4858_2e745132-95d1-4edf-bd2f-e0cb566889c8_1733232634396.jpeg",
       "boards": [
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 89,
-          "pnl": 94400.11035627406,
-          "vol": 13948.182049000001
-        }
-      ]
-    },
-    {
-      "address": "0x090af6fd2aeb04202abc97370aa86c1b81d90fa6",
-      "name": "VictorLudorum",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 91,
-          "pnl": 91828.00680438876,
-          "vol": 159561.0196630001
-        }
-      ]
-    },
-    {
-      "address": "0xeecca68c6ba447d104fe8945aa143344dd858392",
-      "name": "lightotunnel35",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 93,
-          "pnl": 90230.45153932177,
-          "vol": 875981.3401250001
-        }
-      ]
-    },
-    {
-      "address": "0xb4d250f58c26840e09723a83ce9c8149aa32ce99",
-      "name": "soonand",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-3006096-32ca7083-d183-456e-bb09-8e2c6c8cea8d.png",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 94,
-          "pnl": 89507.3782385572,
-          "vol": 2421724.705773997
-        }
-      ]
-    },
-    {
-      "address": "0x5bbdda8c2447fd63f0e8dc8a3712352fc81b9ec2",
-      "name": "Xav",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 95,
-          "pnl": 86260.63643999999,
-          "vol": 19995.69
-        }
-      ]
-    },
-    {
-      "address": "0x3478873ca92b65c52c9818b715056ab884e2a11e",
-      "name": "dumpybadger1368",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 96,
-          "pnl": 86253.78108499992,
-          "vol": 581820.8408700002
-        }
-      ]
-    },
-    {
-      "address": "0x99e42eb9038705165b22f821e27659c1dc41e4c4",
-      "name": "acorp",
-      "xUsername": "",
-      "verified": false,
-      "profileImage": "",
-      "boards": [
-        {
-          "timePeriod": "WEEK",
-          "orderBy": "PNL",
-          "rank": 97,
-          "pnl": 86218.561609,
-          "vol": 330158.143542
+          "rank": 71,
+          "pnl": 139104.56710107738,
+          "vol": 365491.8913410002
         }
       ]
     },
@@ -5473,31 +5147,303 @@
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 98,
-          "pnl": 82120.82334200003,
-          "vol": 937989.5414389999
+          "rank": 74,
+          "pnl": 134014.76894200002,
+          "vol": 1052117.041439
         }
       ]
     },
     {
-      "address": "0x200544427dfc822652cb55ca5ca9f99476a9e414",
-      "name": "kickstandhater",
+      "address": "0x72638c8d939fd0205925025b1183d8db4a360851",
+      "name": "soforth",
       "xUsername": "",
       "verified": false,
-      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/ewok_ce16245e-0223-470a-9fdc-a0cd0573b204_1721767842474.jpg",
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-9985432-7b51a91c-c65b-4585-b80b-0cda52f27066.png",
       "boards": [
         {
           "timePeriod": "WEEK",
           "orderBy": "PNL",
-          "rank": 99,
-          "pnl": 80397.66428875,
+          "rank": 75,
+          "pnl": 128868.98980761986,
+          "vol": 2065512.9029269996
+        }
+      ]
+    },
+    {
+      "address": "0x9e05b2d8bfa136c4f17beec912a8546c2e35e30e",
+      "name": "dddmmm963",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 76,
+          "pnl": 123139.772102532,
+          "vol": 161462.49379699997
+        }
+      ]
+    },
+    {
+      "address": "0xdf8616e18da2ad636713f4bf4367794e810606bb",
+      "name": "ljhggk",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-10201598-cd8e45d7-f5f5-4b53-aa71-1b6837c945c9.png",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 79,
+          "pnl": 121725.26135264651,
+          "vol": 156641.733205
+        }
+      ]
+    },
+    {
+      "address": "0x7dcf235766e6b09c8869468a75d5495cf171a7bd",
+      "name": "godblessme2026",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 80,
+          "pnl": 121322.53065148267,
+          "vol": 167394.8708150001
+        }
+      ]
+    },
+    {
+      "address": "0x853c37a959a5791b849e3f3225c7f5963746bd03",
+      "name": "WarriorPooh",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-4523860-1b2d84e9-15fb-4bed-a92e-6ca1555ceaf8.jpg",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 82,
+          "pnl": 119914.8489374403,
+          "vol": 349049.810131
+        }
+      ]
+    },
+    {
+      "address": "0xb4d250f58c26840e09723a83ce9c8149aa32ce99",
+      "name": "soonand",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-3006096-32ca7083-d183-456e-bb09-8e2c6c8cea8d.png",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 84,
+          "pnl": 116347.04703978769,
+          "vol": 2393873.207307999
+        }
+      ]
+    },
+    {
+      "address": "0xfbe66593e49c4e7a7180a2582f041158bfb800f8",
+      "name": "gaven-willwin",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 85,
+          "pnl": 114783.345165095,
+          "vol": 358585.346215
+        }
+      ]
+    },
+    {
+      "address": "0xbf78b2bea5bfadbc4f7522d1896db21ba9334ae9",
+      "name": "bbbbbbbbzzz",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 86,
+          "pnl": 112882.4493276775,
+          "vol": 188564.009038
+        }
+      ]
+    },
+    {
+      "address": "0x4d6ef7033e3e332ba584882d09070b3abe755cfd",
+      "name": "ASIANARBACCOUNT",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-6911508-29718066-7e8c-42ae-a256-2f6a0d9ab73d.png",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 88,
+          "pnl": 110688.66608825017,
+          "vol": 1865177.834314
+        }
+      ]
+    },
+    {
+      "address": "0xf72e22e2becac755ee39cbe4e22863dd41df5358",
+      "name": "bmilabs",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 90,
+          "pnl": 109260.34732058499,
+          "vol": 112670.825313
+        }
+      ]
+    },
+    {
+      "address": "0xd29312e2446a746bbd94408e1c475f1ec6d7d683",
+      "name": "Kyn008",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 91,
+          "pnl": 107886.47202279032,
+          "vol": 2622120.3320200006
+        }
+      ]
+    },
+    {
+      "address": "0x1eeaf77002cf1eef5305abae702ddc3ccc86db08",
+      "name": "110thst",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 92,
+          "pnl": 105605.23656000002,
+          "vol": 759011.4411010001
+        }
+      ]
+    },
+    {
+      "address": "0xb7632365a9edc5be7239295bf559e8cd98a8d3a5",
+      "name": "0xB7632365a9EDC5bE7239295BF559e8cd98a8d3a5-1769632303424",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 93,
+          "pnl": 105338.6591428955,
+          "vol": 426995.03407100006
+        }
+      ]
+    },
+    {
+      "address": "0x8f28821a0be0f8d51bdb46a9a6295e8069edcae2",
+      "name": "82727skjwojq",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 95,
+          "pnl": 103843.46982587801,
+          "vol": 148014.91489400002
+        }
+      ]
+    },
+    {
+      "address": "0x17dd123a0ad9675e6ed3155724a92b4632af944c",
+      "name": "luciebot",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 96,
+          "pnl": 101756.0283256266,
+          "vol": 140215.89881100017
+        }
+      ]
+    },
+    {
+      "address": "0x72a0d79b4325638bc2bcfc9a2b8a380c2d81c059",
+      "name": "0x898ca742482eab3A4a015DA6928f8edC9BF3DA39-1782562025853",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 97,
+          "pnl": 100366.51046599998,
           "vol": 0
         }
       ]
     },
     {
-      "address": "0x885ffdf360e5b0b6e6acb963fb3f8ba2344c8ed9",
-      "name": "forecastication4",
+      "address": "0xa3fec54e1310fb6a05191420c9d44df4087caac5",
+      "name": "tian888",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 98,
+          "pnl": 99125.34911100003,
+          "vol": 543155.604207
+        }
+      ]
+    },
+    {
+      "address": "0xb3d36421d0576fffc203e1800a3cdb9bca9c66ff",
+      "name": "Srodt",
+      "xUsername": "",
+      "verified": false,
+      "profileImage": "",
+      "boards": [
+        {
+          "timePeriod": "WEEK",
+          "orderBy": "PNL",
+          "rank": 99,
+          "pnl": 99100.776031057,
+          "vol": 71297.002518
+        }
+      ]
+    },
+    {
+      "address": "0x090af6fd2aeb04202abc97370aa86c1b81d90fa6",
+      "name": "VictorLudorum",
       "xUsername": "",
       "verified": false,
       "profileImage": "",
@@ -5506,8 +5452,8 @@
           "timePeriod": "WEEK",
           "orderBy": "PNL",
           "rank": 100,
-          "pnl": 79959.21605084106,
-          "vol": 833375.0101840002
+          "pnl": 97796.8074810913,
+          "vol": 161601.003747
         }
       ]
     }
